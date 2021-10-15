@@ -1,6 +1,9 @@
 # Ignore all .env files
 .env
-
+.jpg
+.jpeg
+.png
+.gif
 # Ignore Folder
 .ssh/
 node_modules/
