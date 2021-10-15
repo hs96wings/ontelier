@@ -1,9 +1,18 @@
 const express = require('express');
+const Conn = require('../models/conn');
 const router = express.Router();
 
 router.get('/', function(req, res, next) {
 	const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-	console.log(ip);
+	Conn.create({
+		conn_ip: ip,
+	})
+	.then((result) => {
+		console.log(result);
+	})
+	.catch((error) => {
+		console.error(error);
+	});
 	res.render('main', {title: 'Ontelier - Main'});
 });
 
