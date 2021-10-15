@@ -1,8 +1,32 @@
 const express = require('express');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
 const Class = require('../models/class');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express.Router();
+
+try {
+	fs.readdirSync('./public/images/uploads');
+} catch (error) {
+	console.error('uploads 폴더가 없어 uploads 폴더를 생성합니다');
+	fs.mkdirSync('./public/images/uploads')
+}
+
+const upload = multer({
+	storage: multer.diskStorage({
+		destination(req, file, cb) {
+			cb(null, './public/images/uploads/');
+		},
+		filename(req, file, cb) {
+			const ext = path.extname(file.originalname);
+			cb(null, path.basename(file.originalname, ext) + Date.now() + ext);
+		},
+	}),
+	limits: { fileSize: 10 * 1024 * 1024 },
+});
 
 router.get('/', isLoggedIn, (req, res) => {
 	Class.findAll({
@@ -23,7 +47,8 @@ router.get('/write', isLoggedIn, (req, res) => {
 	res.render('write', {title: 'Ontelier'});
 });
 
-router.post('/write', isLoggedIn, (req, res) => {
+router.post('/write', isLoggedIn, upload.single('class_img'), async (req, res, next) => {
+	console.log(req.file);
 	const body = req.body;
 
 	Class.create({
@@ -32,6 +57,7 @@ router.post('/write', isLoggedIn, (req, res) => {
 		class_info: body.class_info,
 		teacher_name: body.teacher_name,
 		teacher_info: body.teacher_info,
+		class_img: `/images/uploads/${req.file.filename}`,
 	})
 	.then((result) => {
 		res.redirect('/admin');
