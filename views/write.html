@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h2>◆ 클래스 정보</h2>
+<form method="post" action="/admin/write">
+    
+    <table>
+        <tr>
+            <th>클래스이름</th>
+            <td><input type="text" name="class_title"  maxlength="80" value="">
+            </td>
+        </tr>
+        <tr>
+            <th>클래스가격</th>
+            <td><input type="text" name="class_price" maxlength="20" value="">
+            </td>
+        </tr>
+        <tr>
+            <th>클래스소개</th>
+            <td><textarea name="class_info" rows="10"></textarea></td>
+        </tr>
+        <tr>
+            <th>강사이름</th>
+            <td><input type="text" name="teacher_name" maxlength="20" value="">
+            </td>
+        </tr>
+        <tr>
+            <th>강사소개</th>
+            <td><textarea name="teacher_info" rows="10"></textarea></td>
+        </tr>
+        <tr>
+            <th>클래스이미지</th>
+            <td><label for="ex_file"></label><input type="file">
+            </td>
+        </tr>
+    </table>
+
+     <br>
+    <input type="submit" value="입력">
+    <input type="button" value="취소" onclick="history.back()">
+</form>
+{% endblock %}

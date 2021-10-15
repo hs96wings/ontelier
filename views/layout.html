@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/admin_main.css"/>
+    <title>{{title}}</title>
+</head>
+
+<body>
+<div class="container">
+<!----- 헤더 영역 ----->
+    <div class="header">
+        <div class="logo">온뜰</div>
+        <div id="admin-name" class="name">정서영 (관리자)</div>
+        <button class="logout-button">로그아웃</button>
+    </div>
+
+<!----- 메뉴 영역 ----->
+    <div id="menu">
+        <ul class="menu-item">
+            <li>클래스</li>
+                <ul>
+                    <li>카테고리</li>
+                    <li>상세페이지</li>
+                </ul>
+            <li>회원관리</li>
+                <ul>
+                    <li>회원정보</li>
+                    <li>전체페이지</li>
+                </ul>
+            <li>CS관리</li>
+                <ul>
+                    <li>후기/Q&A 관리</li>
+                </ul>
+        </ul>
+    </div>
+
+<!----- 콘텐트 영역 ----->
+    <div class="content">
+
+        <!-- 검색창 -->
+        <div class="search-box">
+            <select name="search-filter" class="search-field">
+                <option value="클래스이름">클래스이름</option>
+                <option value="클래스가격">클래스가격</option>
+                <option value="카테고리">카테고리</option>
+                <option value="강사이름">강사이름</option>
+            </select>
+            <input type="text" class="search-input">
+            <button class="search-button">검색</button>
+        </div>
+
+        {% block content %}
+        {% endblock %}
+
+        <!-- 페이지네이션 -->
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">〈</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">5</a></li>
+            <li class="page-item"><a class="page-link" href="#">〉</a></li>
+        </ul>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+.container {
+    display: grid;
+    grid-template-areas: 
+            ". header header ."
+            ". menu content .";
+    grid-template-columns: 1fr 1fr 3.5fr 1fr;
+    grid-template-rows: 70px 1fr;
+}
+/* -----헤더----- */
+.header {
+    grid-area: header;
+    display: flex;
+    padding: 15px;
+    align-items: flex-end;
+}
+
+.logo {
+    display: inline-block;
+    width: 80px;
+    height: 50px;
+}
+
+.name {
+    display: inline-block;
+    vertical-align: bottom;
+    text-align: center;
+    width: 100px;
+    height: 25px;
+    line-height: 25px;
+    margin-left: auto;
+}
+
+.logout-button {
+    display: inline-block;
+    vertical-align: middle;
+    width: 70px;
+    height: 25px;
+    margin-left: 10px;
+}
+
+/* -----메뉴----- */
+#menu {
+    grid-area: menu;
+    border-collapse: collapse;
+}
+
+li {
+    list-style: none;
+    padding: 10px;
+}
+
+.menu-item {
+    border: 1px solid;
+    margin: 0;
+    padding: 15px;
+}
+
+/* -----콘텐트----- */
+.content {
+    grid-area: content;
+    display: flex;
+    border: 1px solid;
+    padding: 30px;
+    flex-direction: column;
+}
+
+.search-box {
+    display: flex;
+    width: 100%;
+}
+
+.search-field {
+    width: 100px;
+}
+
+.search-input {
+    width: 100%;
+}
+
+.search-button {
+    display: inline-block;
+    width: 50px;
+    margin-left: auto;
+}
+
+.big-button {
+    display: block;
+    width: 50px;
+    margin: 20px 0 20px auto;
+    right: 0;
+}
+
+/* 테이블 */
+.class-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid #444444;
+    height: 20px;
+  }
+
+th {
+    background-color: lightgray;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}
+
+.page-item {
+    border: 1px solid;
+    padding: 5px;
+    margin: 3px;
+    height: 10px;
+    line-height: 10px;
+}
