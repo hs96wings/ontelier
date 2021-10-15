@@ -12,8 +12,14 @@
 <!----- 헤더 영역 ----->
     <div class="header">
         <div class="logo">온뜰</div>
-        <div id="admin-name" class="name">정서영 (관리자)</div>
-        <button class="logout-button">로그아웃</button>
+        <div id="admin-name" class="name">{{user.user_nickname}}
+            {% if user.user_roll === 'user' %}
+                (유저)
+            {% else %}
+                (관리자)
+            {% endif %}
+        </div>
+        <button class="logout-button" onclick="location.href='/auth/logout'">로그아웃</button>
     </div>
 
 <!----- 메뉴 영역 ----->

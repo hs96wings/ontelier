@@ -4,13 +4,14 @@ const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express.Router();
 
-router.get('/', function(req, res, next) {
+router.get('/', isLoggedIn, (req, res) => {
 	Class.findAll({
         order: [['createdAt', 'DESC']],
     })
 	.then((result) => {
 			res.render('list', {
-			classes: result
+			classes: result,
+			user: req.user,
 		});
 	})
 	.catch((error) => {
@@ -18,11 +19,11 @@ router.get('/', function(req, res, next) {
 	});
 });
 
-router.get('/write', function(req, res, next) {
+router.get('/write', isLoggedIn, (req, res) => {
 	res.render('write', {title: 'Ontelier'});
 });
 
-router.post('/write', function(req, res, next) {
+router.post('/write', isLoggedIn, (req, res) => {
 	const body = req.body;
 
 	Class.create({
@@ -41,7 +42,7 @@ router.post('/write', function(req, res, next) {
 	});
 });
 
-router.post('/update', function(req, res, next) {
+router.post('/update', isLoggedIn, (req, res) => {
 	const body = req.body;
 
 	Class.update({
@@ -63,7 +64,7 @@ router.post('/update', function(req, res, next) {
 	});
 });
 
-router.post('/delete', function(req, res, next) {
+router.post('/delete', isLoggedIn, (req, res) => {
 	const body = req.body;
 
 	Class.destroy({
@@ -79,7 +80,7 @@ router.post('/delete', function(req, res, next) {
 	});
 });
 
-router.get('/class/:id', function(req, res, next) {
+router.get('/class/:id', isLoggedIn, (req, res) => {
 	Class.findOne({where: { id: req.params.id }})
 	.then((result) => {
 		console.log(result);
