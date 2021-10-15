@@ -2,6 +2,6 @@
 .env
 
 # Ignore Folder
-node-modules/
+node_modules/
 migrations/
 seeders/
