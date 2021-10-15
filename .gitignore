@@ -6,4 +6,4 @@
 node_modules/
 migrations/
 seeders/
-config/config.json
+config/*.json
