@@ -8,8 +8,21 @@
     </head>
     <body>
         <img src="/images/logo_1536x984.png" alt="Ontelier" style="width:30%;height:30%;"><br>
-        <a href="/admin">관리자</a><br>
-        <a href="/login">로그인</a><br>
-        <a href="/join">회원가입</a>
+        {% if user and user.user_id %}
+            <p>{{user.user_nickname}}님 안녕하세요</p>
+            <a href="/admin">관리자</a><br>
+            <a href="/auth/logout">로그아웃</a><br>
+        {% else %}
+            <a href="/login">로그인</a><br>
+            <a href="/join">회원가입</a>
+        {% endif %}
     </body>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        window.onload = () => {
+            if (new URL(location.href).searchParams.get('loginError')) {
+                alert(new URL(location.href).searchParams.get('loginError'));
+            }
+        };
+    </script>
 </html>
