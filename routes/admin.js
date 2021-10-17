@@ -29,14 +29,31 @@ const upload = multer({
 	limits: { fileSize: 10 * 1024 * 1024 },
 });
 
-router.get('/', isLoggedIn, isAdmin, (req, res) => {
-	Class.findAll({
-        order: [['createdAt', 'DESC']],
+// router.get('/', isLoggedIn, isAdmin, (req, res) => {
+router.get('/', (req, res) => {
+	let pageNum = req.query.page;
+	let offset = 0;
+	const limit = 3;
+
+	console.log(`pageNum:${pageNum}`);
+	if (pageNum === undefined) pageNum = 1;
+	if (pageNum > 1) {
+		offset = limit * (pageNum - 1);
+	}
+
+	Class.findAndCountAll({
+		offset: offset,
+		limit: limit,
+		order: [['createdAt', 'DESC']],
     })
 	.then((result) => {
+		console.log(result);
 			res.render('list', {
-			classes: result,
+			classes: result.rows,
 			user: req.user,
+			pageNum: pageNum,
+			pages: result.count,
+			limit: limit
 		});
 	})
 	.catch((error) => {
@@ -51,6 +68,12 @@ router.get('/write', isLoggedIn, isAdmin, (req, res) => {
 router.post('/write', isLoggedIn, isAdmin, upload.single('class_img'), async (req, res, next) => {
 	console.log(req.file);
 	const body = req.body;
+	let filename;
+	if (req.file === undefined) {
+		filename = '';
+	} else {
+		filename = `/images/uploads/${req.file.filename}`;
+	}
 
 	Class.create({
 		class_title: body.class_title,
@@ -58,7 +81,7 @@ router.post('/write', isLoggedIn, isAdmin, upload.single('class_img'), async (re
 		class_info: body.class_info,
 		teacher_name: body.teacher_name,
 		teacher_info: body.teacher_info,
-		class_img: `/images/uploads/${req.file.filename}`,
+		class_img: filename,
 	})
 	.then((result) => {
 		res.redirect('/admin');

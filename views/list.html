@@ -20,4 +20,15 @@
 </tr>
 {% endfor %}
 </table>
+
+<!-- 페이지네이션 -->
+<ul class="pagination">
+    {% if pageNum | int > 1 %}
+    <li class="page-item"><a class="page-link" href="/admin?page={{pageNum | int - 1}}">〈</a></li>
+    {% endif %}
+    <li class="page-item"><a class="page-link" href="/admin?page={{pageNum | int}}">{{pageNum | int}}</a></li>
+    {% if pageNum < (pages / limit) %}
+    <li class="page-item"><a class="page-link" href="/admin?page={{pageNum | int + 1}}">〉</a></li>
+    {% endif %}
+</ul>
 {% endblock %}
