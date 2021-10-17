@@ -14,3 +14,12 @@ exports.isNotLoggedIn = (req, res, next) => {
         res.redirect(`/?error=${message}`);
     }
 }
+
+exports.isAdmin = (req, res, next) => {
+    if (req.user.user_roll === 'admin') {
+        next();
+    } else {
+        const message = encodeURIComponent('권한이 없습니다.');
+        res.redirect(`/?error=${message}`);
+    }
+}

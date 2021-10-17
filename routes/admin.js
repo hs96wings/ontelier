@@ -2,11 +2,10 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const moment = require('moment');
 
 const Class = require('../models/class');
 const User = require('../models/user');
-const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
+const { isLoggedIn, isAdmin } = require('./middlewares');
 
 const router = express.Router();
 
@@ -30,10 +29,7 @@ const upload = multer({
 	limits: { fileSize: 10 * 1024 * 1024 },
 });
 
-router.get('/', isLoggedIn, (req, res) => {
-	if (req.user.user_roll !== 'admin') {
-		return res.redirect(`/?loginError=권한이 없습니다`);
-	}
+router.get('/', isLoggedIn, isAdmin, (req, res) => {
 	Class.findAll({
         order: [['createdAt', 'DESC']],
     })
@@ -48,14 +44,11 @@ router.get('/', isLoggedIn, (req, res) => {
 	});
 });
 
-router.get('/write', isLoggedIn, (req, res) => {
-	if (req.user.user_roll !== 'admin') {
-		return res.redirect(`/?loginError=권한이 없습니다`);
-	}
+router.get('/write', isLoggedIn, isAdmin, (req, res) => {
 	res.render('write', {title: 'Ontelier'});
 });
 
-router.post('/write', isLoggedIn, upload.single('class_img'), async (req, res, next) => {
+router.post('/write', isLoggedIn, isAdmin, upload.single('class_img'), async (req, res, next) => {
 	console.log(req.file);
 	const body = req.body;
 
@@ -76,10 +69,7 @@ router.post('/write', isLoggedIn, upload.single('class_img'), async (req, res, n
 	});
 });
 
-router.post('/update', isLoggedIn, (req, res) => {
-	if (req.user.user_roll !== 'admin') {
-		return res.redirect(`/?loginError=권한이 없습니다`);
-	}
+router.post('/update', isLoggedIn, isAdmin, (req, res) => {
 	const body = req.body;
 
 	Class.update({
@@ -101,10 +91,7 @@ router.post('/update', isLoggedIn, (req, res) => {
 	});
 });
 
-router.post('/delete', isLoggedIn, (req, res) => {
-	if (req.user.user_roll !== 'admin') {
-		return res.redirect(`/?loginError=권한이 없습니다`);
-	}
+router.post('/delete', isLoggedIn, isAdmin, (req, res) => {
 	const body = req.body;
 
 	Class.destroy({
@@ -120,10 +107,7 @@ router.post('/delete', isLoggedIn, (req, res) => {
 	});
 });
 
-router.get('/alluser', isLoggedIn, (req, res) => {
-	if (req.user.user_roll !== 'admin') {
-		return res.redirect(`/?loginError=권한이 없습니다`);
-	}
+router.get('/alluser', isLoggedIn, isAdmin, (req, res) => {
 	User.findAll({
         order: [['createdAt', 'DESC']],
     })
@@ -135,10 +119,7 @@ router.get('/alluser', isLoggedIn, (req, res) => {
 	});
 })
 
-router.get('/class/:id', isLoggedIn, (req, res) => {
-	if (req.user.user_roll !== 'admin') {
-		return res.redirect(`/?loginError=권한이 없습니다`);
-	}
+router.get('/class/:id', isLoggedIn, isAdmin, (req, res) => {
 	Class.findOne({where: { id: req.params.id }})
 	.then((result) => {
 		console.log(result);
