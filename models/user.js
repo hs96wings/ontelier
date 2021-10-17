@@ -31,7 +31,7 @@ module.exports = class User extends Sequelize.Model {
                 defaultValue: Sequelize.NOW(),
                 get() {
                     const d = this.getDataValue('user_enrolldate');
-                    return moment().format("YYYY/MM/DD H:mm:ss");
+                    return moment(d).format("YYYY/MM/DD H:mm:ss");
                 }
             },
             user_profile_url: {
