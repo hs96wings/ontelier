@@ -1,10 +1,10 @@
 const passport = require('passport');
-const KakaoStrategy = require('passport-naver').Strategy;
+const NaverStrategy = require('passport-naver').Strategy;
 
 const User = require('../models/user');
 
 module.exports = () => {
-    passport.use(new KakaoStrategy({
+    passport.use(new NaverStrategy({
         clientID: process.env.NAVER_ID,
         clientSecret: process.env.NAVER_SECRET,
         callbackURL: '/auth/naver/callback',
