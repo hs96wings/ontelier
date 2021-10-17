@@ -29,11 +29,10 @@ const upload = multer({
 	limits: { fileSize: 10 * 1024 * 1024 },
 });
 
-// router.get('/', isLoggedIn, isAdmin, (req, res) => {
-router.get('/', (req, res) => {
+router.get('/', isLoggedIn, isAdmin, (req, res) => {
 	let pageNum = req.query.page;
 	let offset = 0;
-	const limit = 3;
+	const limit = 5;
 
 	console.log(`pageNum:${pageNum}`);
 	if (pageNum === undefined) pageNum = 1;
