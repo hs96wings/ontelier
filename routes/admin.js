@@ -108,7 +108,7 @@ router.post('/delete', isLoggedIn, (req, res) => {
 	});
 });
 
-router.get('/alluser', (req, res) => {
+router.get('/alluser', isLoggedIn, (req, res) => {
 	User.findAll({
         order: [['createdAt', 'DESC']],
     })
