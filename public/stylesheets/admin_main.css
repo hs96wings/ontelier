@@ -1,3 +1,10 @@
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+}
+
 .container {
     display: grid;
     grid-template-areas: 
@@ -49,10 +56,47 @@ li {
     padding: 10px;
 }
 
+.nav{
+    overflow: hidden;
+	border-bottom:1px solid #222;
+}
+
 .menu-item {
     border: 1px solid;
     margin: 0;
     padding: 15px;
+}
+.submenu{
+    background: #ddd;
+    overflow: hidden;
+    transition: max-height 0.7s;
+    max-height: 0;
+}
+.submenu a{
+    display: block;
+    padding: 15px 20px;
+    color: #222;
+    font-size: 14px;
+    border-bottom: 1px solid #eaeaea;
+    position: relative;
+    
+}
+.submenu a:after{
+    content: '';
+    opacity: 0;
+    transition: opacity 0.3s;
+
+}
+.submenu a:hover{
+    background: #fafafa;
+   transition: all 0.3s;
+    border-bottom: 1px solid #c8c8c8;
+}
+.submenu a:last-child{
+    border:none;
+}
+.nav:target .submenu{
+    max-height: 20em;
 }
 
 /* -----콘텐트----- */
