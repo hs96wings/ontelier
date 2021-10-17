@@ -10,3 +10,4 @@ node_modules/
 migrations/
 seeders/
 config/*.json
+public/images/
