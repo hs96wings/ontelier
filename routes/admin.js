@@ -2,8 +2,10 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const moment = require('moment');
 
 const Class = require('../models/class');
+const User = require('../models/user');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express.Router();
@@ -105,6 +107,18 @@ router.post('/delete', isLoggedIn, (req, res) => {
 		next(error);
 	});
 });
+
+router.get('/alluser', (req, res) => {
+	User.findAll({
+        order: [['createdAt', 'DESC']],
+    })
+	.then((result) => {
+		res.render('alluser', {users: result});
+	})
+	.catch((error) => {
+		console.log(error);
+	});
+})
 
 router.get('/class/:id', isLoggedIn, (req, res) => {
 	Class.findOne({where: { id: req.params.id }})

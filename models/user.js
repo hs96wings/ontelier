@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const moment = require('moment');
 
 module.exports = class User extends Sequelize.Model {
     static init(sequelize) {
@@ -28,6 +29,10 @@ module.exports = class User extends Sequelize.Model {
                 type: Sequelize.DATE,
                 allowNull: false,
                 defaultValue: Sequelize.NOW(),
+                get() {
+                    const d = this.getDataValue('user_enrolldate');
+                    return moment().format("YYYY/MM/DD H:mm:ss");
+                }
             },
             user_profile_url: {
                 type: Sequelize.STRING(100),
