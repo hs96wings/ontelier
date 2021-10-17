@@ -12,7 +12,13 @@
 </tr>
 {% for user in users %}
 <tr>
-    <td>{{user.user_id}}</td>
+    {% if user.user_roll === 'admin' %}
+        <td style="color: red;">
+    {% else %}
+        <td>
+    {% endif %}
+        {{user.user_id}}
+    </td>
     <td>{{user.user_email}}</td>
     <td>{{user.user_nickname}}</td>
     <td>{{user.user_phone}}</td>
