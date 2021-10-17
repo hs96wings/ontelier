@@ -1,0 +1,57 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h2>◆ 클래스 정보</h2>
+{% if class %}
+        <form method="post">
+            <table>
+            <tr>
+                <th>클래스이름</th>
+                <td><input type="text" name="class_title"  maxlength="80" value="{{class.class_title}}" required>
+                </td>
+            </tr>
+            <tr>
+                <th>클래스가격</th>
+                <td><input type="number" name="class_price" maxlength="20" value="{{class.class_price}}" pattern="[0-9]+" required>
+                </td>
+            </tr>
+            <tr>
+                <th>카테고리</th>
+                <td>
+                    <select name="category">
+                        <option value="수공예/DIY">수공예/DIY</option>
+                        <option value="요리">요리</option>
+                        <option value="문화예술">문화예술</option>
+                        <option value="스포츠">스포츠</option>
+                        <option value="뷰티">뷰티</option>
+                        <option value="수익창출">수익창출</option>
+                        <option value="가족취미">가족취미</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>클래스소개</th>
+                <td><textarea name="class_info" rows="10">{{class.class_info}}</textarea></td>
+            </tr>
+            <tr>
+                <th>강사이름</th>
+                <td><input type="text" name="teacher_name" maxlength="20" value="{{class.teacher_name}}">
+                </td>
+            </tr>
+            <tr>
+                <th>강사소개</th>
+                <td><textarea name="teacher_info" rows="10">{{class.teacher_info}}</textarea></td>
+            </tr>
+            <tr>
+                <th>클래스이미지</th>
+                <td><label for="ex_file"></label><img src="{{class.class_img}}"></td>
+            </tr>
+        </table>
+        <input type="hidden" value="{{class.id}}" name="id">
+        <input type="submit" value="수정" formaction="/admin/update">
+    </form>
+     <br>
+    {% else %}
+    <h1>잘못된 접근입니다</h1>
+    {% endif %}
+    <input type="button" value="돌아가기" onclick="history.back()">
+{% endblock %}

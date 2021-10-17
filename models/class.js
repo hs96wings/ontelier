@@ -7,6 +7,10 @@ module.exports = class Class extends Sequelize.Model {
 				type: Sequelize.STRING(50),
 				allowNull: false,
 			},
+			category: {
+				type: Sequelize.STRING(30),
+				allowNull: false,
+			},
 			class_price: {
 				type: Sequelize.INTEGER,
 				allowNull: false,

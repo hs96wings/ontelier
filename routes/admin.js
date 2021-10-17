@@ -33,6 +33,7 @@ router.get('/', isLoggedIn, isAdmin, (req, res) => {
 	let pageNum = req.query.page;
 	let offset = 0;
 	const limit = 5;
+	const category = req.query.category;
 
 	console.log(`pageNum:${pageNum}`);
 	if (pageNum === undefined) pageNum = 1;
@@ -40,24 +41,46 @@ router.get('/', isLoggedIn, isAdmin, (req, res) => {
 		offset = limit * (pageNum - 1);
 	}
 
-	Class.findAndCountAll({
-		offset: offset,
-		limit: limit,
-		order: [['createdAt', 'DESC']],
-    })
-	.then((result) => {
-		console.log(result);
-			res.render('list', {
-			classes: result.rows,
-			user: req.user,
-			pageNum: pageNum,
-			pages: result.count,
-			limit: limit
+	if (category === undefined) {
+		Class.findAndCountAll({
+			offset: offset,
+			limit: limit,
+			order: [['createdAt', 'DESC']],
+		})
+		.then((result) => {
+			console.log(result);
+				res.render('list', {
+				classes: result.rows,
+				user: req.user,
+				pageNum: pageNum,
+				pages: result.count,
+				limit: limit
+			});
+		})
+		.catch((error) => {
+			console.log(error);
 		});
-	})
-	.catch((error) => {
-		console.log(error);
-	});
+	} else {
+		Class.findAndCountAll({
+			offset: offset,
+			limit: limit,
+			order: [['createdAt', 'DESC']],
+			where: { category }
+		})
+		.then((result) => {
+			console.log(result);
+				res.render('list', {
+				classes: result.rows,
+				user: req.user,
+				pageNum: pageNum,
+				pages: result.count,
+				limit: limit
+			});
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+	}
 });
 
 router.get('/write', isLoggedIn, isAdmin, (req, res) => {
@@ -65,7 +88,7 @@ router.get('/write', isLoggedIn, isAdmin, (req, res) => {
 });
 
 router.post('/write', isLoggedIn, isAdmin, upload.single('class_img'), async (req, res, next) => {
-	console.log(req.file);
+	console.log(req.body);
 	const body = req.body;
 	let filename;
 	if (req.file === undefined) {
@@ -77,6 +100,7 @@ router.post('/write', isLoggedIn, isAdmin, upload.single('class_img'), async (re
 	Class.create({
 		class_title: body.class_title,
 		class_price: body.class_price,
+		category: body.category,
 		class_info: body.class_info,
 		teacher_name: body.teacher_name,
 		teacher_info: body.teacher_info,
@@ -91,12 +115,25 @@ router.post('/write', isLoggedIn, isAdmin, upload.single('class_img'), async (re
 	});
 });
 
+router.get('/update/:id', isLoggedIn, isAdmin, (req, res) => {
+	Class.findOne({where: { id: req.params.id }})
+	.then((result) => {
+		console.log(result);
+		res.render('update', {title: '글 수정', class: result});
+	})
+	.catch((error) => {
+		console.error(error);
+		next(error);
+	});
+})
+
 router.post('/update', isLoggedIn, isAdmin, (req, res) => {
 	const body = req.body;
 
 	Class.update({
 		class_title: body.class_title,
 		class_price: body.class_price,
+		category: body.category,
 		class_info: body.class_info,
 		teacher_name: body.teacher_name,
 		teacher_info: body.teacher_info,
@@ -113,7 +150,7 @@ router.post('/update', isLoggedIn, isAdmin, (req, res) => {
 	});
 });
 
-router.post('/delete', isLoggedIn, isAdmin, (req, res) => {
+router.get('/delete', isLoggedIn, isAdmin, (req, res) => {
 	const body = req.body;
 
 	Class.destroy({
