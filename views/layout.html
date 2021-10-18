@@ -11,7 +11,7 @@
 <div class="container">
 <!----- 헤더 영역 ----->
     <div class="header">
-        <div class="logo">온뜰</div>
+        <div class="logo"><a href="/"><img src="/images/logo_1536x984.png" style="width: 100%; height: 100%"></a></div>
         <div id="admin-name" class="name">{{user.user_nickname}}
             {% if user.user_roll === 'user' %}
                 (유저)
@@ -28,6 +28,7 @@
             <li class="nav" id="class-menu">
                 <a href="#class-menu">클래스</a>
                 <div class="submenu">
+                    <a href="/admin">전체보기</a>
                     <a href="/admin?category=수공예/DIY">수공예/DIY</a>
                     <a href="/admin?category=요리">요리</a>
                     <a href="/admin?category=문화예술">문화예술</a>
