@@ -150,7 +150,7 @@ router.post('/update', isLoggedIn, isAdmin, (req, res) => {
 	});
 });
 
-router.get('/delete', isLoggedIn, isAdmin, (req, res) => {
+router.post('/delete', isLoggedIn, isAdmin, (req, res) => {
 	const body = req.body;
 
 	Class.destroy({
