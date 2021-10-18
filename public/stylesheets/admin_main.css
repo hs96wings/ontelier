@@ -96,7 +96,7 @@ li {
     border:none;
 }
 .nav:target .submenu{
-    max-height: 20em;
+    max-height: 24em;
 }
 
 /* -----콘텐트----- */
