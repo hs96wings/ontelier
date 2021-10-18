@@ -74,7 +74,8 @@ router.get('/', isLoggedIn, isAdmin, (req, res) => {
 				user: req.user,
 				pageNum: pageNum,
 				pages: result.count,
-				limit: limit
+				limit: limit,
+				queryCategory: category,
 			});
 		})
 		.catch((error) => {
