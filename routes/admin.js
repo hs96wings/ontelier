@@ -49,7 +49,7 @@ router.get('/', isLoggedIn, isAdmin, (req, res) => {
 		})
 		.then((result) => {
 			console.log(result);
-				res.render('list', {
+				res.render('admin_list', {
 				classes: result.rows,
 				user: req.user,
 				pageNum: pageNum,
@@ -69,7 +69,7 @@ router.get('/', isLoggedIn, isAdmin, (req, res) => {
 		})
 		.then((result) => {
 			console.log(result);
-				res.render('list', {
+				res.render('admin_list', {
 				classes: result.rows,
 				user: req.user,
 				pageNum: pageNum,
@@ -85,7 +85,7 @@ router.get('/', isLoggedIn, isAdmin, (req, res) => {
 });
 
 router.get('/write', isLoggedIn, isAdmin, (req, res) => {
-	res.render('write', {title: 'Ontelier'});
+	res.render('admin_list_write', {title: 'Ontelier'});
 });
 
 router.post('/write', isLoggedIn, isAdmin, upload.single('class_img'), async (req, res, next) => {
@@ -120,7 +120,7 @@ router.get('/update/:id', isLoggedIn, isAdmin, (req, res) => {
 	Class.findOne({where: { id: req.params.id }})
 	.then((result) => {
 		console.log(result);
-		res.render('update', {title: '글 수정', class: result});
+		res.render('admin_list_update', {title: '글 수정', class: result});
 	})
 	.catch((error) => {
 		console.error(error);
@@ -172,7 +172,7 @@ router.get('/alluser', isLoggedIn, isAdmin, (req, res) => {
         order: [['createdAt', 'DESC']],
     })
 	.then((result) => {
-		res.render('alluser', {users: result});
+		res.render('admin_alluser', {users: result});
 	})
 	.catch((error) => {
 		console.log(error);
@@ -183,7 +183,7 @@ router.get('/class/:id', isLoggedIn, isAdmin, (req, res) => {
 	Class.findOne({where: { id: req.params.id }})
 	.then((result) => {
 		console.log(result);
-		res.render('view', {title: '글 조회', class: result});
+		res.render('admin_list_view', {title: '글 조회', class: result});
 	})
 	.catch((error) => {
 		console.error(error);
