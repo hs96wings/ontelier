@@ -1,0 +1,87 @@
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+}
+
+.container {
+    display: grid;
+    grid-template-areas: 
+            ". header ."
+            ". content ."
+            "footer footer footer";
+    grid-template-columns: 1fr 4.5fr 1fr;
+    grid-template-rows: 60px 70vh 300px;
+}
+
+.logo { /* 정확한 수치 바꾸기 */
+    position: relative;
+    width:61.44px;
+    height:39.4px;
+}
+
+#wrapper {
+    position: absolute;
+    width: 68%;
+    margin: 0px 15%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.header {
+    grid-area: header;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    
+    height: 60px;
+    background: white;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.button {
+    position: relative;
+    margin: 5px;
+    right: 0;
+}
+.right {
+    margin-left: auto;
+}
+.content {
+    grid-area: content;
+    margin: 0;
+}
+.search-box {
+    position: relative;
+    text-align: center;
+    top: 0;
+    width: 400px;
+    margin: 0 30px;
+}
+input {
+    width: 100%;
+    border-radius: 20px;
+    border: 0;
+    background-color: rgb(233, 233, 233);
+    margin: 10px 0;
+    padding: 10px 12px;
+}
+.fa-search {
+    position: absolute;
+    right: 5px;
+    top: 16px;
+    margin: 0;
+}
+
+.footer {
+    grid-area: footer;
+    display: flex;
+    justify-content: center;
+}

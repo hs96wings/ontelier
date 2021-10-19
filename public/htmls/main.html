@@ -13,7 +13,7 @@
 <!----- 헤더 영역 ----->
     <div class="header">
         <div id="wrapper">
-        <a href="/"><img src="/images/logo_1536x984.png" alt="Ontelier" class="logo"></a>
+        <a href="http://18.191.202.121:3000/"><img src="images/logo_1536x984.png" alt="Ontelier" class="logo"></a>
         <div class="search-box">
             <input type="text" class="search-input">
             <button class="fas fa-search">검색</button>
@@ -21,12 +21,10 @@
         <div class="right">
             {% if user and user.user_id %}
                 <span>{{user.user_nickname}}님 안녕하세요</span>
-                {% if user and user.user_roll === 'admin' %}
                 <button class="button" type="button" onclick="location.href='/admin'">관리자</button>
-                {% endif %}
                 <button class="button" type="button" onclick="location.href='/auth/logout'">로그아웃</button>
             {% else %}
-            <button class="button" type="button" onclick="location.href='/login'">로그인</button>
+            <button class="button" type="button" route-link="login.html">로그인</button>
             <button class="button" type="button" onclick="location.href='/join'">회원가입</button>
             {% endif %}
         </div>
