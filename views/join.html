@@ -1,14 +1,30 @@
+{% block css %}
+<link rel="stylesheet" href="stylesheets/login.css"/>
+{% endblock %}
+
 {% extends 'main_layout.html' %}
 {% block content %}
-    <form id="user-form">
-        <input type="text" name="user_id" placeholder="아이디" required><br>
-        <input type="password" name="user_pwd" placeholder="비밀번호" required><br>
-        <input type="password" name="user_pwd_confirm" placeholder="비밀번호 확인" required><br>
-        <input type="email" name="user_email" placeholder="이메일(를) 입력하세요" required><br>
-        <input type="text" name="user_nickname" placeholder="닉네임을(를) 입력하세요" requried><br>
-        <input type="text" name="user_phone"><br>
-        <input type="submit" value="가입 완료">
-    </form>
+<div class="login-container">
+    <div class="login-wrapper">
+        <h2>회원가입</h2>
+        <form id="user-form" class="form">
+            <input type="text" name="user_id" class="input-box" placeholder="아이디" required>
+            <input type="password" name="user_pwd" class="input-box" placeholder="비밀번호" required>
+            <input type="password" name="user_pwd_confirm" class="input-box" placeholder="비밀번호 확인" required>
+            <br><br>
+            <span class="pt12"><span class="red">*</span>닉네임</span>
+            <input type="text" name="user_nickname" class="input-box" placeholder="닉네임을 입력해주세요" requried>
+            <span class="pt12"><span class="red">*</span>이메일</span>
+            <input type="email" name="user_email" class="input-box" placeholder="이메일을 입력해주세요" required>
+            <span class="pt12">연락처</span>
+            <input type="text" name="user_phone" class="input-box" placeholder="연락처">
+            <div class="right">
+            <input type="checkbox" name="checkbox" class="checkbox" value="true"><a href="#"><span class="pt12">개인정보 이용약관 동의</span></a>
+            </div>
+            <input type="submit" class="submit-button" value="가입 완료">
+        </form>
+    </div>
+</div>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/javascripts/join.js"></script>
 {% endblock %}

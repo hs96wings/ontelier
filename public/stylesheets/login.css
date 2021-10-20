@@ -12,15 +12,17 @@ body {
 
 .right {
     margin-left: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
-.container {
+.login-container {
     display: flex;
     justify-content: center;
     width: 100%;
     height: 100%;
 }
 
-.wrapper {
+.login-wrapper {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -29,7 +31,7 @@ body {
     width: 300px;
 }
 
-form {
+.form {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -38,13 +40,50 @@ form {
 }
 
 .input-box {
-    height: 40px;
+    height: 50px;
     padding-left: 10px;
-    margin: 5px
+    margin: 5px 0;
+    border: solid 1px #c6c6c6;
+}
+
+.input-box::placeholder {
+    color: #c6c6c6;
 }
 
 .submit-button {
-    width: 100px;
-    height: 30px;
-    margin: auto auto;
+    width: 161px;
+    height: 50px;
+    padding: 14px 46px;
+    background-color: #85b830;
+    border: 0;
+    cursor: pointer;
+    margin: 28.4px auto 11px auto;
+
+    font-size: 20px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.2;
+    color: #fff;
+    max-height: 50px;
+}
+
+.pt12 {
+    height: 13px;
+    font-size: 12px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.3;
+    letter-spacing: normal;
+    color: #888;
+    line-height: 13px;
+}
+.red {
+    color: #b51625;
+}
+.checkbox {
+    border: solid 1px #888;
+    vertical-align: middle;
+    margin: 0 3px;
 }

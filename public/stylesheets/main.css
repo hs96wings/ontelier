@@ -5,24 +5,24 @@
   text-decoration: none;
 }
 
-.container {
+#main-container {
   display: grid;
   grid-template-areas:
     '. header .'
     '. content .'
     'footer footer footer';
   grid-template-columns: 1fr 4.5fr 1fr;
-  grid-template-rows: 60px 70vh 300px;
+  grid-template-rows: 60px calc(100vh - 60px) 300px;
 }
 
 .logo {
   /* 정확한 수치 바꾸기 */
   position: relative;
-  width: 61.44px;
-  height: 39.4px;
+  width: 65px;
+  height: 41.7px;
 }
 
-#wrapper {
+#main-wrapper {
   position: absolute;
   width: 68%;
   margin: 0px 15%;
@@ -31,19 +31,11 @@
   align-items: center;
 }
 
-.wrapper {
-  position: relative;
-  display: flex;
-  width: 1500px;
-  height: 70vh;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
 
 .header {
   grid-area: header;
   position: fixed;
+  z-index: 10;
   top: 0;
   left: 0;
   right: 0;
@@ -62,6 +54,10 @@
   position: relative;
   margin: 5px;
   right: 0;
+  height: 27.8px;
+  background-color: #f8f8f9;
+  border: 0;
+  cursor: pointer;
 }
 .right {
   margin-left: auto;
@@ -74,21 +70,21 @@
   position: relative;
   text-align: center;
   top: 0;
-  width: 400px;
+  width: 420px;
+  height: 31.6px;
   margin: 0 30px;
 }
-input {
+.search-input {
   width: 100%;
-  border-radius: 20px;
+  padding: 6.7px 18.2px 8px 19px;
+  border-radius: 15.8px;
+  background-color: #e8e8ed;
   border: 0;
-  background-color: rgb(233, 233, 233);
-  margin: 10px 0;
-  padding: 10px 12px;
 }
 .fa-search {
   position: absolute;
-  right: 5px;
-  top: 16px;
+  right: 0px;
+  top: 5px;
   margin: 0;
 }
 
