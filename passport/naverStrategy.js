@@ -19,10 +19,10 @@ module.exports = () => {
             } else {
                 let user_email;
                 let user_nickname;
-                if (profile._json && profile._json.kakao_account.email === undefined) {
+                if (profile._json && profile._json.email === undefined) {
                     user_email = null;
                 } else {
-                    user_email = profile._json && profile._json.kakao_account.email;
+                    user_email = profile._json && profile._json.email;
                 }
                 if (profile.displayName === undefined) {
                     user_nickname = null;
