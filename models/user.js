@@ -15,11 +15,11 @@ module.exports = class User extends Sequelize.Model {
             },
             user_email: {
                 type: Sequelize.STRING(50),
-                allowNull: false,
+                allowNull: true,
             },
             user_nickname: {
                 type: Sequelize.STRING(20),
-                allowNull: false,
+                allowNull: true,
             },
             user_phone: {
                 type: Sequelize.STRING(20),
