@@ -6,6 +6,7 @@ const session = require('express-session');
 const nunjucks = require('nunjucks');
 const dotenv = require('dotenv');
 const passport = require('passport');
+const favicon = require('serve-favicon');
 
 dotenv.config();
 const indexRouter = require('./routes/index');
@@ -15,6 +16,7 @@ const { sequelize } = require('./models');
 const passportConfig = require('./passport');
 
 const app = express();
+app.use(favicon(path.join(__dirname, 'public/', 'favicon.ico')));
 passportConfig();
 app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'html');
