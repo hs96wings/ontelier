@@ -1,0 +1,24 @@
+{% extends 'admin_layout.html' %}
+{% block content %}
+<h2>◆ 후기</h2>
+<form method="post" action="/admin/review/write">
+    <table>
+        <tr>
+            <th>후기점수</th>
+            <td><input type="range" name="review_score" maxlength="20" min="0" max="5" step="1"></td>
+        </tr>
+        <tr>
+            <th>도움이 됐어요</th>
+            <td><input type="number" name="review_best_num"  maxlength="20" min="0" max="99999999" value="" pattern="[0-9]+"></td>
+        </tr>
+        <tr>
+            <th>후기</th>
+            <td><textarea name="review_text" rows="10"></textarea></td>
+        </tr>
+    </table>
+
+     <br>
+    <input type="submit" value="입력">
+    <input type="button" value="취소" onclick="history.back()">
+</form>
+{% endblock %}

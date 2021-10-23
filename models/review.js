@@ -26,6 +26,14 @@ module.exports = class Review extends Sequelize.Model {
 				allowNull: true,
 				defaultValue: 0,
 			},
+			review_text: {
+				type: Sequelize.TEXT,
+				allowNull: true,
+			},
+			reviewer: {
+				type: Sequelize.STRING(20),
+				allowNull: false,
+			},
 		}, {
 			sequelize,
 			timestamps: true,

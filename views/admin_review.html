@@ -1,5 +1,6 @@
 {% extends 'admin_layout.html' %}
 {% block content %}
+<button id="add-button" class="big-button" onclick="location.href='/admin/review/write'">추가</button>
 <!-- 클래스 리스트 -->
 <table class="review-table">
 <tr>
@@ -7,13 +8,15 @@
     <th>클래스이름</th>
     <th>후기작성자</th>
     <th>후기내용</th>
+    <th>후기점수</th>
 </tr>
 {% for review in reviews %}
 <tr>
-    <td><a href="/review/{{review.id}}"></a></td>
-    <td>{{review.class_title}}</td>
+    <td><a href="/admin/review/{{review.id}}">{{review.id}}</a></td>
+    <td>{{review.Class.class_title}}</td>
     <td>{{review.reviewer}}</td>
-    <td>{{review.review_content}}</td>
+    <td>{{review.review_text}}</td>
+    <td>{{review.review_score}}</td>
 </tr>
 {% endfor %}
 </table>

@@ -5,6 +5,7 @@ const fs = require('fs');
 
 const Class = require('../models/class');
 const User = require('../models/user');
+const Review = require('../models/review');
 const { isLoggedIn, isAdmin } = require('./middlewares');
 
 const router = express.Router();
@@ -195,7 +196,67 @@ router.get('/class/:id', isLoggedIn, isAdmin, (req, res) => {
 });
 
 router.get('/review', isLoggedIn, isAdmin, (req, res) => {
-	res.render('admin_list_review', {title: '온뜰 - Admin - 후기'});
+	Review.findAll({
+		include: {
+			model: Class,
+			attributes: ['class_title'],
+		},
+		order: [['createdAt', 'DESC']],
+	})
+	.then((result) => {
+			console.log(result);
+			res.render('admin_review', {
+			title: '온뜰',
+			reviews: result,
+		});
+	})
+	.catch((error) => {
+		res.render('admin_review', {title: '온뜰'});
+		console.error(error);
+	});
+});
+
+router.get('/review/write', isLoggedIn, isAdmin, (req, res) => {
+	res.render('admin_review_write', {title: '온뜰 - Admin - 후기'});
+});
+
+router.post('/review/write', isLoggedIn, isAdmin, async (req, res, next) => {
+	const body = req.body;
+	const user_nickname = req.user.user_nickname;
+	const user_id = req.user.user_id;
+
+	Review.create({
+		review_score: body.review_score,
+		review_best_num: body.review_best_num,
+		review_text: body.review_text,
+		reviewer: user_nickname,
+		UserUserId: user_id,
+		ClassId: 1,
+	})
+	.then(() => {
+		res.redirect('/admin/review');
+	})
+	.catch((error) => {
+		console.error(error);
+		next(error);
+	});
+});
+
+router.get('/review/:id', isLoggedIn, isAdmin, (req, res) => {
+	Review.findOne({
+		where: { id: req.params.id },
+		include: {
+			model: Class,
+			attributes: ['class_title'],
+		}
+	})
+	.then((result) => {
+		res.render('admin_review_view', {title: '후기 조회', review: result});
+	})
+	.catch((error) => {
+		console.error(error);
+		next(error);
+	});
 });
 
 module.exports = router;

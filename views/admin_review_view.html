@@ -1,0 +1,38 @@
+{% extends 'admin_layout.html' %}
+{% block content %}
+<h2>◆ 후기 정보</h2>
+{% if review %}
+    <table>
+        <tr>
+            <th>후기번호</th>
+            <td>{{review.id}}</td>
+        </tr>
+        <tr>
+            <th>작성자</th>
+            <td>{{review.reviewer}}</td>
+        </tr>
+        <tr>
+            <th>강의이름</th>
+            <td>{{review.Class.class_title}}</td>
+            </td>
+        </tr>
+        <tr>
+            <th>후기점수</th>
+            <td>{{review.review_score}}</td>
+        </tr>
+        <tr>
+            <th>도움이 됐어요!</th>
+            <td>{{review.review_best_num}}</td>
+        </tr>
+    </table>
+    <!-- <button onclick="location.href='/admin/update/{{class.id}}'">수정</button>
+    <form method="post">
+        <input type="hidden" value="{{class.id}}" name="id">
+        <input type="submit" value="삭제" formaction="/admin/delete">
+    </form> -->
+     <br>
+    {% else %}
+    <h1>잘못된 접근입니다</h1>
+    {% endif %}
+    <input type="button" value="돌아가기" onclick="history.back()">
+{% endblock %}
