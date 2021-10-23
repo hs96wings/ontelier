@@ -15,7 +15,7 @@ module.exports = class Class extends Sequelize.Model {
 			},
 			// 강의 평가
 			class_score: {
-				type: Sequelize.FLOAT,
+				type: Sequelize.INTEGER,
 				allowNull: true,
 				defaultValue: 0,
 			},
