@@ -1,3 +1,142 @@
 {% extends 'main_layout.html' %}
 {% block content %}
+
+<!-- 배너 영역 -->
+<div class="banner">
+    <img class="banner-image" src="/images/57.png">
+</div>
+<!-- 카테고리 영역 -->
+<div class="category-wrapper">
+    <div class="category-icon"><a href="/category?category=수공예/DIY"><img src="/images/58.png"></a></div>
+    <div class="category-icon"><a href="/category?category=예술문화"><img src="/images/59.png"></a></div>
+    <div class="category-icon"><a href="/category?category=스포츠"><img src="/images/62.png"></a></div>
+    <div class="category-icon"><a href="/category?category=뷰티"><img src="/images/65.png"></a></div>
+    <div class="category-icon"><a href="/category?category=요리"><img src="/images/68.png"></a></div>
+    <div class="category-icon"><a href="/category?category=음악"><img src="/images/71.png"></a></div>
+    <p>></p>
+</div>
+        
+<!----- 콘텐츠 영역 ----->
+<div class="container">
+    <div class="class-container">
+
+<!-- 인기 클래스 -->
+<div class="class-wrapper">
+    <p class="pt10">popularity class Best 10</p>
+    <span class="pt27">인기 클래스 Best</span><a class="allview-btn pt10" href="#">전체보기</a>
+        <div class="class-list">
+            <!-- 클래스 리스트 -->
+            {% for class in classes %}
+            <div class="class-item">
+                <ul><a href="#">
+                    <li><div class="class-image"><img class="class-thumbnail" src="{{class.class_img}}"></div></li>
+                    <li class="class-title">{{class.class_title}}</li>
+                    <li class="class-price">{{class.class_price.toLocaleString('ko-KR')}}원</li>
+                    <li class="class-score">
+                        <span class="pt14">{{"★".repeat(class.class_score) + ("☆".repeat(5 - class.class_score) )}}</span>
+                        <span class="pt10 gray">(146)<!--후기개수--></span> <!--임시. review 테이블에서 개수 가져오기-->
+                    </li></a>
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+</div>
+
+<!-- 특가 클래스 -->
+<div class="class-wrapper">
+    <p class="pt10">time deal class</p>
+    <span class="pt27">오늘의 특가 클래스</span><a class="allview-btn pt10" href="#">전체보기</a>
+        <div class="class-list">
+            <!-- 클래스 리스트 -->
+            {% for class in classes %}
+            <div class="class-item">
+                <ul><a href="#">
+                    <li><div class="class-image"><img class="class-thumbnail" src="{{class.class_img}}"></div></li>
+                    <li class="class-title">{{class.class_title}}</li>
+                    <li class="class-price">{{class.class_price.toLocaleString('ko-KR')}}원</li>
+                    <li class="class-score">
+                        <span class="pt14">{{"★".repeat(class.class_score) + ("☆".repeat(5 - class.class_score) )}}</span>
+                        <span class="pt10 gray">(146)<!--후기개수--></span> <!--임시. review 테이블에서 개수 가져오기-->
+                    </li></a>
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+</div>
+
+<!-- 신규 클래스 -->
+<div class="class-wrapper">
+    <p class="pt10">new class</p>
+    <span class="pt27">신규 클래스</span><a class="allview-btn pt10" href="#">전체보기</a>
+        <div class="class-list">
+            <!-- 클래스 리스트 -->
+            {% for class in classes %}
+            <div class="class-item">
+                <ul><a href="#">
+                    <li><div class="class-image"><img class="class-thumbnail" src="{{class.class_img}}"></div></li>
+                    <li class="class-title">{{class.class_title}}</li>
+                    <li class="class-price">{{class.class_price.toLocaleString('ko-KR')}}원</li>
+                    <li class="class-score">
+                        <span class="pt14">{{"★".repeat(class.class_score) + ("☆".repeat(5 - class.class_score) )}}</span>
+                        <span class="pt10 gray">(146)<!--후기개수--></span> <!--임시. review 테이블에서 개수 가져오기-->
+                    </li></a>
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+</div>
+
+<!-- 가족 동반 클래스 -->
+<div class="class-wrapper">
+    <p class="pt10">with family class</p>
+    <span class="pt27">가족과 함께 하는 강의</span><a class="allview-btn pt10" href="#">전체보기</a>
+        <div class="class-list">
+            <!-- 클래스 리스트 -->
+            {% for class in classes %}
+            <div class="class-item">
+                <ul><a href="#">
+                    <li><div class="class-image"><img class="class-thumbnail" src="{{class.class_img}}"></div></li>
+                    <li class="class-title">{{class.class_title}}</li>
+                    <li class="class-price">{{class.class_price.toLocaleString('ko-KR')}}원</li>
+                    <li class="class-score">
+                        <span class="pt14">{{"★".repeat(class.class_score) + ("☆".repeat(5 - class.class_score) )}}</span>
+                        <span class="pt10 gray">(146)<!--후기개수--></span> <!--임시. review 테이블에서 개수 가져오기-->
+                    </li></a>
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+</div>
+
+<!-- 우수 후기 클래스 -->
+<div class="class-wrapper">
+    <p class="pt10">best review class</p>
+    <span class="pt27">이달의 우수후기 클래스</span><a class="allview-btn pt10" href="#">전체보기</a>
+        <div class="class-list">
+            <!-- 클래스 리스트 -->
+            {% for class in classes %}
+            <div class="class-item">
+                <ul><a href="#">
+                    <li><div class="class-image"><img class="class-thumbnail" src="{{class.class_img}}"></div></li>
+                    <li class="class-title">{{class.class_title}}</li>
+                    <li class="class-price">{{class.class_price.toLocaleString('ko-KR')}}원</li>
+                    <li class="class-score">
+                        <span class="pt14">{{"★".repeat(class.class_score) + ("☆".repeat(5 - class.class_score) )}}</span>
+                        <span class="pt10 gray">(146)<!--후기개수--></span> <!--임시. review 테이블에서 개수 가져오기-->
+                    </li></a>
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+</div>
+
+    </div>
+</div>
+        
+
+
+        <!-- <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+        <script src="/javascripts/class_list.js"></script> -->
+
+        
 {% endblock %}
