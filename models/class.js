@@ -92,4 +92,8 @@ module.exports = class Class extends Sequelize.Model {
 			collate: 'utf8_general_ci',
 		});
 	}
+
+	static associate(db) {
+		db.Class.hasMany(db.Review);
+	}
 }

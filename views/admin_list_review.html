@@ -1,0 +1,31 @@
+{% extends 'admin_layout.html' %}
+{% block content %}
+<!-- 클래스 리스트 -->
+<table class="review-table">
+<tr>
+    <th>후기번호</th>
+    <th>클래스이름</th>
+    <th>후기작성자</th>
+    <th>후기내용</th>
+</tr>
+{% for review in reviews %}
+<tr>
+    <td><a href="/review/{{review.id}}"></a></td>
+    <td>{{review.class_title}}</td>
+    <td>{{review.reviewer}}</td>
+    <td>{{review.review_content}}</td>
+</tr>
+{% endfor %}
+</table>
+
+<!-- 페이지네이션 -->
+<ul class="pagination">
+    {% if pageNum | int > 1 %}
+        <li class="page-item"><a class="page-link" href="/admin/review?page={{pageNum | int - 1}}">〈</a></li>
+    {% endif %}
+        <li class="page-item"><a class="page-link" href="/admin/review?page={{pageNum | int}}">{{pageNum | int}}</a></li>
+    {% if pageNum < (pages / limit) %}
+        <li class="page-item"><a class="page-link" href="/admin/review?page={{pageNum | int + 1}}">〉</a></li>
+    {% endif %}
+</ul>
+{% endblock %}

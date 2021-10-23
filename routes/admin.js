@@ -194,4 +194,8 @@ router.get('/class/:id', isLoggedIn, isAdmin, (req, res) => {
 	});
 });
 
+router.get('/review', isLoggedIn, isAdmin, (req, res) => {
+	res.render('admin_list_review', {title: '온뜰 - Admin - 후기'});
+});
+
 module.exports = router;
