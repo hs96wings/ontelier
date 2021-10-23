@@ -41,8 +41,12 @@ module.exports = class Class extends Sequelize.Model {
 				defaultValue: 0,
 			},
 			// 카테고리
-			category: {
-				type: Sequelize.STRING(30),
+			category_high: {
+				type: Sequelize.STRING(40),
+				allowNull: false,
+			},
+			category_low: {
+				type: Sequelize.STRING(40),
 				allowNull: false,
 			},
 			// 클래스 소개

@@ -13,6 +13,18 @@
             </td>
         </tr>
         <tr>
+            <th>강의평가</th>
+            <td>{{class.class_score}}</td>
+        </tr>
+        <tr>
+            <th>가족동반</th>
+            {% if class.class_family === 1 %}
+            <td>Yes</td>
+            {% else %}
+            <td>No</td>
+            {% endif %}
+        </tr>
+        <tr>
             <th>카테고리</th>
             <td>{{class.category}}</td>
         </tr>
@@ -32,7 +44,18 @@
             <th>클래스이미지</th>
             <td><img src="{{class.class_img}}"></td>
         </tr>
-        {{class.class_id}}
+        <tr>
+            <th>커리큘럼</th>
+            <td>{{class.class_cirriculum}}</td>
+        </tr>
+        <tr>
+            <th>찜목록갯수</th>
+            <td>{{class.class_wish_num}}</td>
+        </tr>
+        <tr>
+            <th>수강인원</th>
+            <td>{{class.class_student_num}}</td>
+        </tr>
     </table>
     <button onclick="location.href='/admin/update/{{class.id}}'">수정</button>
     <form method="post">
