@@ -18,6 +18,7 @@
             <th>카테고리</th>
             <td>
                 <select name="category_high" class="category_high" id="category_high" onchange="categoryKindChange(this)">
+                    <option value="수익창출">수익창출</option>
                     <option value="DIY/수공예">DIY/수공예</option>
                     <option value="예술문화">예술문화</option>
                     <option value="스포츠">스포츠</option>
@@ -25,10 +26,10 @@
                     <option value="요리">요리</option>
                     <option value="음악">음악</option>
                     <option value="디자인/개발">디자인개발</option>
-                    <option value="수익창출">수익창출</option>
                 </select>
                 <select name="category_low" class="category_low" id="category_low">
-                    <option>선택해주세요</option>
+                    <option value="주식">주식</option>
+                    <option value="부동산">부동산</option>
                 </select>
             </td>
         </tr>
@@ -57,14 +58,6 @@
         <tr>
             <th>커리큘럼</th>
             <td><textarea name="class_cirriculum" rows="10"></textarea></td>
-        </tr>
-        <tr>
-            <th>찜목록갯수</th>
-            <td><input type="number" name="class_wish_num"  maxlength="20" min="0" max="99999999" value="" pattern="[0-9]+"></td>
-        </tr>
-        <tr>
-            <th>수강인원</th>
-            <td><input type="number" name="class_student_num"  maxlength="20" min="0" max="99999999" value="" pattern="[0-9]+"></td>
         </tr>
         <tr>
             <th>가족동반</th>

@@ -10,13 +10,13 @@ router.use((req, res, next) => {
 })
 
 router.get('/', function(req, res, next) {
-	const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-	Conn.create({
-		conn_ip: ip,
-	})
-	.catch((error) => {
-		console.error(error);
-	});
+	// const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+	// Conn.create({
+	// 	conn_ip: ip,
+	// })
+	// .catch((error) => {
+	// 	console.error(error);
+	// });
 
 	Class.findAll({
 		order: [['createdAt', 'DESC']],

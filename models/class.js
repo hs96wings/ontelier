@@ -69,18 +69,6 @@ module.exports = class Class extends Sequelize.Model {
 				type: Sequelize.TEXT,
 				allowNull: true,
 			},
-			// 찜목록개수
-			class_wish_num: {
-				type: Sequelize.INTEGER,
-				allowNull: true,
-				defaultValue: 0,
-			},
-			// 수강인원
-			class_student_num: {
-				type: Sequelize.INTEGER,
-				allowNull: true,
-				defaultValue: 0,
-			},
 		}, {
 			sequelize,
 			timestamps: true,
@@ -95,5 +83,7 @@ module.exports = class Class extends Sequelize.Model {
 
 	static associate(db) {
 		db.Class.hasMany(db.Review);
+		db.Class.hasMany(db.Wishlist);
+		db.Class.hasMany(db.Purchase);
 	}
 }
