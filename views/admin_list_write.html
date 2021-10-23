@@ -17,7 +17,7 @@
         <tr>
             <th>카테고리</th>
             <td>
-                <select name="category_1" class="category_1" id="category_1" onchange="categoryKindChange(this)">
+                <select name="category_high" class="category_high" id="category_high" onchange="categoryKindChange(this)">
                     <option value="DIY/수공예">DIY/수공예</option>
                     <option value="예술문화">예술문화</option>
                     <option value="스포츠">스포츠</option>
@@ -27,7 +27,7 @@
                     <option value="디자인/개발">디자인개발</option>
                     <option value="수익창출">수익창출</option>
                 </select>
-                <select name="category_2" class="category_2" id="category_2">
+                <select name="category_low" class="category_low" id="category_low">
                     <option>선택해주세요</option>
                 </select>
             </td>
@@ -88,9 +88,9 @@
         var beauty = ["네일", "패션", "헤어", "테라피", "화장품"];
         var cook = ["한식", "일식/중식", "양식", "다이어트/건강식", "음료/술", "비건/채소", "디저트", "떡/전통다과"];
         var music = ["악기", "작곡", "보컬/랩"];
-        var dev = ["모션그래픽", "3D4D", "브랜드디자인", "UXUI", "게임개발", "모바일앱개발", "데이터분석", "프로그래밍언어"];
+        var dev = ["모션/그래픽", "3D/4D", "브랜드디자인", "UX/UI", "게임개발", "모바일앱개발", "데이터분석", "프로그래밍언어"];
         var earn = ["주식", "부동산"];
-        var target = document.getElementById("category_2");
+        var target = document.getElementById("category_low");
         var target2;
 
         if (e.value === "DIY/수공예") target2 = diy;
