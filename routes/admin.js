@@ -64,7 +64,7 @@ router.get('/', isLoggedIn, isAdmin, (req, res) => {
 			offset: offset,
 			limit: limit,
 			order: [['createdAt', 'DESC']],
-			where: { category }
+			where: { category_high }
 		})
 		.then((result) => {
 				res.render('admin_list', {
