@@ -35,7 +35,6 @@ router.get('/', isLoggedIn, isAdmin, (req, res) => {
 	const limit = 5;
 	const category = req.query.category;
 
-	console.log(`pageNum:${pageNum}`);
 	if (pageNum === undefined) pageNum = 1;
 	if (pageNum > 1) {
 		offset = limit * (pageNum - 1);
@@ -48,7 +47,6 @@ router.get('/', isLoggedIn, isAdmin, (req, res) => {
 			order: [['createdAt', 'DESC']],
 		})
 		.then((result) => {
-			console.log(result);
 				res.render('admin_list', {
 				classes: result.rows,
 				user: req.user,
@@ -58,7 +56,7 @@ router.get('/', isLoggedIn, isAdmin, (req, res) => {
 			});
 		})
 		.catch((error) => {
-			console.log(error);
+			console.error(error);
 		});
 	} else {
 		Class.findAndCountAll({
@@ -68,7 +66,6 @@ router.get('/', isLoggedIn, isAdmin, (req, res) => {
 			where: { category }
 		})
 		.then((result) => {
-			console.log(result);
 				res.render('admin_list', {
 				classes: result.rows,
 				user: req.user,
@@ -79,7 +76,7 @@ router.get('/', isLoggedIn, isAdmin, (req, res) => {
 			});
 		})
 		.catch((error) => {
-			console.log(error);
+			console.error(error);
 		});
 	}
 });
@@ -89,7 +86,6 @@ router.get('/write', isLoggedIn, isAdmin, (req, res) => {
 });
 
 router.post('/write', isLoggedIn, isAdmin, upload.single('class_img'), async (req, res, next) => {
-	console.log(req.body);
 	const body = req.body;
 	let filename;
 	if (req.file === undefined) {
@@ -107,11 +103,11 @@ router.post('/write', isLoggedIn, isAdmin, upload.single('class_img'), async (re
 		teacher_info: body.teacher_info,
 		class_img: filename,
 	})
-	.then((result) => {
+	.then(() => {
 		res.redirect('/admin');
 	})
 	.catch((error) => {
-		console.log(error);
+		console.error(error);
 		next(error);
 	});
 });
@@ -119,7 +115,6 @@ router.post('/write', isLoggedIn, isAdmin, upload.single('class_img'), async (re
 router.get('/update/:id', isLoggedIn, isAdmin, (req, res) => {
 	Class.findOne({where: { id: req.params.id }})
 	.then((result) => {
-		console.log(result);
 		res.render('admin_list_update', {title: '글 수정', class: result});
 	})
 	.catch((error) => {
@@ -141,12 +136,11 @@ router.post('/update', isLoggedIn, isAdmin, (req, res) => {
 	}, {
 		where: { id: body.id }
 	})
-	.then((result) => {
-		console.log(result);
+	.then(() => {
 		res.redirect('/admin');
 	})
 	.catch((error) => {
-		console.log(error);
+		console.error(error);
 		next(error);
 	});
 });
@@ -157,12 +151,11 @@ router.post('/delete', isLoggedIn, isAdmin, (req, res) => {
 	Class.destroy({
 		where: { id: body.id }
 	})
-	.then((result) => {
-		console.log(result);
+	.then(() => {
 		res.redirect('/admin');
 	})
 	.catch((error) => {
-		console.log(error);
+		console.error(error);
 		next(error);
 	});
 });
@@ -175,14 +168,13 @@ router.get('/alluser', isLoggedIn, isAdmin, (req, res) => {
 		res.render('admin_alluser', {users: result});
 	})
 	.catch((error) => {
-		console.log(error);
+		console.error(error);
 	});
 })
 
 router.get('/class/:id', isLoggedIn, isAdmin, (req, res) => {
 	Class.findOne({where: { id: req.params.id }})
 	.then((result) => {
-		console.log(result);
 		res.render('admin_list_view', {title: '글 조회', class: result});
 	})
 	.catch((error) => {

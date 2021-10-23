@@ -1,5 +1,6 @@
 const express = require('express');
 const Conn = require('../models/conn');
+const Class = require('../models/class');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const router = express.Router();
 
@@ -13,13 +14,23 @@ router.get('/', function(req, res, next) {
 	Conn.create({
 		conn_ip: ip,
 	})
-	.then((result) => {
-		console.log(result);
-	})
 	.catch((error) => {
 		console.error(error);
 	});
-	res.render('main', {title: 'Ontelier - Main'});
+
+	Class.findAll({
+		order: [['createdAt', 'DESC']],
+	})
+	.then((result) => {
+			res.render('main', {
+			title: '온뜰',
+			classes: result,
+		});
+	})
+	.catch((error) => {
+		res.render('main', {title: '온뜰'});
+		console.error(error);
+	});
 });
 
 router.get('/login', isNotLoggedIn, (req, res) =>  {
