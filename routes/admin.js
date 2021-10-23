@@ -110,6 +110,7 @@ router.post('/write', isLoggedIn, isAdmin, upload.single('class_img'), async (re
 		class_cirriculum: body.class_cirriculum,
 		class_wish_num: body.class_wish_num,
 		class_student_num: body.class_student_num,
+		class_discount: body.class_discount,
 	})
 	.then(() => {
 		res.redirect('/admin');

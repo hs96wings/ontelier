@@ -11,7 +11,7 @@
         </tr>
         <tr>
             <th>클래스가격</th>
-            <td><input type="number" name="class_price" maxlength="20" value="" pattern="[0-9]+" min="1" max="99999999" required>
+            <td><input type="number" name="class_price" maxlength="20" value="0" pattern="[0-9]+" min="1" max="99999999" required>
             </td>
         </tr>
         <tr>
@@ -61,10 +61,17 @@
         </tr>
         <tr>
             <th>가족동반</th>
-            <td><input type="radio" id="family_yes" name="class_family" value="1" checked>
+            <td>
+                <input type="radio" id="family_yes" name="class_family" value="1" checked>
                 <label for="family_yes">Yes</label>
                 <input type="radio" id="family_no" name="class_family" value="0">
                 <label for="family_no">No</label>
+            </td>
+        </tr>
+        <tr>
+            <th>할인률</th>
+            <td>
+                <input type="number" name="class_discount" maxlength="20" value="0" pattern="[0-9]+" min="0" max="100" required>
             </td>
         </tr>
     </table>

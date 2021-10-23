@@ -69,6 +69,12 @@ module.exports = class Class extends Sequelize.Model {
 				type: Sequelize.TEXT,
 				allowNull: true,
 			},
+			// 할인률
+			class_discount: {
+				type: Sequelize.INTEGER,
+				allowNull: true,
+				defaultValue: 0,
+			},
 		}, {
 			sequelize,
 			timestamps: true,
