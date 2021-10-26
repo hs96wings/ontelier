@@ -17,25 +17,66 @@ router.get('/', function(req, res, next) {
 	// .catch((error) => {
 	// 	console.error(error);
 	// });
+	let popularClass;
+	let saleClass;
+	let newClass;
+	let familyClass;
 
-
-	// 인기 클래스 (별점 순)
-	// 오늘의 특가 클래스  (할인률 순)
-	// 신규 클래스 (enrolldate 순)
-	// 가족과 함께하는 강의 (class_family === 1)
-	// 이달의 우수후기 (후기 순)
 	Class.findAll({
 		order: [['createdAt', 'DESC']],
+		limit: 5,
 	})
 	.then((result) => {
-			res.render('main', {
+		newClass = result;
+	})
+	.catch((error) => {
+		console.error(error);
+		next(error);
+	})
+
+	Class.findAll({
+		order: [['class_score', 'DESC']],
+		limit: 5,
+	})
+	.then((result) => {
+		popularClass = result;
+	})
+	.catch((error) => {
+		console.error(error);
+		popularClass = newClass;
+	});
+
+	
+	Class.findAll({
+		order: [['class_discount', 'DESC']],
+		limit: 5,
+	})
+	.then((result) => {
+		saleClass = result;
+	})
+	.catch((error) => {
+		console.error(error);
+		saleClass = newClass;
+	})
+
+	Class.findAll({
+		where: {class_family: 1},
+		order: [['createdAt', 'DESC']],
+		limit: 5,
+	})
+	.then((result) => {
+		familyClass = result;
+		res.render('main', {
+			populars: popularClass,
+			sales: saleClass,
+			newes: newClass,
+			familys: familyClass,
 			title: '온뜰',
-			classes: result,
 		});
 	})
 	.catch((error) => {
-		res.render('main', {title: '온뜰'});
 		console.error(error);
+		res.render('main', {title: '온뜰 - DB오류'});
 	});
 });
 
