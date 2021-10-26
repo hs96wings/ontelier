@@ -108,8 +108,6 @@ router.post('/write', isLoggedIn, isAdmin, upload.single('class_img'), async (re
 		teacher_name: body.teacher_name,
 		teacher_info: body.teacher_info,
 		class_cirriculum: body.class_cirriculum,
-		class_wish_num: body.class_wish_num,
-		class_student_num: body.class_student_num,
 		class_discount: body.class_discount,
 	})
 	.then(() => {
@@ -132,20 +130,30 @@ router.get('/update/:id', isLoggedIn, isAdmin, (req, res) => {
 	});
 })
 
-router.post('/update', isLoggedIn, isAdmin, (req, res) => {
+router.post('/update', isLoggedIn, isAdmin, upload.single('class_img'), (req, res) => {
 	const body = req.body;
+
+	let filename;
+
+	if (req.file === undefined) {
+		filename = body.originalname;
+	} else {
+		filename = `/images/uploads/${req.file.filename}`;
+	}
 
 	Class.update({
 		class_title: body.class_title,
 		class_price: body.class_price,
-		category: body.category,
+		class_score: body.class_score,
+		class_img: filename,
+		class_family: body.class_family,
+		category_high: body.category_high,
+		category_low: body.category_low,
 		class_info: body.class_info,
 		teacher_name: body.teacher_name,
 		teacher_info: body.teacher_info,
-		class_score: body.class_score,
 		class_cirriculum: body.class_cirriculum,
-		class_wish_num: class_wish_num,
-		class_student_num: class_student_num,
+		class_discount: body.class_discount,
 	}, {
 		where: { id: body.id }
 	})

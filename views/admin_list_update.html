@@ -2,56 +2,121 @@
 {% block content %}
 <h2>◆ 클래스 정보</h2>
 {% if class %}
-        <form method="post">
-            <table>
-            <tr>
-                <th>클래스이름</th>
-                <td><input type="text" name="class_title"  maxlength="80" value="{{class.class_title}}" required>
-                </td>
-            </tr>
-            <tr>
-                <th>클래스가격</th>
-                <td><input type="number" name="class_price" maxlength="20" value="{{class.class_price}}" pattern="[0-9]+" required>
-                </td>
-            </tr>
-            <tr>
-                <th>카테고리</th>
-                <td>
-                    <select name="category">
-                        <option value="수공예/DIY">수공예/DIY</option>
-                        <option value="요리">요리</option>
-                        <option value="문화예술">문화예술</option>
-                        <option value="스포츠">스포츠</option>
-                        <option value="뷰티">뷰티</option>
-                        <option value="수익창출">수익창출</option>
-                        <option value="가족취미">가족취미</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th>클래스소개</th>
-                <td><textarea name="class_info" rows="10">{{class.class_info}}</textarea></td>
-            </tr>
-            <tr>
-                <th>강사이름</th>
-                <td><input type="text" name="teacher_name" maxlength="20" value="{{class.teacher_name}}">
-                </td>
-            </tr>
-            <tr>
-                <th>강사소개</th>
-                <td><textarea name="teacher_info" rows="10">{{class.teacher_info}}</textarea></td>
-            </tr>
-            <tr>
-                <th>클래스이미지</th>
-                <td><label for="ex_file"></label><img src="{{class.class_img}}"></td>
-            </tr>
-        </table>
-        <input type="hidden" value="{{class.id}}" name="id">
-        <input type="submit" value="수정" formaction="/admin/update">
-    </form>
-     <br>
-    {% else %}
-    <h1>잘못된 접근입니다</h1>
-    {% endif %}
-    <input type="button" value="돌아가기" onclick="history.back()">
+<form method="post" action="/admin/update" enctype="multipart/form-data">
+    <table>
+    <tr>
+        <th>클래스이름</th>
+        <td><input type="text" name="class_title"  maxlength="80" value="{{class.class_title}}" required>
+        </td>
+    </tr>
+    <tr>
+        <th>클래스가격</th>
+        <td><input type="number" name="class_price" maxlength="20" value="{{class.class_price}}" pattern="[0-9]+" required>
+        </td>
+    </tr>
+    <tr>
+        <th>카테고리</th>
+        <td>
+            <select name="category_high" class="category_high" id="category_high" onchange="categoryKindChange(this)">
+                <option value="수익창출">수익창출</option>
+                <option value="DIY/수공예">DIY/수공예</option>
+                <option value="예술문화">예술문화</option>
+                <option value="스포츠">스포츠</option>
+                <option value="뷰티">뷰티</option>
+                <option value="요리">요리</option>
+                <option value="음악">음악</option>
+                <option value="디자인/개발">디자인/개발</option>
+            </select>
+            <select name="category_low" class="category_low" id="category_low">
+                <option value="주식">주식</option>
+                <option value="부동산">부동산</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <th>클래스소개</th>
+        <td><textarea name="class_info" rows="10">{{class.class_info}}</textarea></td>
+    </tr>
+    <tr>
+        <th>강사이름</th>
+        <td><input type="text" name="teacher_name" maxlength="20" value="{{class.teacher_name}}">
+        </td>
+    </tr>
+    <tr>
+        <th>강사소개</th>
+        <td><textarea name="teacher_info" rows="10">{{class.teacher_info}}</textarea></td>
+    </tr>
+    <tr>
+        <th>클래스이미지</th>
+        <input type="hidden" value="{{class.class_img}}" name="original_img">
+        <td><img src="{{class.class_img}}"></td>
+    </tr>
+    <tr>
+        <th>클래스 이미지 수정</th>
+        <td><label for="ex_file"></label><input type="file" name="class_img">
+    </tr>
+    <tr>
+        <th>클래스점수</th>
+        <td><input type="range" name="class_score" maxlength="20" min="0" max="5" step="1" value="{{class.class_score}}">
+    </tr>
+    <tr>
+        <th>커리큘럼</th>
+        <td><textarea name="class_cirriculum" rows="10">{{class_cirriculum}}</textarea></td>
+    </tr>
+    <tr>
+        <th>가족동반</th>
+        <td>
+            <input type="radio" id="family_yes" name="class_family" value="1" checked>
+            <label for="family_yes">Yes</label>
+            <input type="radio" id="family_no" name="class_family" value="0">
+            <label for="family_no">No</label>
+        </td>
+    </tr>
+    <tr>
+        <th>할인률</th>
+        <td>
+            <input type="number" name="class_discount" maxlength="20" value="{{class_discount}}" pattern="[0-9]+" min="0" max="100" value={{class.class_discount}} required>
+        </td>
+    </tr>
+</table>
+<input type="hidden" value="{{class.id}}" name="id">
+<input type="submit" value="수정">
+</form>
+<br>
+{% else %}
+<h1>잘못된 접근입니다</h1>
+{% endif %}
+<input type="button" value="돌아가기" onclick="history.back()">
+<script>
+    function categoryKindChange(e) {
+        var diy = ["뜨개질", "자수", "비누/캔들/향", "라탄공예", "가죽공예", "레진공예", "도예", "플라워도예"];
+        var culture = ["마카색/연필/수채화", "오일파스텔", "아크릴화", "유화", "캘리그라피", "디지털드로잉", "웹툰", "사진영상"];
+        var sports = ["요가", "필라테스", "스트레칭", "재활", "피트니스", "러닝사이클"];
+        var beauty = ["네일", "패션", "헤어", "테라피", "화장품"];
+        var cook = ["한식", "일식/중식", "양식", "다이어트/건강식", "음료/술", "비건/채소", "디저트", "떡/전통다과"];
+        var music = ["악기", "작곡", "보컬/랩"];
+        var dev = ["모션/그래픽", "3D/4D", "브랜드디자인", "UX/UI", "게임개발", "모바일앱개발", "데이터분석", "프로그래밍언어"];
+        var earn = ["주식", "부동산"];
+        var target = document.getElementById("category_low");
+        var target2;
+
+        if (e.value === "DIY/수공예") target2 = diy;
+        else if (e.value === "예술문화") target2 = culture;
+        else if (e.value === "스포츠") target2 = sports;
+        else if (e.value === "뷰티") target2 = beauty;
+        else if (e.value === "요리") target2 = cook;
+        else if (e.value === '음악') target2 = music;
+        else if (e.value === '디자인/개발') target2 = dev;
+        else if (e.value === '수익창출') targer2 = earn;
+
+        target.options.length = 0;
+
+        for (x in target2) {
+            var opt = document.createElement("option");
+            opt.value = target2[x];
+            opt.innerHTML = target2[x];
+            target.appendChild(opt);
+        }
+    }
+</script>    
 {% endblock %}

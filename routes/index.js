@@ -2,6 +2,8 @@ const express = require('express');
 const Conn = require('../models/conn');
 const Class = require('../models/class');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
+const { Op } = require('sequelize');
+
 const router = express.Router();
 
 router.use((req, res, next) => {
@@ -50,6 +52,11 @@ router.get('/', function(req, res, next) {
 	Class.findAll({
 		order: [['class_discount', 'DESC']],
 		limit: 5,
+		where: {
+			class_discount: {
+				[Op.gt]: 0,
+			},
+		},
 	})
 	.then((result) => {
 		saleClass = result;
