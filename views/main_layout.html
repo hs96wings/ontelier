@@ -18,7 +18,7 @@
         <a href="/"><img src="/images/logo_1536x984.png" alt="Ontelier" class="logo"></a>
         <div class="search-box">
             <input type="text" placeholder="취미를 검색해보세요!" class="search-input">
-            <button class="fas fa-search">검색</button>
+            <input type="button" class="search-icon"/>
         </div>
         <div class="right">
             {% if user and user.user_id %}
@@ -43,14 +43,22 @@
 
 <!----- 푸터 영역 ----->
     <div class="footer">
-        <ul class="pt10">
-            <li class="gray">이용약관</li>
-            <li class="gray">개인정보 처리방침</li>
-            <li class="gray">환불정책</li>
-            <li class="gray">사업자 정보 확인</li>
-            <li class="gray">단체/기업 강사 문의</li>    
-            <li class="gray">제휴/협력문의</li>
-        </ul>
+        <h5>고객센터</h5>
+        <div class="footer-list">
+            <ul>
+                <li>이메일: inquiry@ontel.inc</li>
+                <li>고객센터: 1234-5678</li>
+                <li>업무시간: 평일 10:00~17:00(점심:12:00~13:00)</li>
+            </ul>
+            <ul>
+                <li>이용약관</li>
+                <li>개인정보 처리방침</li>
+                <li>환불정책</li>
+                <li>사업자 정보 확인</li>
+                <li>단체/기업 강사 문의</li>    
+                <li>제휴/협력문의</li>
+            </ul>
+        </div>
     </div>
 
 </div>

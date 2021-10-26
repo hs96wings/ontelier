@@ -13,20 +13,49 @@
     grid-template-columns: 1fr 1fr 3.5fr 1fr;
     grid-template-rows: 70px 1fr;
 }
+
+.red {
+    color: #b51625;
+}
+.right {
+    margin-left: auto;
+  }
 /* -----헤더----- */
+
 .header {
     grid-area: header;
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+  
+    height: 60px;
+    background: white;
+    font-size: 15px;
     display: flex;
-    padding: 15px;
-    align-items: flex-end;
-}
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+  }
 
-.logo {
-    display: inline-block;
-    width: 80px;
-    height: 50px;
-}
 
+  .logo {
+    position: relative;
+    width: 65px;
+    height: 41.7px;
+  }
+
+#main-wrapper {
+    position: absolute;
+    width: 68%;
+    margin: 0px 15%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
 .name {
     display: inline-block;
     vertical-align: bottom;
@@ -37,14 +66,28 @@
     margin-left: auto;
 }
 
-.logout-button {
-    display: inline-block;
-    vertical-align: middle;
-    width: 70px;
-    height: 25px;
-    margin-left: 10px;
+.button {
+  position: relative;
+  margin: 5px;
+  right: 0;
+  height: 27.8px;
+  background-color: #f8f8f9;
+  border: 0;
+  cursor: pointer;
 }
 
+.pt24 {
+    font-size: 24px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.25;
+    letter-spacing: normal;
+    text-align: left;
+    color: #85b830;
+    padding: 10px;
+    border-bottom: 0.5px solid #bfbfbf;
+}
 /* -----메뉴----- */
 #menu {
     grid-area: menu;
@@ -58,16 +101,14 @@ li {
 
 .nav{
     overflow: hidden;
-	border-bottom:1px solid #222;
 }
 
 .menu-item {
-    border: 1px solid;
+    border: 0;
     margin: 0;
     padding: 15px;
 }
 .submenu{
-    background: #ddd;
     overflow: hidden;
     transition: max-height 0.7s;
     max-height: 0;
@@ -88,7 +129,7 @@ li {
 
 }
 .submenu a:hover{
-    background: #fafafa;
+    background: #ddd;
    transition: all 0.3s;
     border-bottom: 1px solid #c8c8c8;
 }
@@ -103,7 +144,7 @@ li {
 .content {
     grid-area: content;
     display: flex;
-    border: 1px solid;
+    border: 0;
     padding: 30px;
     flex-direction: column;
 }
@@ -112,41 +153,76 @@ li {
     display: flex;
     width: 100%;
 }
-
+.search-input {
+width: 100%;
+padding: 6.7px 18.2px 8px 19px;
+border-radius: 15.8px;
+background-color: #e8e8ed;
+border: 0;
+}
 .search-field {
     width: 100px;
+    border-radius: 15.8px;
+    text-align: center;
 }
 
-.search-input {
-    width: 100%;
-}
 
 .search-button {
     display: inline-block;
     width: 50px;
     margin-left: auto;
+    border-radius: 15.8px;
+    border: 0;
 }
 
 .big-button {
     display: block;
-    width: 50px;
     margin: 20px 0 20px auto;
     right: 0;
+
+    width: 60px;
+    height: 30px;
+    padding: 5px;
+    background-color: #85b830;
+    border: 0;
+    cursor: pointer;
+
+    font-size: 14px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    color: #fff;
 }
 
 /* 테이블 */
-.class-table {
+.class-table, .user-table, .review-table {
     border-collapse: collapse;
     width: 100%;
+    margin: 20px 0;
+}
+
+.user-table {
+
 }
 
 th, td {
-    border: 1px solid #444444;
+    border-bottom: 1px solid #bfbfbf;
+    font-size: 14px;
     height: 20px;
+    padding: 7px;
   }
 
 th {
-    background-color: lightgray;
+    background-color: #eaeaea;
+    color: #231815;
+}
+
+td a {
+    color: #231815;
+}
+
+td a:hover {
+    color: #85b830;
 }
 
 .pagination {
@@ -156,9 +232,15 @@ th {
 }
 
 .page-item {
-    border: 1px solid;
+    border: 0;
     padding: 5px;
     margin: 3px;
     height: 10px;
+    font-size: 12px;
     line-height: 10px;
+    color: #85b830;
+}
+
+.page-item a{
+    color: #85b830;
 }

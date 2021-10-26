@@ -10,17 +10,23 @@
 <body>
 <div class="container">
 <!----- 헤더 영역 ----->
-    <div class="header">
-        <div class="logo"><a href="/"><img src="/images/logo_1536x984.png" style="width: 100%; height: 100%"></a></div>
-        <div id="admin-name" class="name">{{user.user_nickname}}</div>
-        <button class="logout-button" onclick="location.href='/auth/logout'">로그아웃</button>
+
+<div class="header">
+    <div id="main-wrapper">
+    <a href="/"><img src="/images/logo_1536x984.png" alt="Ontelier" class="logo"></a>
+    <div class="right">
+        <span class="red"> ● </span>
+        <span>{{user.user_nickname}} 님</span>
+        <button class="button" type="button" onclick="location.href='/auth/logout'">로그아웃</button>
     </div>
+    </div>
+</div>
 
 <!----- 메뉴 영역 ----->
     <div id="menu">
         <ul class="menu-item">
             <li class="nav" id="class-menu">
-                <a href="#class-menu">클래스</a>
+                <a href="#class-menu"><div class="pt24">클래스</div></a>
                 <div class="submenu">
                     <a href="/admin">전체보기</a>
                     <a href="/admin?category=DIY/수공예">수공예/DIY</a>
@@ -33,14 +39,14 @@
                 </div>
             </li>
             <li class="nav" id="member-menu">
-            <a href="#member-menu">회원관리</a>
+            <a href="#member-menu"><div class="pt24">회원관리</div></a>
                 <div class="submenu">
                     <a href="/admin/alluser">회원정보</a>
                     <a href="">전체페이지</a>
                 </div>
             </li>
             <li class="nav" id="cs-menu">
-            <a href="#cs-menu">CS관리</a>
+            <a href="#cs-menu"><div class="pt24">CS관리</div></a>
                 <div class="submenu">
                     <a href="/admin/review">후기/Q&A 관리</a>
                 </div>

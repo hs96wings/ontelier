@@ -1,4 +1,84 @@
 {% extends 'main_layout.html' %}
 {% block content %}
-카테고리 상세 페이지
+
+<!-- 카테고리 메뉴 -->
+<div class="category-list-wrapper">
+    <li class="dropdown">
+    <div class="category-title">DIY / 수공예 ▼</div>
+    <div class="dropdown-content">
+        <a href="#">예술문화</a>
+        <a href="#">스포츠</a>
+        <a href="#">뷰티</a>
+        <a href="#">요리</a>
+        <a href="#">음악</a>
+        <a href="#">디자인&개발</a>
+        <a href="#">수익창출</a>
+    </div>
+</li>
+    <ul class="category-list">
+        <li class="selected-btn">전체</li>
+        <li>자수</li>
+        <li>뜨개질</li>
+        <li>자수</li>
+        <li>비누/캔들/향수</li>
+        <li>라틴공예</li>
+        <li>가죽공예</li>
+        <li>레진공예</li>
+        <li>도예</li>
+        <li>플라워 도예</li>
+    </ul>
+</div>
+
+
+<!----- 콘텐츠 영역 ----->
+<div class="container">
+    <div class="class-container">
+
+<!-- 인기 클래스 -->
+<div class="class-wrapper">
+    <p class="pt10">popularity class Best 10</p>
+    <span class="pt27">인기 클래스 Best</span><a class="allview-btn pt10" href="#">전체보기</a>
+        <div class="class-list">
+            <!-- 클래스 리스트 -->
+            {% for class in classes %}
+            <div class="class-item">
+                <ul><a href="#">
+                    <li><div class="class-image"><img class="class-thumbnail" src="{{class.class_img}}"></div></li>
+                    <li class="class-title">{{class.class_title}}</li>
+                    <li class="class-price">{{class.class_price.toLocaleString('ko-KR')}}원</li>
+                    <li class="class-score">
+                        <span class="pt14">{{"★".repeat(class.class_score) + ("☆".repeat(5 - class.class_score) )}}</span>
+                        <span class="pt10 gray">(146)<!--후기개수--></span> <!--임시. review 테이블에서 개수 가져오기-->
+                    </li></a>
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+</div>
+
+<!-- 특가 클래스 -->
+<div class="class-wrapper">
+    <p class="pt10">time deal class</p>
+    <span class="pt27">오늘의 특가 클래스</span><a class="allview-btn pt10" href="#">전체보기</a>
+        <div class="class-list">
+            <!-- 클래스 리스트 -->
+            {% for class in classes %}
+            <div class="class-item">
+                <ul><a href="#">
+                    <li><div class="class-image"><img class="class-thumbnail" src="{{class.class_img}}"></div></li>
+                    <li class="class-title">{{class.class_title}}</li>
+                    <li class="class-price">{{class.class_price.toLocaleString('ko-KR')}}원</li>
+                    <li class="class-score">
+                        <span class="pt14">{{"★".repeat(class.class_score) + ("☆".repeat(5 - class.class_score) )}}</span>
+                        <span class="pt10 gray">(146)<!--후기개수--></span> <!--임시. review 테이블에서 개수 가져오기-->
+                    </li></a>
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+</div>
+
+</div>
+</div>
+
 {% endblock %}
