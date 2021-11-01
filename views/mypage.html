@@ -9,9 +9,13 @@
 <body>
     <table>
         <tr>
+            <th>프로필사진</th>
+            <td><img src="{{user.user_profile_url}}"></td>
+        </tr>
+        <tr>
             <th>아이디</th>
             {% if user and user.provider === 'local' %}
-            <td>{{user.user_id}}</td>
+            <td>{{user.user_id}} 님</td>
             {% else %}
                 {% if user.provider === 'kakao' %}
                 <td>카카오 계정</td>
@@ -36,11 +40,24 @@
             <th>가입날짜</th>
             <td>{{user.user_enrolldate}}</td>
         </tr>
-        <tr>
-            <th>프로필사진</th>
-            <td>{{user.user_profile_url}}</td>
-        </tr>
     </table>
+
+
+    <button class="submit-button" type="button" onclick="location.href='/mypage/edit'">정보수정</button>
+
+<!-- 임시로 전체 클래스 띄움 -->
+    <h2>내가 구매한 클래스</h2>
+    {% for class in classes %}
+    <div class="class-item">
+        <ul><a href="/class/contents/{{class.id}}"> <!-- 강의 페이지로 -->
+            <li><div class="class-image"><img class="class-thumbnail" src="{{class.class_img}}"></div></li>
+            <li class="class-title">{{class.class_title}}</li>
+            </a>
+        </ul>
+    </div>
+    {% endfor %}
+
+
     <button onclick="location.href='/'">돌아가기</button>
 </body>
 </html>

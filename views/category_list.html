@@ -6,20 +6,19 @@
     <li class="dropdown">
     <div class="category-title">DIY / 수공예 ▼</div>
     <div class="dropdown-content">
-        <a href="#">예술문화</a>
-        <a href="#">스포츠</a>
-        <a href="#">뷰티</a>
-        <a href="#">요리</a>
-        <a href="#">음악</a>
-        <a href="#">디자인&개발</a>
-        <a href="#">수익창출</a>
+        <a href="/category?category=예술문화">예술문화</a>
+        <a href="/category?category=스포츠">스포츠</a>
+        <a href="/category?category=뷰티">뷰티</a>
+        <a href="/category?category=요리">요리</a>
+        <a href="/category?category=음악">음악</a>
+        <a href="/category?category=디자인&개발">디자인&개발</a>
+        <a href="/category?category=수익창출">수익창출</a>
     </div>
 </li>
     <ul class="category-list">
         <li class="selected-btn">전체</li>
         <li>자수</li>
         <li>뜨개질</li>
-        <li>자수</li>
         <li>비누/캔들/향수</li>
         <li>라틴공예</li>
         <li>가죽공예</li>
@@ -37,7 +36,7 @@
 <!-- 인기 클래스 -->
 <div class="class-wrapper">
     <p class="pt10">popularity class Best 10</p>
-    <span class="pt27">인기 클래스 Best</span><a class="allview-btn pt10" href="#">전체보기</a>
+    <span class="pt27">인기 클래스 Best</span><a class="allview-btn pt10" href="/category/all">전체보기</a>
         <div class="class-list">
             <!-- 클래스 리스트 -->
             {% for class in best %}
@@ -59,7 +58,7 @@
 <!-- 특가 클래스 -->
 <div class="class-wrapper">
     <p class="pt10">time deal class</p>
-    <span class="pt27">오늘의 특가 클래스</span><a class="allview-btn pt10" href="#">전체보기</a>
+    <span class="pt27">오늘의 특가 클래스</span><a class="allview-btn pt10" href="/category/all">전체보기</a>
         <div class="class-list">
             <!-- 클래스 리스트 -->
             {% for class in sale %}
