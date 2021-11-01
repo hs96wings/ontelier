@@ -26,9 +26,9 @@
     <span class="pt27">인기 클래스 Best</span><a class="allview-btn pt10" href="#">전체보기</a>
         <div class="class-list">
             <!-- 클래스 리스트 -->
-            {% for class in populars %}
+            {% for class in best %}
             <div class="class-item">
-                <ul><a href="#">
+                <ul><a href="/class/{{class.id}}">
                     <li><div class="class-image"><img class="class-thumbnail" src="{{class.class_img}}"></div></li>
                     <li class="class-title">{{class.class_title}}</li>
                     <li class="class-price">{{class.class_price.toLocaleString('ko-KR')}}원</li>
@@ -48,9 +48,9 @@
     <span class="pt27">오늘의 특가 클래스</span><a class="allview-btn pt10" href="#">전체보기</a>
         <div class="class-list">
             <!-- 클래스 리스트 -->
-            {% for class in sales %}
+            {% for class in sale %}
             <div class="class-item">
-                <ul><a href="#">
+                <ul><a href="/class/{{class.id}}">
                     <li><div class="class-image"><img class="class-thumbnail" src="{{class.class_img}}"></div></li>
                     <li class="class-title">{{class.class_title}}</li>
                     <li class="class-price">{{class.class_price.toLocaleString('ko-KR')}}원</li>
@@ -72,7 +72,7 @@
             <!-- 클래스 리스트 -->
             {% for class in newes %}
             <div class="class-item">
-                <ul><a href="#">
+                <ul><a href="/class/{{class.id}}">
                     <li><div class="class-image"><img class="class-thumbnail" src="{{class.class_img}}"></div></li>
                     <li class="class-title">{{class.class_title}}</li>
                     <li class="class-price">{{class.class_price.toLocaleString('ko-KR')}}원</li>
@@ -92,9 +92,9 @@
     <span class="pt27">가족과 함께 하는 강의</span><a class="allview-btn pt10" href="#">전체보기</a>
         <div class="class-list">
             <!-- 클래스 리스트 -->
-            {% for class in familys %}
+            {% for class in family %}
             <div class="class-item">
-                <ul><a href="#">
+                <ul><a href="/class/{{class.id}}">
                     <li><div class="class-image"><img class="class-thumbnail" src="{{class.class_img}}"></div></li>
                     <li class="class-title">{{class.class_title}}</li>
                     <li class="class-price">{{class.class_price.toLocaleString('ko-KR')}}원</li>
@@ -116,7 +116,7 @@
             <!-- 클래스 리스트 -->
             {% for class in newes %}
             <div class="class-item">
-                <ul><a href="#">
+                <ul><a href="/class/{{class.id}}">
                     <li><div class="class-image"><img class="class-thumbnail" src="{{class.class_img}}"></div></li>
                     <li class="class-title">{{class.class_title}}</li>
                     <li class="class-price">{{class.class_price.toLocaleString('ko-KR')}}원</li>

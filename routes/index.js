@@ -19,7 +19,7 @@ router.get('/', function(req, res, next) {
 	// .catch((error) => {
 	// 	console.error(error);
 	// });
-	let popularClass;
+	let bestClass;
 	let saleClass;
 	let newClass;
 	let familyClass;
@@ -41,11 +41,11 @@ router.get('/', function(req, res, next) {
 		limit: 5,
 	})
 	.then((result) => {
-		popularClass = result;
+		bestClass = result;
 	})
 	.catch((error) => {
 		console.error(error);
-		popularClass = newClass;
+		bestClass = newClass;
 	});
 
 	
@@ -74,10 +74,10 @@ router.get('/', function(req, res, next) {
 	.then((result) => {
 		familyClass = result;
 		res.render('main', {
-			populars: popularClass,
-			sales: saleClass,
+			best: bestClass,
+			sale: saleClass,
 			newes: newClass,
-			familys: familyClass,
+			family: familyClass,
 			title: '온뜰',
 		});
 	})

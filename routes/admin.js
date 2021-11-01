@@ -24,9 +24,18 @@ const upload = multer({
 		},
 		filename(req, file, cb) {
 			const ext = path.extname(file.originalname);
-			cb(null, path.basename(file.originalname, ext) + Date.now() + ext);
+			cb(null, req.user.user_nickname + '_' + Date.now() + ext);
 		},
 	}),
+	fileFilter: function (req, file, cb) {
+		var ext = path.extname(file.originalname);
+		if (ext !== '.png' && ext !== '.jpeg' && ext !== '.jpg' && ext !== '.gif') {
+			const err = new Error('이미지만 업로드 해주세요');
+			err.status = 406;
+			next(err);
+		}
+		cb(null, true);
+	},
 	limits: { fileSize: 10 * 1024 * 1024 },
 });
 

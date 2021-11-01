@@ -1,0 +1,57 @@
+<h2>◆ 클래스 정보</h2>
+{% if class %}
+    <table>
+        <tr>
+            <th>클래스이름</th>
+            <td>{{class.class_title}}</td>
+        </tr>
+        <tr>
+            <th>클래스가격</th>
+            <td>{{class.class_price}}</td>
+            </td>
+        </tr>
+        <tr>
+            <th>강의평가</th>
+            <td>{{class.class_score}}</td>
+        </tr>
+        <tr>
+            <th>가족동반</th>
+            {% if class.class_family === 1 %}
+            <td>Yes</td>
+            {% else %}
+            <td>No</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <th>카테고리</th>
+            <td>{{class.category_high}} &gt; {{class.category_low}}</td>
+        </tr>
+        <tr>
+            <th>클래스소개</th>
+            <td>{{class.class_info}}</td>
+        </tr>
+        <tr>
+            <th>강사이름</th>
+            <td>{{class.teacher_name}}</td>
+        </tr>
+        <tr>
+            <th>강사소개</th>
+            <td>{{class.teacher_info}}</td>
+        </tr>
+        <tr>
+            <th>클래스이미지</th>
+            <td><img src="{{class.class_img}}"></td>
+        </tr>
+        <tr>
+            <th>커리큘럼</th>
+            <td>{{class.class_cirriculum}}</td>
+        </tr>
+        <tr>
+            <th>할인률</th>
+            <td>{{class.class_discount}}%</td>
+        </tr>
+    </table>
+    {% else %}
+    <h1>잘못된 접근입니다</h1>
+    {% endif %}
+    <input type="button" value="돌아가기" onclick="history.back()">

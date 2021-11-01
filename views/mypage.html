@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>아이디</th>
+            {% if user and user.provider === 'local' %}
+            <td>{{user.user_id}}</td>
+            {% else %}
+                {% if user.provider === 'kakao' %}
+                <td>카카오 계정</td>
+                {% else %}
+                <td>네이버 계정</td>
+                {% endif %}
+            {% endif %}
+        </tr>
+        <tr>
+            <th>이메일</th>
+            <td>{{user.user_email}}</td>
+        </tr>
+        <tr>
+            <th>닉네임</th>
+            <td>{{user.user_nickname}}</td>
+        </tr>
+        <tr>
+            <th>연락처</th>
+            <td>{{user.user_phone}}</td>
+        </tr>
+        <tr>
+            <th>가입날짜</th>
+            <td>{{user.user_enrolldate}}</td>
+        </tr>
+        <tr>
+            <th>프로필사진</th>
+            <td>{{user.user_profile_url}}</td>
+        </tr>
+    </table>
+    <button onclick="location.href='/'">돌아가기</button>
+</body>
+</html>

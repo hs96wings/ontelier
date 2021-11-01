@@ -1,6 +1,7 @@
 const express = require('express');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const Class = require('../models/class');
+const { Op } = require('sequelize');
 
 const router = express.Router();
 
@@ -11,19 +12,44 @@ router.get('/', function(req, res, next) {
         category = 'DIY/수공예';
     }
 
+	let bestClass;
+	let saleClass;
+	
     Class.findAll({
-        where: {category_high: category},
-		order: [['createdAt', 'DESC']],
+		where: {category_high: category},
+        order: [['class_score', 'DESC']],
+		limit: 5,
 	})
 	.then((result) => {
-			res.render('category_list', {
-			classes: result,
+		bestClass = result;
+	})
+	.catch((error) => {
+		console.error(error);
+	});
+
+	
+	Class.findAll({
+		order: [['class_discount', 'DESC']],
+		limit: 5,
+		where: {
+			category_high: category,
+			class_discount: {
+				[Op.gt]: 0,
+			},
+		},
+	})
+	.then((result) => {
+		saleClass = result;
+		res.render('category_list', {
+			title: '온뜰',
+			best: bestClass,
+			sale: saleClass,
 		});
 	})
 	.catch((error) => {
-		res.render('main', {title: '온뜰'});
 		console.error(error);
-	});
+		saleClass = newClass;
+	})
 });
 
 
