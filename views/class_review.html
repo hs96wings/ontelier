@@ -1,0 +1,35 @@
+{% extends 'main_layout.html' %}
+{% block content %}
+
+<p>후기 {{reviews.length}}개</p>
+
+{% for review in reviews %}
+    <table>
+        <tr>
+            <th>후기번호</th>
+            <td>{{review.id}}</td>
+        </tr>
+        <tr>
+            <th>작성자</th>
+            <td>{{review.reviewer}}</td>
+        </tr>
+        <tr>
+            <th>강의이름</th>
+            <td>{{review.Class.class_title}}</td>
+        </tr>
+        <tr>
+            <th>후기점수</th>
+            <td>{{review.review_score}}</td>
+        </tr>
+        <tr>
+            <th>도움이 됐어요!</th>
+            <td>{{review.review_best_num}}</td>
+        </tr>
+        <tr>
+            <th>리뷰 이미지</th>
+            <td><img src="{{review.review_img}}"></td>
+        </tr>
+    </table>
+{% endfor %}
+
+{% endblock %}
