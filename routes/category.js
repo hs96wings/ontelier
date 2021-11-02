@@ -52,5 +52,19 @@ router.get('/', function(req, res, next) {
 	})
 });
 
+router.get('/all', (req, res, next) => {
+	Class.findAll()
+	.then((result) => {
+		res.render('allview_list', {
+			title: '온뜰 - 전체보기',
+			classes: result,
+		});
+	})
+	.catch((error) => {
+		console.error(error);
+		res.render('allview_list', {title: '온뜰 - 전체보기'});
+	});
+});
+
 
 module.exports = router;
