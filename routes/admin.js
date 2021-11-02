@@ -6,6 +6,8 @@ const fs = require('fs');
 const Class = require('../models/class');
 const User = require('../models/user');
 const Review = require('../models/review');
+const Purchase = require('../models/purchase');
+
 const { isLoggedIn, isAdmin, isSuper } = require('./middlewares');
 
 const router = express.Router();
@@ -209,6 +211,9 @@ router.get('/alluser', isLoggedIn, isAdmin, (req, res) => {
 			console.error(error);
 		});
 	} else {
+		User.findAll({
+
+		})
 		res.render('admin_alluser');
 	}
 })
