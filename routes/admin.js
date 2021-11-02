@@ -209,12 +209,23 @@ router.get('/alluser', isLoggedIn, isAdmin, (req, res) => {
 		})
 		.catch((error) => {
 			console.error(error);
+			res.status(500).send();
 		});
 	} else {
-		User.findAll({
-
+		Purchase.findOne({
+			include: {
+				model: Class,
+				where: {teacher_name: req.user.user_nickname}
+			},
 		})
-		res.render('admin_alluser');
+		.then((result) => {
+			console.log(result);
+			res.render('admin_enrolluser', {users: result});
+		})
+		.catch((error) => {
+			console.error(error);
+			res.status(500).send();
+		})
 	}
 })
 
