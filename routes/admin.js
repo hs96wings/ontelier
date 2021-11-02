@@ -49,44 +49,50 @@ router.get('/', isLoggedIn, isAdmin, (req, res) => {
 	if (pageNum > 1) {
 		offset = limit * (pageNum - 1);
 	}
-
-	if (category === undefined) {
-		Class.findAndCountAll({
-			offset: offset,
-			limit: limit,
-			order: [['createdAt', 'DESC']],
-		})
-		.then((result) => {
-				res.render('admin_list', {
-				classes: result.rows,
-				user: req.user,
-				pageNum: pageNum,
-				pages: result.count,
-				limit: limit
-			});
-		})
-		.catch((error) => {
-			console.error(error);
-		});
-	} else {
-		Class.findAndCountAll({
-			offset: offset,
-			limit: limit,
-			order: [['createdAt', 'DESC']],
-			where: { category_high: category }
-		})
-		.then((result) => {
-				res.render('admin_list', {
-				classes: result.rows,
-				user: req.user,
-				pageNum: pageNum,
-				pages: result.count,
+	
+	if (req.user.user_roll === 'admin') {
+		if (category === undefined) {
+			Class.findAndCountAll({
+				offset: offset,
 				limit: limit,
-				queryCategory: category,
+				order: [['createdAt', 'DESC']],
+			})
+			.then((result) => {
+					res.render('admin_list', {
+					classes: result.rows,
+					user: req.user,
+					pageNum: pageNum,
+					pages: result.count,
+					limit: limit
+				});
+			})
+			.catch((error) => {
+				console.error(error);
 			});
-		})
-		.catch((error) => {
-			console.error(error);
+		} else {
+			Class.findAndCountAll({
+				offset: offset,
+				limit: limit,
+				order: [['createdAt', 'DESC']],
+				where: { category_high: category }
+			})
+			.then((result) => {
+					res.render('admin_list', {
+					classes: result.rows,
+					user: req.user,
+					pageNum: pageNum,
+					pages: result.count,
+					limit: limit,
+					queryCategory: category,
+				});
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+		}
+	} else {
+		res.render('admin_alluser', {
+			user: req.user,
 		});
 	}
 });

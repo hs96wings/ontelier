@@ -16,7 +16,7 @@ exports.isNotLoggedIn = (req, res, next) => {
 }
 
 exports.isAdmin = (req, res, next) => {
-    if (req.user.user_roll === 'admin') {
+    if (req.user.user_roll !== 'user') {
         next();
     } else {
         const message = encodeURIComponent('권한이 없습니다.');
