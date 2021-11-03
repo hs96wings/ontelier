@@ -6,7 +6,9 @@ const fs = require('fs');
 const Class = require('../models/class');
 const User = require('../models/user');
 const Review = require('../models/review');
-const { isLoggedIn, isAdmin } = require('./middlewares');
+const Purchase = require('../models/purchase');
+
+const { isLoggedIn, isAdmin, isSuper } = require('./middlewares');
 
 const router = express.Router();
 
@@ -42,6 +44,7 @@ const upload = multer({
 router.get('/', isLoggedIn, isAdmin, (req, res) => {
 	let pageNum = req.query.page;
 	let offset = 0;
+	let user_roll = req.user.user_roll;
 	const limit = 5;
 	const category = req.query.category;
 
@@ -49,53 +52,59 @@ router.get('/', isLoggedIn, isAdmin, (req, res) => {
 	if (pageNum > 1) {
 		offset = limit * (pageNum - 1);
 	}
-
-	if (category === undefined) {
-		Class.findAndCountAll({
-			offset: offset,
-			limit: limit,
-			order: [['createdAt', 'DESC']],
-		})
-		.then((result) => {
-				res.render('admin_list', {
-				classes: result.rows,
-				user: req.user,
-				pageNum: pageNum,
-				pages: result.count,
-				limit: limit
-			});
-		})
-		.catch((error) => {
-			console.error(error);
-		});
-	} else {
-		Class.findAndCountAll({
-			offset: offset,
-			limit: limit,
-			order: [['createdAt', 'DESC']],
-			where: { category_high: category }
-		})
-		.then((result) => {
-				res.render('admin_list', {
-				classes: result.rows,
-				user: req.user,
-				pageNum: pageNum,
-				pages: result.count,
+	
+	if (req.user.user_roll === 'admin') {
+		if (category === undefined) {
+			Class.findAndCountAll({
+				offset: offset,
 				limit: limit,
-				queryCategory: category,
+				order: [['createdAt', 'DESC']],
+			})
+			.then((result) => {
+					res.render('admin_list', {
+					classes: result.rows,
+					user: req.user,
+					pageNum: pageNum,
+					pages: result.count,
+					limit: limit
+				});
+			})
+			.catch((error) => {
+				console.error(error);
 			});
-		})
-		.catch((error) => {
-			console.error(error);
+		} else {
+			Class.findAndCountAll({
+				offset: offset,
+				limit: limit,
+				order: [['createdAt', 'DESC']],
+				where: { category_high: category }
+			})
+			.then((result) => {
+					res.render('admin_list', {
+					classes: result.rows,
+					user: req.user,
+					pageNum: pageNum,
+					pages: result.count,
+					limit: limit,
+					queryCategory: category,
+				});
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+		}
+	} else {
+		res.render('admin_alluser', {
+			user: req.user,
 		});
 	}
 });
 
-router.get('/write', isLoggedIn, isAdmin, (req, res) => {
+router.get('/write', isLoggedIn, isSuper, (req, res) => {
 	res.render('admin_list_write', {title: 'Ontelier'});
 });
 
-router.post('/write', isLoggedIn, isAdmin, upload.single('class_img'), async (req, res, next) => {
+router.post('/write', isLoggedIn, isSuper, upload.single('class_img'), async (req, res, next) => {
 	const body = req.body;
 	let filename;
 
@@ -128,7 +137,7 @@ router.post('/write', isLoggedIn, isAdmin, upload.single('class_img'), async (re
 	});
 });
 
-router.get('/update/:id', isLoggedIn, isAdmin, (req, res) => {
+router.get('/update/:id', isLoggedIn, isSuper, (req, res) => {
 	Class.findOne({where: { id: req.params.id }})
 	.then((result) => {
 		res.render('admin_list_update', {title: '글 수정', class: result});
@@ -139,7 +148,7 @@ router.get('/update/:id', isLoggedIn, isAdmin, (req, res) => {
 	});
 })
 
-router.post('/update', isLoggedIn, isAdmin, upload.single('class_img'), (req, res) => {
+router.post('/update', isLoggedIn, isSuper, upload.single('class_img'), (req, res) => {
 	const body = req.body;
 
 	let filename;
@@ -175,7 +184,7 @@ router.post('/update', isLoggedIn, isAdmin, upload.single('class_img'), (req, re
 	});
 });
 
-router.post('/delete', isLoggedIn, isAdmin, (req, res) => {
+router.post('/delete', isLoggedIn, isSuper, (req, res) => {
 	const body = req.body;
 
 	Class.destroy({
@@ -191,18 +200,36 @@ router.post('/delete', isLoggedIn, isAdmin, (req, res) => {
 });
 
 router.get('/alluser', isLoggedIn, isAdmin, (req, res) => {
-	User.findAll({
-        order: [['createdAt', 'DESC']],
-    })
-	.then((result) => {
-		res.render('admin_alluser', {users: result});
-	})
-	.catch((error) => {
-		console.error(error);
-	});
+	if (req.user.user_roll === 'admin') {
+		User.findAll({
+			order: [['createdAt', 'DESC']],
+		})
+		.then((result) => {
+			res.render('admin_alluser', {users: result});
+		})
+		.catch((error) => {
+			console.error(error);
+			res.status(500).send();
+		});
+	} else {
+		Purchase.findOne({
+			include: {
+				model: Class,
+				where: {teacher_name: req.user.user_nickname}
+			},
+		})
+		.then((result) => {
+			console.log(result);
+			res.render('admin_enrolluser', {users: result});
+		})
+		.catch((error) => {
+			console.error(error);
+			res.status(500).send();
+		})
+	}
 })
 
-router.get('/class/:id', isLoggedIn, isAdmin, (req, res) => {
+router.get('/class/:id', isLoggedIn, isSuper, (req, res) => {
 	Class.findOne({where: { id: req.params.id }})
 	.then((result) => {
 		res.render('admin_list_view', {title: '글 조회', class: result});
@@ -213,7 +240,7 @@ router.get('/class/:id', isLoggedIn, isAdmin, (req, res) => {
 	});
 });
 
-router.get('/review', isLoggedIn, isAdmin, (req, res) => {
+router.get('/review', isLoggedIn, isSuper, (req, res) => {
 	Review.findAll({
 		include: {
 			model: Class,
@@ -234,11 +261,11 @@ router.get('/review', isLoggedIn, isAdmin, (req, res) => {
 	});
 });
 
-router.get('/review/write', isLoggedIn, isAdmin, (req, res) => {
+router.get('/review/write', isLoggedIn, isSuper, (req, res) => {
 	res.render('admin_review_write', {title: '온뜰 - Admin - 후기'});
 });
 
-router.post('/review/write', isLoggedIn, isAdmin, async (req, res, next) => {
+router.post('/review/write', isSuper, async (req, res, next) => {
 	const body = req.body;
 	const user_nickname = req.user.user_nickname;
 	const user_id = req.user.user_id;
@@ -260,7 +287,7 @@ router.post('/review/write', isLoggedIn, isAdmin, async (req, res, next) => {
 	});
 });
 
-router.get('/review/:id', isLoggedIn, isAdmin, (req, res) => {
+router.get('/review/:id', isLoggedIn, isSuper, (req, res) => {
 	Review.findOne({
 		where: { id: req.params.id },
 		include: {

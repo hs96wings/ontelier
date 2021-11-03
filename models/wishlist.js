@@ -25,7 +25,7 @@ module.exports = class Wishlist extends Sequelize.Model {
 	}
 
 	static associate(db) {
-		db.Review.belongsTo(db.User);
-		db.Review.belongsTo(db.Class);
+		db.Wishlist.belongsTo(db.User);
+		db.Wishlist.belongsTo(db.Class);
 	};
 }

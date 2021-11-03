@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-module.exports = class Wishlist extends Sequelize.Model {
+module.exports = class Purchase extends Sequelize.Model {
 	static init(sequelize) {
 		return super.init({
             purchase_enrolldate: {
@@ -25,7 +25,7 @@ module.exports = class Wishlist extends Sequelize.Model {
 	}
 
 	static associate(db) {
-		db.Review.belongsTo(db.User);
-		db.Review.belongsTo(db.Class);
+		db.Purchase.belongsTo(db.User);
+		db.Purchase.belongsTo(db.Class);
 	};
 }
