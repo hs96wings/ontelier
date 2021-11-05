@@ -12,14 +12,18 @@ module.exports = () => {
             const exUser = await User.findOne({ where: { user_id }});
             if (exUser) {
                 const result = await bcrypt.compare(user_pwd, exUser.user_pwd);
+                // 인증 성공
                 if (result) {
                     done(null, exUser);
+                // user_id는 맞지만 비밀번호가 다름
                 } else {
                     done(null, false, { message: '비밀번호가 일치하지 않습니다' });
                 }
+            // user_id가 DB에 없을 때
             } else {
                 done(null, false, { message: '가입되지 않은 회원입니다.'});
             }
+        // DB 연결 실패
         } catch (error) {
             console.error(error);
             done(error);

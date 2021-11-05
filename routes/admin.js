@@ -32,11 +32,11 @@ const upload = multer({
 	fileFilter: function (req, file, cb) {
 		var ext = path.extname(file.originalname);
 		if (ext !== '.png' && ext !== '.jpeg' && ext !== '.jpg' && ext !== '.gif') {
-			const err = new Error('이미지만 업로드 해주세요');
-			err.status = 406;
-			next(err);
+			req.flash('error', '클래스는 등록되었으나 이미지는 등록되지 않았습니다');
+			cb(null, false);
+		} else {
+			cb(null, true);
 		}
-		cb(null, true);
 	},
 	limits: { fileSize: 10 * 1024 * 1024 },
 });
@@ -66,7 +66,8 @@ router.get('/', isLoggedIn, isAdmin, (req, res) => {
 					user: req.user,
 					pageNum: pageNum,
 					pages: result.count,
-					limit: limit
+					limit: limit,
+					messages: req.flash('error'),
 				});
 			})
 			.catch((error) => {

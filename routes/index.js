@@ -79,6 +79,7 @@ router.get('/', function(req, res, next) {
 			newes: newClass,
 			family: familyClass,
 			title: '온뜰',
+			messages: req.flash('error'),
 		});
 	})
 	.catch((error) => {
@@ -88,11 +89,12 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/login', isNotLoggedIn, (req, res) =>  {
-	res.render('login', {title: 'Ontelier - Login'});
+	res.render('login', {title: '온뜰 - 로그인', messages: req.flash('error')});
+	// res.render('login', {title: '온뜰 - 로그인'});
 });
 
 router.get('/join', isNotLoggedIn, (req, res) => {
-	res.render('join', {title: 'Ontelier - Join'});
+	res.render('join', {title: '온뜰 - 회원가입', messages: req.flash('error')});
 });
 
 module.exports = router;
