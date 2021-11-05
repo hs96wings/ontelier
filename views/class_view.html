@@ -1,61 +1,82 @@
 {% extends 'main_layout.html' %}
 {% block content %}
 {% if class %}
-    <table>
-        <tr>
-            <th>클래스이미지</th>
-            <td><img src="{{class.class_img}}"></td>
-        </tr>
-        <tr>
-            <th>클래스이름</th>
-            <td>{{class.class_title}}</td>
-        </tr>
-        <tr>
-            <th>할인률</th>
-            <td>{{class.class_discount}}%</td>
-        </tr>
-        <tr>
-            <th>클래스가격</th>
-            <td>{{class.class_price}}</td>
-            </td>
-        </tr>
-        <tr>
-            <th>클래스소개</th>
-            <td>{{class.class_info}}</td>
-        </tr>
-        <tr>
-            <th>강사이름</th>
-            <td>{{class.teacher_name}}</td>
-        </tr>
-        <tr>
-            <th>강사소개</th>
-            <td>{{class.teacher_info}}</td>
-        </tr>
-        <tr>
-            <th>커리큘럼</th>
-            <td>{{class.class_cirriculum}}</td>
-        </tr>
-        <tr>
-            <th>후기</th> <!--후기랑 Q&A 불러오기-->
-            <td>후기들</td>
-            <td><button type="button" onclick="location.href='/class/{{class.id}}/review'">후기 더보기</button></td>
-        </tr>
-        <tr>
-            <th>강의평가</th>
-            <td>{{class.class_score}}</td>
-        </tr>
-        <tr>
-            <th>Q&A</th>
-            <td>큐앤에이</td>
-        </tr>
-    </table>
 
-    <button class="submit-button" type="button" onclick="location.href='/class/{{class.id}}/payment'">신청하기</button>
+<!----- 클래스 배너 ----->
+<img class="class_banner" src="{{class.class_img}}">
+
+
+<!----- 좌측 컨텐츠 ----->
+<div class="class_left">
+
+  <menu class="class_nav">
+    <ul>
+      <li>클래스소개</li>
+      <li>강사소개</li>
+      <li>커리큘럼</li>
+      <li>후기</li>
+      <li>Q&A</li>
+    </ul>
+  </menu>
+
+  <div class="class_contents">
+    <!-- 클래스 설명 -->
+    <div class="class_info">{{class.class_info}}</div>
+
+    <!-- 강사 소개 -->
+    <p class="class_teacher_name">강사 {{class.teacher_name}}</p>
+    <div class="class_teacher_info">{{class.teacher_info}}</div>
+
+    <div class="class_space"></div>
+
+    <!-- 커리큘럼 -->
+    <p>커리큘럼</p>
+    <div class="class_cirriculum">{{class.class_cirriculum}}</div>
+
+    <div class="class_space"></div>
+
+    <!-- 후기 -->
+    <p>실제 후기<span>214</span></p>
+    <div class="class_review_wrapper">
+      <span>삐뽀 님</span><span>2021-10-29</span>
+      <p>곰돌이 얼굴과 몸의 이음새가 제일 어려워서 몇번 뜯었다가 다시 했지만, 자세하고 친절하게  설명해주셔서 따라서 하다보니 완성할 수 있었어요. 제가 에코백을 평소에 잘 사용하지 않는 편이어서, 원단에 수놓은 후에 사용중인 화장품 케이스에 붙였어요.^^</p>
+    </div>
+    <button type="button" class="class_more_button" name="button">+ 후기 더보기</button>
+    <div class="class_space"></div>
+
+    <!-- Q&A -->
+    <p>Q&A<span>56</span></p>
+    <div class="class_QnA_wrapper">
+      <span>Q. 포룽 님</span><span>2021-10-29</span>
+      <p>강의는 16주 동안만 들을수 있나요?</p>
+    </div>
+    <button type="button" class="class_more_button" name="button">+ 후기 더보기</button>
+
+  </div>
+
+</div>
+
+<!----- 우측 컨텐츠 ----->
+<div class="class_right">
+  <div class="class_float_wrapper">
+
+      <p>{{class.class_title}}</p>
+      <span>{{class.class_discount}}%</span>
+      <span>{{class.class_price.toLocaleString('ko-KR')}}원</span>
+
+      <button type="button" class="like-button" name="button"></button>
+      <button class="submit-button" type="button" onclick="location.href='/class/{{class.id}}/payment'">신청하기</button>
+
+  </div>
+</div>
+
+
+
 
 
     {% else %}
     <h1>잘못된 접근입니다</h1>
     {% endif %}
-    <input type="button" value="돌아가기" onclick="history.back()">
+    <!-- <input type="button" value="돌아가기" onclick="history.back()"> -->
 
 {% endblock %}
