@@ -81,4 +81,7 @@
 </div>
 
 </body>
+{% if messages and messages.length > 0 %}
+<script>alert("{{messages}}");</script>
+{% endif %}
 </html>

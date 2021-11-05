@@ -94,15 +94,7 @@ router.get('/login', isNotLoggedIn, (req, res) =>  {
 });
 
 router.get('/join', isNotLoggedIn, (req, res) => {
-	res.render('join', {title: 'Ontelier - Join'});
-});
-
-router.get('/debug', (req, res) => {
-	res.json({
-		"req.session": req.session,
-		"req.user": req.user,
-		"req._passport": req._passport,
-	});
+	res.render('join', {title: '온뜰 - 회원가입', messages: req.flash('error')});
 });
 
 module.exports = router;

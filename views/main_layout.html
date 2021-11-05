@@ -67,7 +67,8 @@
 
     </body>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-{% if messages and messages.length > 0 %}
-<script>alert("{{messages}}");</script>
-{% endif %}
+
+    {% if messages and messages.length > 0 %}
+    <script>alert("{{messages}}");</script>
+    {% endif %}
 </html>

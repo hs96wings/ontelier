@@ -11,8 +11,10 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
     try {
         const exUser = await User.findOne({ where: { user_id }});
         if (exUser) {
-            const message = encodeURIComponent('이미 존재하는 아이디입니다');
-            res.redirect(`/?error=${message}`);
+            req.flash('error', '이미 존재하는 아이디입니다');
+            // const message = encodeURIComponent('이미 존재하는 아이디입니다');
+            // res.redirect(`/?error=${message}`);
+            return res.redirect('/join');
         }
         const hash = await bcrypt.hash(user_pwd, 12);
         await User.create({
@@ -28,30 +30,6 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
         return next(error);
     }
 });
-
-// router.post('/login', isNotLoggedIn, (req, res, next) => {
-//     passport.authenticate('local', (authError, user, info) => {
-//         if (authError) {
-//             console.error(authError);
-//             next(authError);
-//         }
-//         if (!user) {
-//             return res.redirect(`/?error=${info.message}`);
-//         }
-//         return req.login(user, (loginError) => {
-//             if (loginError) {
-//                 console.error(loginError);
-//                 return next(loginError);
-//             }
-//             return res.redirect('/');
-//         });
-//     }) (req, res, next);
-//     // passport.authenticate('local', {
-//     //     successRedirect: '/',
-//     //     failureRedirect: '/login',
-//     //     failureFlash: true
-//     // });
-// });
 
 router.post('/login', isNotLoggedIn, passport.authenticate('local', {
     successRedirect: '/',
