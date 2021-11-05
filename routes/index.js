@@ -79,6 +79,7 @@ router.get('/', function(req, res, next) {
 			newes: newClass,
 			family: familyClass,
 			title: '온뜰',
+			messages: req.flash('error'),
 		});
 	})
 	.catch((error) => {
