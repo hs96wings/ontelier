@@ -88,11 +88,20 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/login', isNotLoggedIn, (req, res) =>  {
-	res.render('login', {title: 'Ontelier - Login'});
+	res.render('login', {title: '온뜰 - 로그인', messages: req.flash('error')});
+	// res.render('login', {title: '온뜰 - 로그인'});
 });
 
 router.get('/join', isNotLoggedIn, (req, res) => {
 	res.render('join', {title: 'Ontelier - Join'});
+});
+
+router.get('/debug', (req, res) => {
+	res.json({
+		"req.session": req.session,
+		"req.user": req.user,
+		"req._passport": req._passport,
+	});
 });
 
 module.exports = router;

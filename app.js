@@ -50,9 +50,9 @@ app.use(session({
 		secure: false,
 	},
 }));
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
 
 app.use('/', indexRouter);
 app.use('/admin', adminRouter);

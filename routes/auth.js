@@ -29,24 +29,35 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
     }
 });
 
-router.post('/login', isNotLoggedIn, (req, res, next) => {
-    passport.authenticate('local', (authError, user, info) => {
-        if (authError) {
-            console.error(authError);
-            next(authError);
-        }
-        if (!user) {
-            return res.redirect(`/?error=${info.message}`);
-        }
-        return req.login(user, (loginError) => {
-            if (loginError) {
-                console.error(loginError);
-                return next(loginError);
-            }
-            return res.redirect('/');
-        });
-    }) (req, res, next);
-});
+// router.post('/login', isNotLoggedIn, (req, res, next) => {
+//     passport.authenticate('local', (authError, user, info) => {
+//         if (authError) {
+//             console.error(authError);
+//             next(authError);
+//         }
+//         if (!user) {
+//             return res.redirect(`/?error=${info.message}`);
+//         }
+//         return req.login(user, (loginError) => {
+//             if (loginError) {
+//                 console.error(loginError);
+//                 return next(loginError);
+//             }
+//             return res.redirect('/');
+//         });
+//     }) (req, res, next);
+//     // passport.authenticate('local', {
+//     //     successRedirect: '/',
+//     //     failureRedirect: '/login',
+//     //     failureFlash: true
+//     // });
+// });
+
+router.post('/login', isNotLoggedIn, passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true,
+}));
 
 router.get('/logout', isLoggedIn, (req, res) => {
     req.logout();
