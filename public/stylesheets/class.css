@@ -1,0 +1,67 @@
+.class_view_container {
+    display: grid;
+    grid-template-areas:
+      'banner banner'
+      'left right';
+    grid-template-columns: 2.4fr 1.7fr;
+    grid-template-rows: 540px 95%;
+}
+
+.class_banner {
+  grid-area: banner;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.class_left {
+  grid-area: left;
+
+}
+
+.class_nav {
+  height: 100px;
+}
+.class_nav ul {
+display: flex;
+}
+.class_nav ul li {
+  padding-right: 60px;
+  font-size: 18px;
+ font-weight: normal;
+ font-stretch: normal;
+ font-style: normal;
+ line-height: 1.2;
+ letter-spacing: normal;
+ text-align: left;
+ color: #000;
+}
+.class_right {
+    grid-area: right;
+}
+
+.class_contents p {
+  font-size: 22px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-align: left;
+  color: #231815;
+}
+
+.class_contents span {
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-align: left;
+  color: #85b830;
+}
+
+.class_space {
+  height: 70px;
+}

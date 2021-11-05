@@ -1,6 +1,7 @@
 {% extends 'main_layout.html' %}
 {% block content %}
 {% if class %}
+<div class="class_view_container">
 
 <!----- 클래스 배너 ----->
 <img class="class_banner" src="{{class.class_img}}">
@@ -79,4 +80,5 @@
     {% endif %}
     <!-- <input type="button" value="돌아가기" onclick="history.back()"> -->
 
+</div>
 {% endblock %}
