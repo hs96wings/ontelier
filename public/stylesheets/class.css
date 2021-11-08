@@ -1,3 +1,15 @@
+p {
+    font-size: 17px;
+}
+
+.green {
+  color: #85b830;
+}
+.floating {
+  position: sticky;
+  top: 60px;
+}
+
 .class_view_container {
     display: grid;
     grid-template-areas:
@@ -20,12 +32,15 @@
 }
 
 .class_nav {
-  height: 100px;
+  margin: 30px 0;
+  padding: 15px 0;
+  background-color: #fff;
+  z-index: 3;
 }
 .class_nav ul {
 display: flex;
 }
-.class_nav ul li {
+.class_nav li {
   padding-right: 60px;
   font-size: 18px;
  font-weight: normal;
@@ -34,24 +49,77 @@ display: flex;
  line-height: 1.2;
  letter-spacing: normal;
  text-align: left;
- color: #000;
 }
-.class_right {
-    grid-area: right;
+.class_nav li:hover {
+  cursor: pointer;
 }
 
-.class_contents p {
+.class_nav a {
+  color: #000;
+}
+.class_nav ul li.on {
+  color: #85b830;
+  font-weight: 800;
+}
+
+.class_right {
+  grid-area: right;
+}
+.class_float_wrapper {
+  padding: 55px;
+}
+.class_title {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 30px;
+}
+
+.price {
+  font-size: 14px;
+  color: #7e7e7f;
+  text-decoration: line-through;
+}
+.sale_price {
+  font-size: 17px;
+}
+.discount {
+  font-size: 14px;
+  color: #b51625;
+}
+
+.like-button {
+  float: left;
+  border: none;
+  background-color: #fff;
+  color: #7e7e7f;
+  width: 25%;
+  height: 50px;
+  font-size: 14px;
+  margin-top: 28.4px;
+  text-align: center;
+}
+.like-button:hover {
+  cursor: pointer;
+}
+
+.class_contents {
+  padding: 15px;
+}
+
+.scroll {
   font-size: 22px;
-  font-weight: normal;
+  font-weight: 800;
   font-stretch: normal;
   font-style: normal;
   line-height: 1.2;
   letter-spacing: normal;
   text-align: left;
   color: #231815;
-}
 
-.class_contents span {
+  margin-bottom: 20px;
+  margin-right: 5px;
+}
+.scroll span {
   font-size: 14px;
   font-weight: normal;
   font-stretch: normal;
@@ -60,8 +128,69 @@ display: flex;
   letter-spacing: normal;
   text-align: left;
   color: #85b830;
+  margin-left: 5px;
 }
 
+.pt20 {
+  font-size: 20px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-align: left;
+  color: #231815;
+}
+.date {
+  float: right;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-align: center;
+  color: #7e7e7f;
+}
+
+.class_review_wrapper,
+.class_QnA_wrapper {
+  margin: 34px 0;
+  padding-left: 16px;
+}
+
+.class_review_wrapper p, .class_QnA_wrapper p, .class_more_button {
+  font-size: 17px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-align: left;
+  color: #7e7e7f;
+  padding: 12px 4px;
+}
+
+.QnA_answer {
+  padding-left: 30px;
+  margin-top: 10px;
+}
+
+.class_more_button {
+  display: block;
+  border: none;
+  background-color: #fff;
+  width: 200px;
+  margin: auto;
+  text-align: center;
+}
+.class_more_button a {
+  color: #7e7e7f;
+}
+.submit-button {
+  float: right;
+  width: 70%;
+}
 .class_space {
   height: 70px;
 }
