@@ -1,8 +1,9 @@
 const express = require('express');
-const Conn = require('../models/conn');
 const Class = require('../models/class');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const { Op } = require('sequelize');
+const Review = require('../models/review');
+const sequelize = require('sequelize');
 
 const router = express.Router();
 
@@ -12,17 +13,11 @@ router.use((req, res, next) => {
 })
 
 router.get('/', function(req, res, next) {
-	// const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-	// Conn.create({
-	// 	conn_ip: ip,
-	// })
-	// .catch((error) => {
-	// 	console.error(error);
-	// });
 	let bestClass;
 	let saleClass;
 	let newClass;
 	let familyClass;
+	let reviewClass;
 
 	Class.findAll({
 		order: [['createdAt', 'DESC']],
@@ -64,7 +59,26 @@ router.get('/', function(req, res, next) {
 	.catch((error) => {
 		console.error(error);
 		saleClass = newClass;
+	});
+
+	// SELECT class_title FROM classes INNER JOIN reviews ON classes.id = reviews.ClassId GROUP BY classes.id ORDER BY COUNT(classes.id) DESC;
+	Class.findAll({
+		include: [
+			{
+				model: Review,
+				attributes: ['ClassId']
+			}
+		],
+		group: ['ClassId'],
+		order: [[sequelize.fn('COUNT', sequelize.col('ClassId')), 'DESC']],
 	})
+	.then((result) => {
+		reviewClass = result;
+	})
+	.catch((error) => {
+		console.error(error);
+		reviewClass = newClass;
+	});
 
 	Class.findAll({
 		where: {class_family: 1},
@@ -78,6 +92,7 @@ router.get('/', function(req, res, next) {
 			sale: saleClass,
 			newes: newClass,
 			family: familyClass,
+			reviews: reviewClass,
 			title: '온뜰',
 			messages: req.flash('error'),
 		});
