@@ -71,7 +71,6 @@ router.get('/', function(req, res, next) {
 		],
 		group: ['ClassId'],
 		order: [[sequelize.fn('COUNT', sequelize.col('ClassId')), 'DESC']],
-		limit: 5
 	})
 	.then((result) => {
 		reviewClass = result;

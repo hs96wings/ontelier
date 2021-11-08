@@ -220,7 +220,6 @@ router.get('/alluser', isLoggedIn, isAdmin, (req, res) => {
 			},
 		})
 		.then((result) => {
-			console.log(result);
 			res.render('admin_enrolluser', {users: result});
 		})
 		.catch((error) => {
@@ -250,7 +249,6 @@ router.get('/review', isLoggedIn, isSuper, (req, res) => {
 		order: [['createdAt', 'DESC']],
 	})
 	.then((result) => {
-			console.log(result);
 			res.render('admin_review', {
 			title: '온뜰',
 			reviews: result,
