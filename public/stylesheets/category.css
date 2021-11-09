@@ -19,9 +19,19 @@
     font-size: 18px;
 }
 
+.category-list li.on {
+  color: #85b830 !important;
+  font-weight: 800;
+}
+
+.category-list li a:active {
+  color: #85b830 !important;
+  font-weight: 800;
+}
+
   .container {
     display: grid;
-    grid-template-areas: 
+    grid-template-areas:
             ". content .";
     grid-template-columns: calc(50vw - 600px) 1200px calc(50vw - 600px);
     grid-template-rows: 1fr;

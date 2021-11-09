@@ -1,31 +1,120 @@
 {% extends 'main_layout.html' %}
 {% block content %}
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/javascripts/getParameter.js"></script>
+<script src="/javascripts/classView.js"></script>
+
+{% set category = '예술문화' %}
+
 <!-- 카테고리 메뉴 -->
 <div class="category-list-wrapper">
     <li class="dropdown">
-    <div class="category-title">DIY / 수공예 ▼</div>
+    <div><span id="category-ti" class="category-title"></span> ▼</div>
     <div class="dropdown-content">
+      {% if category !== 'DIY/수공예' %}
+        <a href="/category?category=DIY/수공예">DIY/수공예</a>
+      {% endif %}
+      {% if category !== '예술문화' %}
         <a href="/category?category=예술문화">예술문화</a>
+      {% endif %}
+      {% if category !== '스포츠' %}
         <a href="/category?category=스포츠">스포츠</a>
+      {% endif %}
+      {% if category !== '뷰티' %}
         <a href="/category?category=뷰티">뷰티</a>
+      {% endif %}
+      {% if category !== '요리' %}
         <a href="/category?category=요리">요리</a>
+      {% endif %}
+      {% if category !== '음악' %}
         <a href="/category?category=음악">음악</a>
+      {% endif %}
+      {% if category !== '디자인' %}
         <a href="/category?category=디자인&개발">디자인&개발</a>
+      {% endif %}
+      {% if category !== '수익창출' %}
         <a href="/category?category=수익창출">수익창출</a>
+      {% endif %}
     </div>
 </li>
+  {% if class.category_high == 'DIY/수공예' %}
     <ul class="category-list">
-        <li class="selected-btn">전체</li>
-        <li>자수</li>
-        <li>뜨개질</li>
-        <li>비누/캔들/향수</li>
-        <li>라틴공예</li>
-        <li>가죽공예</li>
-        <li>레진공예</li>
-        <li>도예</li>
-        <li>플라워 도예</li>
+        <li><a href="/category?category=DIY/수공예">전체</a></li>
+        <li><a href="/category?category=DIY/수공예&sort=자수">자수</a></li>
+        <li><a href="/category?category=DIY/수공예&sort=뜨개질">뜨개질</a></li>
+        <li><a href="/category?category=DIY/수공예&sort=비누">비누/캔들/향수</a></li>
+        <li><a href="/category?category=DIY/수공예&sort=라틴공예">라틴공예</a></li>
+        <li><a href="/category?category=DIY/수공예&sort=가죽공예">가죽공예</a></li>
+        <li><a href="/category?category=DIY/수공예&sort=레진공예">레진공예</a></li>
+        <li><a href="/category?category=DIY/수공예&sort=도예">도예</a></li>
+        <li><a href="/category?category=DIY/수공예&sort=플라워도예">플라워 도예</a></li>
     </ul>
+  {% endif %}
+  {% if category == '예술문화' %}
+    <ul class="category-list">
+        <li><a href="/category?category=예술문화">전체</a></li>
+        <li><a href="/category?category=예술문화&sort=마카색연필">마카색·연필</a></li>
+        <li><a href="/category?category=예술문화&sort=수채화">수채화</a></li>
+        <li><a href="/category?category=예술문화&sort=오일파스텔">오일·파스텔</a></li>
+        <li><a href="/category?category=예술문화&sort=아크릴화">아크릴화</a></li>
+        <li><a href="/category?category=예술문화&sort=유화">유화</a></li>
+        <li><a href="/category?category=예술문화&sort=캘리그라피">캘리그라피</a></li>
+        <li><a href="/category?category=예술문화&sort=디지털드로잉">디지털드로잉</a></li>
+        <li><a href="/category?category=예술문화&sort=웹툰">웹툰</a></li>
+        <li><a href="/category?category=예술문화&sort=사진">사진</a></li>
+        <li><a href="/category?category=예술문화&sort=영상">영상</a></li>
+    </ul>
+  {% endif %}
+  {% if category == '스포츠' %}
+    <ul class="category-list">
+        <li><a href="/category?category=스포츠">전체</a></li>
+        <li><a href="/category?category=스포츠&sort=요가">요가</a></li>
+        <li><a href="/category?category=스포츠&sort=필라테스">필라테스</a></li>
+        <li><a href="/category?category=스포츠&sort=스트레칭">스트레칭</a></li>
+        <li><a href="/category?category=스포츠&sort=재활">재활</a></li>
+        <li><a href="/category?category=스포츠&sort=피트니스">피트니스</a></li>
+        <li><a href="/category?category=스포츠&sort=러닝사이클">러닝·사이클</a></li>
+    </ul>
+  {% endif %}
+  {% if category == '뷰티' %}
+    <ul class="category-list">
+        <li><a href="/category?category=뷰티">전체</a></li>
+        <li><a href="/category?category=뷰티&sort=네일">네일</a></li>
+        <li><a href="/category?category=뷰티&sort=패션">패션</a></li>
+        <li><a href="/category?category=뷰티&sort=헤어">헤어</a></li>
+        <li><a href="/category?category=뷰티&sort=테라피">테라피</a></li>
+        <li><a href="/category?category=뷰티&sort=화장품">화장품</a></li>
+    </ul>
+  {% endif %}
+  {% if category == '음악' %}
+    <ul class="category-list">
+        <li><a href="/category?category=음악">전체</a></li>
+        <li><a href="/category?category=음악&sort=악기">악기</a></li>
+        <li><a href="/category?category=음악&sort=작곡">작곡</a></li>
+        <li><a href="/category?category=음악&sort=보컬랩">보컬·랩</a></li>
+    </ul>
+  {% endif %}
+  {% if category == '디자인&개발' %}
+    <ul class="category-list">
+        <li><a href="/category?category=디자인&개발">전체</a></li>
+        <li><a href="/category?category=디자인&개발&sort=모션그래픽">모션그래픽</a></li>
+        <li><a href="/category?category=디자인&개발&sort=3D4D">3D·4D</a></li>
+        <li><a href="/category?category=디자인&개발&sort=브랜드디자인">브랜드 디자인</a></li>
+        <li><a href="/category?category=디자인&개발&sort=UXUI">UX·UI</a></li>
+        <li><a href="/category?category=디자인&개발&sort=게임개발">게임 개발</a></li>
+        <li><a href="/category?category=디자인&개발&sort=모바일앱개발">모바일 앱개발</a></li>
+        <li><a href="/category?category=디자인&개발&sort=데이터분석">데이터분석</a></li>
+        <li><a href="/category?category=디자인&개발&sort=프로그래밍언어">프로그래밍언어</a></li>
+    </ul>
+  {% endif %}
+  {% if category == '수익창출' %}
+    <ul class="category-list">
+        <li><a href="/category?category=수익창출">전체</a></li>
+        <li><a href="/category?category=수익창출&sort=주식">주식</a></li>
+        <li><a href="/category?category=수익창출&sort=부동산">부동산</a></li>
+    </ul>
+  {% endif %}
 </div>
 
 
@@ -79,5 +168,13 @@
 
 </div>
 </div>
+
+<script type="text/javascript">
+
+    var element = document.getElementById("category-ti");
+    element.innerText = getParameter("category");
+</script>
+
+
 
 {% endblock %}
