@@ -65,7 +65,7 @@ router.get('/', function(req, res, next) {
 				title: '온뜰',
 				best: bestClass,
 				sale: saleClass,
-				category: category_high,
+				category: category,
 				sort: null,
 			});
 		})
@@ -91,8 +91,8 @@ router.get('/', function(req, res, next) {
 				title: '온뜰',
 				best: bestClass,
 				sale: saleClass,
-				category: category_high,
-				sort: category_low
+				category: category,
+				sort: sort
 			});
 		})
 		.catch((error) => {
