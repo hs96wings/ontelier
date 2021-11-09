@@ -5,7 +5,9 @@
 <script src="/javascripts/getParameter.js"></script>
 <script src="/javascripts/classView.js"></script>
 
-{% set category = '예술문화' %}
+{{category}}
+{{sort}}
+
 
 <!-- 카테고리 메뉴 -->
 <div class="category-list-wrapper">
@@ -38,7 +40,7 @@
       {% endif %}
     </div>
 </li>
-  {% if class.category_high == 'DIY/수공예' %}
+  {% if category == 'DIY/수공예' %}
     <ul class="category-list">
         <li><a href="/category?category=DIY/수공예">전체</a></li>
         <li><a href="/category?category=DIY/수공예&sort=자수">자수</a></li>
