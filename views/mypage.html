@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{title}}</title>
-</head>
-<body>
+{% extends 'main_layout.html' %}
+{% block content %}
+
+
     <table>
         <tr>
             <th>프로필사진</th>
@@ -46,18 +41,23 @@
     <button class="submit-button" type="button" onclick="location.href='/mypage/edit'">정보수정</button>
 
 <!-- 임시로 전체 클래스 띄움 -->
-    <h2>내가 구매한 클래스</h2>
-    {% for class in classes %}
-    <div class="class-item">
-        <ul><a href="/class/contents/{{class.id}}"> <!-- 강의 페이지로 -->
-            <li><div class="class-image"><img class="class-thumbnail" src="{{class.class_img}}"></div></li>
-            <li class="class-title">{{class.class_title}}</li>
-            </a>
-        </ul>
-    </div>
-    {% endfor %}
+<div class="class-wrapper">
+    <p class="pt10">my class</p>
+    <span class="pt27">내가 구매한 클래스</span><a class="allview-btn pt10" href="/category/all">전체보기</a>
+        <div class="class-list">
+            <!-- 클래스 리스트 -->
+            {% for class in classes %}
+            <div class="class-item">
+                <ul><a href="/class/contents/{{class.id}}"> <!-- 강의 페이지로 -->
+                    <li><div class="class-image"><img class="class-thumbnail" src="{{class.class_img}}"></div></li>
+                    <li class="class-title">{{class.class_title}}</li>
+                    </a>
+                </ul>
+                <button type="button" class="submit-button"></button>
+            </div>
+            {% endfor %}
+        </div>
+</div>
 
 
-    <button onclick="location.href='/'">돌아가기</button>
-</body>
-</html>
+{% endblock %}

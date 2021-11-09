@@ -13,52 +13,89 @@ router.get('/', function(req, res, next) {
         category = 'DIY/수공예';
     }
 
-	if (sort === undefined) {
-		sort = '*';
-	}
-
 	let bestClass;
 	let saleClass;
 	
-    Class.findAll({
-		where: {
-			category_high: category,
-			category_low: sort,
-		},
-        order: [['class_score', 'DESC']],
-		limit: 5,
-	})
-	.then((result) => {
-		bestClass = result;
-	})
-	.catch((error) => {
-		console.error(error);
-	});
+	if (sort === undefined) {
+		Class.findAll({
+			where: {
+				category_high: category,
+			},
+			order: [['class_score', 'DESC']],
+			limit: 5,
+		})
+		.then((result) => {
+			bestClass = result;
+		})
+		.catch((error) => {
+			console.error(error);
+		});
+	} else {
+		Class.findAll({
+			where: {
+				category_high: category,
+				category_low: sort,
+			},
+			order: [['class_score', 'DESC']],
+			limit: 5,
+		})
+		.then((result) => {
+			bestClass = result;
+		})
+		.catch((error) => {
+			console.error(error);
+		});
+	}
 
 	
-	Class.findAll({
-		order: [['class_discount', 'DESC']],
-		limit: 5,
-		where: {
-			category_high: category,
-			category_low: sort,
-			class_discount: {
-				[Op.gt]: 0,
+	if (sort === undefined) {
+		Class.findAll({
+			order: [['class_discount', 'DESC']],
+			limit: 5,
+			where: {
+				category_high: category,
+				class_discount: {
+					[Op.gt]: 0,
+				},
 			},
-		},
-	})
-	.then((result) => {
-		saleClass = result;
-		res.render('category_list', {
-			title: '온뜰',
-			best: bestClass,
-			sale: saleClass,
-		});
-	})
-	.catch((error) => {
-		console.error(error);
-		saleClass = newClass;
-	})
+		})
+		.then((result) => {
+			saleClass = result;
+			res.render('category_list', {
+				title: '온뜰',
+				best: bestClass,
+				sale: saleClass,
+			});
+		})
+		.catch((error) => {
+			console.error(error);
+			saleClass = newClass;
+		})
+	} else {
+		Class.findAll({
+			order: [['class_discount', 'DESC']],
+			limit: 5,
+			where: {
+				category_high: category,
+				category_low: sort,
+				class_discount: {
+					[Op.gt]: 0,
+				},
+			},
+		})
+		.then((result) => {
+			saleClass = result;
+			res.render('category_list', {
+				title: '온뜰',
+				best: bestClass,
+				sale: saleClass,
+			});
+		})
+		.catch((error) => {
+			console.error(error);
+			saleClass = newClass;
+		})
+	}
 });
 
 router.get('/all', (req, res, next) => {
