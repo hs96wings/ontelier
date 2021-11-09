@@ -7,16 +7,24 @@ const router = express.Router();
 
 router.get('/', function(req, res, next) {
     let category = req.query.category;
+	let sort = req.query.sort;
 
     if (category === undefined) {
         category = 'DIY/수공예';
     }
 
+	if (sort === undefined) {
+		sort = '*';
+	}
+
 	let bestClass;
 	let saleClass;
 	
     Class.findAll({
-		where: {category_high: category},
+		where: {
+			category_high: category,
+			category_low: sort,
+		},
         order: [['class_score', 'DESC']],
 		limit: 5,
 	})
@@ -33,6 +41,7 @@ router.get('/', function(req, res, next) {
 		limit: 5,
 		where: {
 			category_high: category,
+			category_low: sort,
 			class_discount: {
 				[Op.gt]: 0,
 			},
