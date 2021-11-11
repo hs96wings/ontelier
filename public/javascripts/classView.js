@@ -20,7 +20,7 @@ $(document).ready(function($) {
         $(".class_nav li").click(function(event){
 
                 event.preventDefault();
-                var top = $($(this).attr("data-target")).offset().top - 110;
+                var top = $($(this).attr("data-target")).offset().top - 115;
 
                 $('html,body').animate({scrollTop: top}, 300);
 
@@ -36,7 +36,7 @@ $(window).scroll(function(){
     $.each($('.scroll'), function(idx, item){
         var $target   = $contents.eq(idx),
             i         = $target.index(),
-            targetTop = $target.offset().top - 110;
+            targetTop = $target.offset().top - 120;
 
         if (targetTop <= scltop) {
             $menu.removeClass('on');
