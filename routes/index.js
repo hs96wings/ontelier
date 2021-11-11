@@ -112,4 +112,20 @@ router.get('/join', isNotLoggedIn, (req, res) => {
 	res.render('join', {title: '온뜰 - 회원가입', messages: req.flash('error')});
 });
 
+router.get('/search', (req, res, next) => {
+	Class.findAll({
+		where: {
+			'class_title': {
+				[Op.like]: '%' + req.query.title + '%',
+			},
+		},
+	})
+	.then((result) => {
+		res.render('search', {title: '온뜰 - 검색결과', classes: result});
+	})
+	.catch((error) => {
+		next(error);
+	});
+});
+
 module.exports = router;
