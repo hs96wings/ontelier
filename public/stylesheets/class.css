@@ -14,7 +14,7 @@ p {
     display: grid;
     grid-template-areas:
       'banner banner'
-      'left right';
+      'left1 right1';
     grid-template-columns: 2.4fr 1.7fr;
     grid-template-rows: 540px 95%;
 }
@@ -27,8 +27,8 @@ p {
 }
 
 .class_left {
-  grid-area: left;
-
+  grid-area: left1;
+  width: inherit;
 }
 
 .class_nav {
@@ -63,9 +63,11 @@ display: flex;
 }
 
 .class_right {
-  grid-area: right;
+  grid-area: right1;
+  width: inherit;
 }
 .class_float_wrapper {
+  width: inherit;
   padding: 55px;
 }
 .class_title {
@@ -105,7 +107,9 @@ display: flex;
 .class_contents {
   padding: 15px;
 }
-
+.class_contents img, video {
+  max-width: 100%;
+}
 .scroll {
   font-size: 22px;
   font-weight: 800;
