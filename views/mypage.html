@@ -1,44 +1,53 @@
 {% extends 'main_layout.html' %}
 {% block content %}
 
+<div class="mypage-container">
 
-    <table>
-        <tr>
-            <th>프로필사진</th>
-            <td><img src="{{user.user_profile_url}}"></td>
-        </tr>
-        <tr>
-            <th>아이디</th>
-            {% if user and user.provider === 'local' %}
-            <td>{{user.user_id}} 님</td>
+
+<div class="mypage-wrapper">
+
+    <div class="mypage-space"></div>
+
+    <div class="mypage-profile">
+    <div class="mypage-profile-wrapper">
+
+        <div class="profile-img"><img class="profile-pic" src="{{user.user_profile_url}}"></div>
+
+        <div class="profile-text">
+
+        {% if user and user.provider === 'local' %}
+        <span class="mypage-nickname">{{user.user_nickname}} 님</span>
+        {% else %}
+            {% if user.provider === 'kakao' %}
+            <span>카카오 계정</span>
             {% else %}
-                {% if user.provider === 'kakao' %}
-                <td>카카오 계정</td>
-                {% else %}
-                <td>네이버 계정</td>
-                {% endif %}
+            <span>네이버 계정</span>
             {% endif %}
-        </tr>
-        <tr>
-            <th>이메일</th>
-            <td>{{user.user_email}}</td>
-        </tr>
-        <tr>
-            <th>닉네임</th>
-            <td>{{user.user_nickname}}</td>
-        </tr>
-        <tr>
-            <th>연락처</th>
-            <td>{{user.user_phone}}</td>
-        </tr>
-        <tr>
-            <th>가입날짜</th>
-            <td>{{user.user_enrolldate}}</td>
-        </tr>
-    </table>
+        {% endif %}
+
+        <p class="mypage-email">{{user.user_email}}</p>
 
 
-    <button class="submit-button" type="button" onclick="location.href='/mypage/edit'">정보수정</button>
+        <button class="submit-button" id="info-edit-btn" type="button" onclick="location.href='/mypage/edit'">정보수정</button>
+    </div>
+
+    </div>
+
+    <div class="mypage-button-wrapper">
+      <button type="button" class="mypage-btn" onclick="#">구매내역<p class="mypage-btn-num">4개</p></button>
+      <button type="button" class="mypage-btn" onclick="#">찜 목록<p class="mypage-btn-num">12개</p></button>
+      <button type="button" class="mypage-btn" onclick="#">내 후기<p class="mypage-btn-num">3개</p></button>
+    </div>
+
+    </div>
+
+          <div class="mypage-space"></div>
+
+    </div>
+
+
+</div>
+
 
 <!-- 임시로 전체 클래스 띄움 -->
 <div class="container">

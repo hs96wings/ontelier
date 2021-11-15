@@ -1,6 +1,108 @@
+.mypage-space {
+  height: 160px;
+}
+
+
 #mypage-submit-button {
   display: block;
   width: 150px;
   text-align: center;
   margin: auto;
+  padding: 0;
+}
+
+.mypage-container {
+  display: grid;
+  grid-template-areas:
+          ". mycontent .";
+  grid-template-columns: calc(50vw - 600px) 1200px calc(50vw - 600px);
+  grid-template-rows: 1fr;
+}
+.mypage-wrapper {
+  grid-area: mycontent;
+}
+
+.mypage-profile {
+  height: 130px;
+}
+.mypage-profile-wrapper {
+  margin-left: 135px;
+  width: 400px;
+  height: 130px;
+  float: left;
+}
+
+.profile-img {
+  float: left;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background-color: #eaeaea;
+  overflow: hidden;
+}
+
+.profile-pic {
+    width:100%;
+    height:100%;
+    object-fit: cover;
+}
+
+.profile-text {
+  padding: 25px;
+  float: left;
+  height: 130px;
+  width: 200px;
+}
+.mypage-nickname {
+  font-size: 22px;
+  font-stretch: normal;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-align: left;
+  color: #231815;
+}
+
+.mypage-email {
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-align: left;
+  color: #7e7e7f;
+}
+
+#info-edit-btn {
+  width: 110px;
+  height: 38px;
+  font-size: 15px;
+  padding: 0;
+}
+
+.mypage-button-wrapper {
+  width: 300px;
+  height: 95px;
+  float: right;
+  margin: 17.5px 135px;
+}
+
+.mypage-btn {
+  width: 95px;
+  height: 95px;
+  border-radius: 5px;
+  border: none;
+  background-color: #eaeaea;
+  cursor: pointer;
+}
+
+.mypage-btn-num {
+  font-size: 15px;
+  font-weight: 700;
+  font-stretch: normal;
+  line-height: 1.28;
+  letter-spacing: normal;
+  text-align: center;
+  color: #85b830;
 }
