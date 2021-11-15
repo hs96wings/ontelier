@@ -30,7 +30,7 @@
   <div class="class_contents">
     <!-- 클래스 설명 -->
     <p id="class_info" class="scroll">클래스 소개</p>
-    <p>{{class.class_info}}</p>
+    <p>{{class.class_info | safe}}</p>
     <div class="class_space"></div>
 
     <!-- 강사 소개 -->
@@ -41,7 +41,7 @@
 
     <!-- 커리큘럼 -->
     <p id="class_cirriculum" class="scroll">커리큘럼</p>
-    <div class="pt20">{{class.class_cirriculum}}</div>
+    <div class="pt20">{{class.class_cirriculum | safe}}</div>
 
     <div class="class_space"></div>
 

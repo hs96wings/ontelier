@@ -30,7 +30,7 @@
         </tr>
         <tr>
             <th>클래스소개</th>
-            <td>{{class.class_info}}</td>
+            <td>{{class.class_info | safe}}</td>
         </tr>
         <tr>
             <th>강사이름</th>
@@ -38,7 +38,7 @@
         </tr>
         <tr>
             <th>강사소개</th>
-            <td>{{class.teacher_info}}</td>
+            <td>{{class.teacher_info | safe}}</td>
         </tr>
         <tr>
             <th>클래스이미지</th>
@@ -46,7 +46,7 @@
         </tr>
         <tr>
             <th>커리큘럼</th>
-            <td>{{class.class_cirriculum}}</td>
+            <td>{{class.class_cirriculum | safe}}</td>
         </tr>
         <tr>
             <th>할인률</th>

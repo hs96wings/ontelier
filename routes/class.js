@@ -2,6 +2,7 @@ const express = require('express');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const Class = require('../models/class');
 const Review = require('../models/review');
+const Purchase = require('../models/purchase');
 
 const router = express.Router();
 
@@ -31,6 +32,31 @@ router.get('/:id/review', (req, res, next) => {
     .catch((error) => {
         res.render('error');
     })
+});
+
+router.get('/:id/payment', isLoggedIn, async (req, res, next) => {
+    const isPurchase = await Purchase.findOne({
+        where: {
+            UserUserId: req.user.user_id,
+            ClassId: req.params.id,
+        }
+    });
+    if (isPurchase) {
+        req.flash('error', '이미 구매한 상품입니다');
+        res.redirect('/');
+    } else {
+        Purchase.create({
+            ClassId: req.params.id,
+            UserUserId: req.user.user_id,
+        })
+        .then(() => {
+            res.redirect('/mypage');
+        })
+        .catch((error) => {
+            req.flash('error', '구매에 실패했습니다');
+            res.redirect('/');
+        })
+    }
 });
 
 module.exports = router;

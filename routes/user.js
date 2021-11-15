@@ -2,19 +2,25 @@ const express = require('express');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const User = require('../models/class');
 const Class = require('../models/class');
+const Purchase = require('../models/purchase');
 
 const router = express.Router();
 
 router.get('/', isLoggedIn, (req, res, next) => {
-    Class.findAll()
+    Purchase.findAll({
+        where: {
+            UserUserId: req.user.user_id
+        }
+    })
     .then((result) => {
         res.render('mypage', {
-            title: '온뜰 - mypage',
+            title: '온뜰 - Mypage',
             classes: result,
         });
     })
     .catch((error) => {
-        res.render('mypage', {title: '온뜰 - mypage'});
+        req.flash('error', '오류가 발생했습니다');
+        res.redirect('/');
     });
 });
 
