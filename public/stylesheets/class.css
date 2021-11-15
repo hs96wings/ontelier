@@ -2,6 +2,9 @@ p {
     font-size: 17px;
 }
 
+h3 {
+  margin: 10px 0;
+}
 .green {
   color: #85b830;
 }
@@ -14,7 +17,7 @@ p {
     display: grid;
     grid-template-areas:
       'banner banner'
-      'left right';
+      'left1 right1';
     grid-template-columns: 2.4fr 1.7fr;
     grid-template-rows: 540px 95%;
 }
@@ -27,21 +30,21 @@ p {
 }
 
 .class_left {
-  grid-area: left;
-
+  grid-area: left1;
+  width: inherit;
 }
 
 .class_nav {
   margin: 30px 0;
-  padding: 15px 0;
   background-color: #fff;
   z-index: 3;
 }
 .class_nav ul {
-display: flex;
+  display: flex;
+  border-bottom: 1px solid #f5f5f5;
 }
 .class_nav li {
-  padding-right: 60px;
+  padding: 15px 30px;
   font-size: 18px;
  font-weight: normal;
  font-stretch: normal;
@@ -51,6 +54,8 @@ display: flex;
  text-align: left;
 }
 .class_nav li:hover {
+  color: #85b830;
+  font-weight: 800;
   cursor: pointer;
 }
 
@@ -60,13 +65,19 @@ display: flex;
 .class_nav ul li.on {
   color: #85b830;
   font-weight: 800;
+  border-bottom: 3px solid #85b830;
 }
 
 .class_right {
-  grid-area: right;
+  grid-area: right1;
+  width: inherit;
 }
 .class_float_wrapper {
+  display: block;
+  width: inherit;
+  height: 170px;
   padding: 55px;
+  border: 1px solid #f5f5f5;
 }
 .class_title {
   font-size: 20px;
@@ -78,13 +89,22 @@ display: flex;
   font-size: 14px;
   color: #7e7e7f;
   text-decoration: line-through;
+  width: 60px;
+  height: 20px;
+  margin-left: auto;
 }
 .sale_price {
   font-size: 17px;
+  width: 75px;
+  height: 20px;
+  margin-left: auto;
 }
 .discount {
   font-size: 14px;
   color: #b51625;
+  width: 30px;
+  height: 20px;
+  margin-left: auto;
 }
 
 .like-button {
@@ -104,6 +124,12 @@ display: flex;
 
 .class_contents {
   padding: 15px;
+}
+.class_contents img, video {
+  max-width: 100%;
+}
+.class_contents iframe {
+  width: 300px;
 }
 
 .scroll {
