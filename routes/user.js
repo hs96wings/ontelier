@@ -7,10 +7,11 @@ const Purchase = require('../models/purchase');
 const router = express.Router();
 
 router.get('/', isLoggedIn, (req, res, next) => {
-    Purchase.findAll({
-        where: {
-            UserUserId: req.user.user_id
-        }
+    Class.findAll({
+        include: {
+            model: Purchase,
+            where: {UserUserId: req.user.user_id}
+        },
     })
     .then((result) => {
         res.render('mypage', {
