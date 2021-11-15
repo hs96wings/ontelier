@@ -1,4 +1,9 @@
 {% extends 'main_layout.html' %}
 {% block content %}
 강의 페이지
+{{class.class_title}}<br>
+{{class.class_cirriculum}}<br>
+{% for video in videos %}
+    {{video.video_url}}<br>
+{% endfor %}
 {% endblock %}

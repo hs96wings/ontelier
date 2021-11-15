@@ -92,5 +92,6 @@ module.exports = class Class extends Sequelize.Model {
 		db.Class.hasMany(db.Review);
 		db.Class.hasMany(db.Wishlist);
 		db.Class.hasMany(db.Purchase);
+		db.Class.hasMany(db.Lecture);
 	}
 }
