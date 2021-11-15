@@ -67,9 +67,7 @@ router.get('/contents/:id', async (req, res, next) => {
             ClassId: req.params.id,
         }
     })
-
     if (isPurchase) {
-        // select classes.id, classes.class_title, lectures.video_url from classes left outer join lectures on classes.id=lectures.ClassId where classes.id=1;
         const isClass = await Class.findOne({
             where: {
                 id: req.params.id,
@@ -95,24 +93,6 @@ router.get('/contents/:id', async (req, res, next) => {
             req.flash('error', '없는 강의입니다');
             res.redirect('/mypage');
         }
-        // Class.findAll({
-        //     where: {
-        //         id: req.params.id,
-        //     },
-        //     include: {
-        //         model: Lecture,
-        //         attributes: ['video_url']
-        //     },
-        //     attributes: ['class_title', 'class_img', 'class_info', 'class_cirriculum'],
-        // })
-        // .then((result) => {
-        //     console.log(result);
-        //     res.render('class_contents', { datas: result });
-        // })
-        // .catch(() => {
-        //     req.flash('error', '강의를 불러오지 못했습니다');
-        //     res.redirect('/mypage');
-        // });
     } else {
         req.flash('error', '구매하지 않은 강의입니다');
         res.redirect('/');
