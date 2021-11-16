@@ -1,32 +1,11 @@
 const express = require('express');
-const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
-const User = require('../models/class');
+const { isLoggedIn } = require('./middlewares');
 const Class = require('../models/class');
 const Purchase = require('../models/purchase');
 const Review = require('../models/review');
 const Wishlist = require('../models/wishlist');
-const moment = require('moment');
 
 const router = express.Router();
-
-// router.get('/', isLoggedIn, (req, res, next) => {
-//     Class.findAll({
-//         include: {
-//             model: Purchase,
-//             where: {UserUserId: req.user.user_id}
-//         },
-//     })
-//     .then((result) => {
-//         res.render('mypage', {
-//             title: '온뜰 - Mypage',
-//             classes: result,
-//         });
-//     })
-//     .catch((error) => {
-//         req.flash('error', '오류가 발생했습니다');
-//         res.redirect('/');
-//     });
-// });
 
 router.get('/', isLoggedIn, async (req, res) => {
     const purchases = await Class.findAndCountAll({

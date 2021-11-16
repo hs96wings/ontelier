@@ -1,6 +1,8 @@
 const express = require('express');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const Class = require('../models/class');
+const Review = require('../models/review');
+const sequelize = require('sequelize');
 const { Op } = require('sequelize');
 
 const router = express.Router();
@@ -102,18 +104,55 @@ router.get('/', function(req, res, next) {
 	}
 });
 
-router.get('/all', (req, res, next) => {
-	Class.findAll()
-	.then((result) => {
-		res.render('allview_list', {
-			title: '온뜰 - 전체보기',
-			classes: result,
-		});
-	})
-	.catch((error) => {
-		console.error(error);
-		res.render('allview_list', {title: '온뜰 - 전체보기'});
-	});
+router.get('/all', async (req, res, next) => {
+	let sort = req.query.sort;
+	let result;
+	if (sort === undefined) sort = "all";
+	switch (sort) {
+		case "best":
+			result = await Class.findAll({order: [['class_score', 'DESC']]});
+			break;
+		case "new":
+			result = await Class.findAll({order: [['createdAt', 'DESC']]});
+			break;
+		case "sale":
+			result = await Class.findAll({
+				order: [['class_discount', 'DESC']],
+				where: {
+					class_discount: {
+						[Op.gt]: 0,
+					},
+				},
+			});
+			break;
+		case "family":
+			result = await Class.findAll({
+				where: {class_family: 1},
+				order: [['createdAt', 'DESC']],
+			});
+			break;
+		case "review":
+			result = await Class.findAll({
+				include: [
+					{
+						model: Review,
+						attributes: ['ClassId']
+					}
+				],
+				group: ['ClassId'],
+				order: [[sequelize.fn('COUNT', sequelize.col('ClassId')), 'DESC']],
+			});
+			break;
+		default:
+			result = await Class.findAll();
+			break;
+	}
+	if (result) {
+		res.render('allview_list', {classes: result});
+	} else {
+		req.flash('error', 'DB 오류');
+		res.redirect('/');
+	}
 });
 
 
