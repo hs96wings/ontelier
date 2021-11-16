@@ -10,41 +10,21 @@ const router = express.Router();
 router.use((req, res, next) => {
 	res.locals.user = req.user;
 	next();
-})
+});
 
-router.get('/', function(req, res, next) {
+router.get('/', async (req, res, next) => {
 	let bestClass;
 	let saleClass;
 	let newClass;
 	let familyClass;
 	let reviewClass;
-
-	Class.findAll({
-		order: [['createdAt', 'DESC']],
-		limit: 5,
-	})
-	.then((result) => {
-		newClass = result;
-	})
-	.catch((error) => {
-		console.error(error);
-		next(error);
-	})
-
-	Class.findAll({
+	
+	bestClass = await Class.findAll({
 		order: [['class_score', 'DESC']],
 		limit: 5,
-	})
-	.then((result) => {
-		bestClass = result;
-	})
-	.catch((error) => {
-		console.error(error);
-		bestClass = newClass;
 	});
 
-	
-	Class.findAll({
+	saleClass = await Class.findAll({
 		order: [['class_discount', 'DESC']],
 		limit: 5,
 		where: {
@@ -52,17 +32,21 @@ router.get('/', function(req, res, next) {
 				[Op.gt]: 0,
 			},
 		},
-	})
-	.then((result) => {
-		saleClass = result;
-	})
-	.catch((error) => {
-		console.error(error);
-		saleClass = newClass;
+	});
+
+	newClass = await Class.findAll({
+		order: [['createdAt', 'DESC']],
+		limit: 5,
+	});
+
+	familyClass = await Class.findAll({
+		where: {class_family: 1},
+		order: [['createdAt', 'DESC']],
+		limit: 5,
 	});
 
 	// SELECT class_title FROM classes INNER JOIN reviews ON classes.id = reviews.ClassId GROUP BY classes.id ORDER BY COUNT(classes.id) DESC;
-	Class.findAll({
+	reviewClass = await Class.findAll({
 		include: [
 			{
 				model: Review,
@@ -71,22 +55,9 @@ router.get('/', function(req, res, next) {
 		],
 		group: ['ClassId'],
 		order: [[sequelize.fn('COUNT', sequelize.col('ClassId')), 'DESC']],
-	})
-	.then((result) => {
-		reviewClass = result;
-	})
-	.catch((error) => {
-		console.error(error);
-		reviewClass = newClass;
 	});
 
-	Class.findAll({
-		where: {class_family: 1},
-		order: [['createdAt', 'DESC']],
-		limit: 5,
-	})
-	.then((result) => {
-		familyClass = result;
+	if (bestClass && saleClass && newClass && familyClass && reviewClass) {
 		res.render('main', {
 			best: bestClass,
 			sale: saleClass,
@@ -96,12 +67,11 @@ router.get('/', function(req, res, next) {
 			title: '온뜰',
 			messages: req.flash('error'),
 		});
-	})
-	.catch((error) => {
-		console.error(error);
-		res.render('main', {title: '온뜰 - DB오류'});
-	});
-});
+	} else {
+		req.flash('error', 'DB 오류');
+		res.status(500).send();
+	}
+})
 
 router.get('/login', isNotLoggedIn, (req, res) =>  {
 	res.render('login', {title: '온뜰 - 로그인', messages: req.flash('error')});
