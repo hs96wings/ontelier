@@ -1,11 +1,26 @@
 {% extends 'main_layout.html' %}
+
+{% set sale_price = class.class_price * ( (100 - class.class_discount) / 100 ) %}
+
 {% block content %}
 
 <link rel="stylesheet" href="/stylesheets/class.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="/javascripts/classView.js"></script>
 
-{% set sale_price = class.class_price * ( (100 - class.class_discount) / 100 ) %}
+<style media="screen">
+
+  #main-container {
+    display: grid;
+    grid-template-areas:
+      '. header .'
+      '. content .'
+      'footer footer footer';
+    grid-template-columns: calc(50vw - 1200px /2) 1200px calc(50vw - 1200px /2);
+    grid-template-rows: 60px 95% 300px;
+  }
+
+</style>
 
 {% if class %}
 <div class="class_view_container">
