@@ -2,19 +2,16 @@
 {% block content %}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="/javascripts/getParameter.js"></script>
 <script src="/javascripts/classView.js"></script>
 
-{{category}}
-{{sort}}
 
 <!-- 카테고리 메뉴 -->
 <div class="category-list-wrapper">
     <li class="dropdown">
-    <div><span id="category-ti" class="category-title"></span> ▼</div>
+    <div><span id="category-ti" class="category-title">{{category}}</span> ▼</div>
     <div class="dropdown-content">
       {% if category !== 'DIY/수공예' %}
-        <a href="/category?category=DIY/수공예">DIY/수공예</a>
+        <a href="/category?category=DIY/수공예">DIY·수공예</a>
       {% endif %}
       {% if category !== '예술문화' %}
         <a href="/category?category=예술문화">예술문화</a>
@@ -31,8 +28,8 @@
       {% if category !== '음악' %}
         <a href="/category?category=음악">음악</a>
       {% endif %}
-      {% if category !== '디자인' %}
-        <a href="/category?category=디자인&개발">디자인&개발</a>
+      {% if category !== '디자인/개발' %}
+        <a href="/category?category=디자인/개발">디자인·개발</a>
       {% endif %}
       {% if category !== '수익창출' %}
         <a href="/category?category=수익창출">수익창출</a>
@@ -55,8 +52,7 @@
   {% if category == '예술문화' %}
     <ul class="category-list">
         <li><a href="/category?category=예술문화">전체</a></li>
-        <li><a href="/category?category=예술문화&sort=마카색연필">마카색·연필</a></li>
-        <li><a href="/category?category=예술문화&sort=수채화">수채화</a></li>
+        <li><a href="/category?category=예술문화&sort=마카/색연필/수채화">마카·색연필·수채화</a></li>
         <li><a href="/category?category=예술문화&sort=오일파스텔">오일·파스텔</a></li>
         <li><a href="/category?category=예술문화&sort=아크릴화">아크릴화</a></li>
         <li><a href="/category?category=예술문화&sort=유화">유화</a></li>
@@ -88,25 +84,38 @@
         <li><a href="/category?category=뷰티&sort=화장품">화장품</a></li>
     </ul>
   {% endif %}
+  {% if category == '요리' %}
+    <ul class="category-list">
+        <li><a href="/category?category=요리">전체</a></li>
+        <li><a href="/category?category=요리&sort=한식">한식</a></li>
+        <li><a href="/category?category=요리&sort=일식/중식">일식·중식</a></li>
+        <li><a href="/category?category=요리&sort=양식">양식</a></li>
+        <li><a href="/category?category=요리&sort=다이어트/건강식">다이어트·건강식</a></li>
+        <li><a href="/category?category=요리&sort=음료/술">음료·술</a></li>
+        <li><a href="/category?category=요리&sort=비건/채소">비건·채소</a></li>
+        <li><a href="/category?category=요리&sort=디저트">디저트</a></li>
+        <li><a href="/category?category=요리&sort=떡/전통다과">떡·전통다과</a></li>
+    </ul>
+  {% endif %}
   {% if category == '음악' %}
     <ul class="category-list">
         <li><a href="/category?category=음악">전체</a></li>
         <li><a href="/category?category=음악&sort=악기">악기</a></li>
         <li><a href="/category?category=음악&sort=작곡">작곡</a></li>
-        <li><a href="/category?category=음악&sort=보컬랩">보컬·랩</a></li>
+        <li><a href="/category?category=음악&sort=보컬/랩">보컬·랩</a></li>
     </ul>
   {% endif %}
-  {% if category == '디자인&개발' %}
+  {% if category == '디자인/개발' %}
     <ul class="category-list">
-        <li><a href="/category?category=디자인&개발">전체</a></li>
-        <li><a href="/category?category=디자인&개발&sort=모션그래픽">모션그래픽</a></li>
-        <li><a href="/category?category=디자인&개발&sort=3D4D">3D·4D</a></li>
-        <li><a href="/category?category=디자인&개발&sort=브랜드디자인">브랜드 디자인</a></li>
-        <li><a href="/category?category=디자인&개발&sort=UXUI">UX·UI</a></li>
-        <li><a href="/category?category=디자인&개발&sort=게임개발">게임 개발</a></li>
-        <li><a href="/category?category=디자인&개발&sort=모바일앱개발">모바일 앱개발</a></li>
-        <li><a href="/category?category=디자인&개발&sort=데이터분석">데이터분석</a></li>
-        <li><a href="/category?category=디자인&개발&sort=프로그래밍언어">프로그래밍언어</a></li>
+        <li><a href="/category?category=디자인/개발">전체</a></li>
+        <li><a href="/category?category=디자인/개발&sort=모션그래픽">모션그래픽</a></li>
+        <li><a href="/category?category=디자인/개발&sort=3D/4D">3D·4D</a></li>
+        <li><a href="/category?category=디자인/개발&sort=브랜드디자인">브랜드 디자인</a></li>
+        <li><a href="/category?category=디자인/개발&sort=UX/UI">UX·UI</a></li>
+        <li><a href="/category?category=디자인/개발&sort=게임개발">게임개발</a></li>
+        <li><a href="/category?category=디자인/개발&sort=모바일앱개발">모바일앱개발</a></li>
+        <li><a href="/category?category=디자인/개발&sort=데이터분석">데이터분석</a></li>
+        <li><a href="/category?category=디자인/개발&sort=프로그래밍언어">프로그래밍언어</a></li>
     </ul>
   {% endif %}
   {% if category == '수익창출' %}
@@ -169,12 +178,6 @@
 
 </div>
 </div>
-
-<script type="text/javascript">
-
-    var element = document.getElementById("category-ti");
-    element.innerText = getParameter("category");
-</script>
 
 
 
