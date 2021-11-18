@@ -1,0 +1,14 @@
+
+.class-list {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  flex-flow: wrap;
+}
+.class-item {
+  position: relative;
+  width: 282px;
+  height: auto;
+  margin-right: 0px;
+  margin-bottom: 75px;
+}
