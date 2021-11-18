@@ -4,9 +4,17 @@
 <div class="login-wrapper">
 
 <h2>프로필 정보 수정</h2><br>
-<form class="form" action="index.html" method="post">
+<form class="form" action="/mypage/update" method="post" enctype="multipart/form-data">
 
-        <div class="profile-img"><img class="profile-pic" src="{{user.user_profile_url}}"></div><br>
+        <div class="profile-img">
+
+          {% if user.user_profile_url %}
+          <img class="profile-pic" src="{{user.user_profile_url}}">
+          {% else %}
+          <img class="profile-pic" src="/images/user.png">
+          {% endif %}
+
+        </div><br>
 
         <input type="hidden" value="{{user.user_profile_url}}" name="original_img">
         <img src="{{user.user_profile_url}}">
@@ -22,7 +30,7 @@
         <input type="text" name="user_email" class="input-box" maxlength="80" value="{{user_email}}" required>
 
         <span class="pt12">비밀번호</span>
-        <input type="text" name="user_pwd" class="input-box" maxlength="100" value="{{user_pwd}}" required>
+        <input type="password" name="user_pwd" class="input-box" maxlength="100" value="{{user_pwd}}" required>
 
         <span class="pt12">연락처</span>
         <input type="text" name="user_phone" class="input-box" maxlength="40" value="{{user_phone}}" required>
