@@ -77,11 +77,11 @@ router.post('/update', isLoggedIn, upload.single('user_profile_url'), async (req
     let filename;
 
 	if (req.file === undefined) {
-		filename = body.originalname;
+		filename = req.body.originalname;
 	} else {
 		filename = `/images/uploads/${req.file.filename}`;
 	}
-    
+
     try {
         const hash = await bcrypt.hash(user_pwd, 12);
         await User.update({
