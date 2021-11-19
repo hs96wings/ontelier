@@ -24,16 +24,16 @@
         <br>
 
         <span class="pt12">닉네임</span>
-        <input type="text" name="user_nickname" class="input-box" maxlength="40" value="{{user_nickname}}" required>
+        <input type="text" name="user_nickname" class="input-box" maxlength="40" value="{{user.user_nickname}}" required>
 
         <span class="pt12">이메일</span>
-        <input type="text" name="user_email" class="input-box" maxlength="80" value="{{user_email}}" required>
+        <input type="text" name="user_email" class="input-box" maxlength="80" value="{{user.user_email}}" required>
 
         <span class="pt12">비밀번호</span>
-        <input type="password" name="user_pwd" class="input-box" maxlength="100" value="{{user_pwd}}" required>
+        <input type="password" name="user_pwd" class="input-box" maxlength="100" value="" required>
 
         <span class="pt12">연락처</span>
-        <input type="text" name="user_phone" class="input-box" maxlength="40" value="{{user_phone}}" required>
+        <input type="text" name="user_phone" class="input-box" maxlength="40" value="{{user.user_phone}}">
 
     <input type="hidden" value="{{user.user_id}}" name="user_id">
     <input type="submit" class="submit-button" value="수정">

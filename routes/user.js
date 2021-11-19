@@ -1,11 +1,46 @@
 const express = require('express');
 const { isLoggedIn } = require('./middlewares');
+const User = require('../models/user');
 const Class = require('../models/class');
 const Purchase = require('../models/purchase');
 const Review = require('../models/review');
 const Wishlist = require('../models/wishlist');
 
+const bcrypt = require('bcrypt');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
 const router = express.Router();
+
+try {
+	fs.readdirSync('./public/images/uploads');
+} catch (error) {
+	console.error('uploads 폴더가 없어 uploads 폴더를 생성합니다');
+	fs.mkdirSync('./public/images/uploads')
+}
+
+const upload = multer({
+	storage: multer.diskStorage({
+		destination(req, file, cb) {
+			cb(null, './public/images/uploads/');
+		},
+		filename(req, file, cb) {
+			const ext = path.extname(file.originalname);
+			cb(null, req.user.user_nickname + '_' + Date.now() + ext);
+		},
+	}),
+	fileFilter: function (req, file, cb) {
+		var ext = path.extname(file.originalname);
+		if (ext !== '.png' && ext !== '.jpeg' && ext !== '.jpg' && ext !== '.gif') {
+			req.flash('error', '수정되었으나 이미지는 등록되지 않았습니다');
+			cb(null, false);
+		} else {
+			cb(null, true);
+		}
+	},
+	limits: { fileSize: 10 * 1024 * 1024 },
+});
 
 router.get('/', isLoggedIn, async (req, res) => {
     const purchases = await Class.findAndCountAll({
@@ -33,7 +68,39 @@ router.get('/', isLoggedIn, async (req, res) => {
 })
 
 router.get('/edit', isLoggedIn, (req, res, next) => {
-    res.render('userinfo_update', {title: '온뜰 - mypage 수정'});
+    res.render('userinfo_update', {user: req.user});
+});
+
+router.post('/update', isLoggedIn, upload.single('user_profile_url'), async (req, res, next) => {
+    const {user_pwd, user_email, user_nickname, user_phone } = req.body;
+
+    let filename;
+
+	if (req.file === undefined) {
+		filename = body.originalname;
+	} else {
+		filename = `/images/uploads/${req.file.filename}`;
+	}
+    
+    try {
+        const hash = await bcrypt.hash(user_pwd, 12);
+        await User.update({
+            user_pwd: hash,
+            user_email,
+            user_nickname,
+            user_phone,
+            user_profile_url: filename,
+        }, {
+            where: {
+                user_id: req.user.user_id,
+            }
+        });
+        return res.redirect('/mypage');
+    } catch (error) {
+        console.error(error);
+        req.flash('error', 'DB 오류');
+        return res.redirect('/');
+    }
 });
 
 router.get('/reviews', isLoggedIn, async (req, res, next) => {

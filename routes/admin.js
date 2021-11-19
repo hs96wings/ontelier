@@ -44,7 +44,7 @@ const upload = multer({
 router.get('/', isLoggedIn, isAdmin, (req, res) => {
 	let pageNum = req.query.page;
 	let offset = 0;
-	let user_roll = req.user.user_roll;
+	const user_roll = req.user.user_roll;
 	const limit = 5;
 	const category = req.query.category;
 
@@ -53,7 +53,7 @@ router.get('/', isLoggedIn, isAdmin, (req, res) => {
 		offset = limit * (pageNum - 1);
 	}
 	
-	if (req.user.user_roll === 'admin') {
+	if (user_roll === 'admin') {
 		if (category === undefined) {
 			Class.findAndCountAll({
 				offset: offset,
