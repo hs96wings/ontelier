@@ -70,14 +70,34 @@
                 <option value="강사이름">강사이름</option>
             </select>
             <input type="text" class="search-input">
-            <button class="search-button">검색</button>
+            <button class="search-button" onclick="search()">검색</button>
         </div>
 
         {% block content %}
         {% endblock %}
 
     </div>
+    <script>
+        function search() {
+            var searchFilter = document.getElementsByName('search-filter')[0].selectedIndex;
+            var searchKeyword = document.getElementsByClassName('search-input')[0].value;
 
+            switch (searchFilter) {
+                case 0:
+                    location.href = `/admin?filter=class_title&keyword=${searchKeyword}`;
+                    break;
+                case 1:
+                    location.href = `/admin?filter=class_price&keyword=${searchKeyword}`;
+                    break;
+                case 2:
+                    location.href = `/admin?filter=category&keyword=${searchKeyword}`;
+                    break;
+                case 3:
+                    location.href = `/admin?filter=teacher_name&keyword=${searchKeyword}`;
+                    break;
+            }
+        }
+    </script>
 </div>
 
 </body>

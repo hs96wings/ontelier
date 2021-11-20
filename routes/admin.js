@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const { Op } = require('sequelize');
 
 const Class = require('../models/class');
 const User = require('../models/user');
@@ -41,58 +42,106 @@ const upload = multer({
 	limits: { fileSize: 10 * 1024 * 1024 },
 });
 
-router.get('/', isLoggedIn, isAdmin, (req, res) => {
+router.get('/', isLoggedIn, isAdmin, async (req, res) => {
 	let pageNum = req.query.page;
+	let filter = req.query.filter;
+	let keyword = req.query.keyword;
 	let offset = 0;
 	const user_roll = req.user.user_roll;
 	const limit = 5;
-	const category = req.query.category;
+	let category = req.query.category;
+	let result;
 
 	if (pageNum === undefined) pageNum = 1;
 	if (pageNum > 1) {
 		offset = limit * (pageNum - 1);
 	}
+
+	if (!filter) filter = '';
+	if (!keyword) keyword = '';
+	if (!category) category = '';
 	
 	if (user_roll === 'admin') {
-		if (category === undefined) {
-			Class.findAndCountAll({
-				offset: offset,
-				limit: limit,
-				order: [['createdAt', 'DESC']],
-			})
-			.then((result) => {
-					res.render('admin_list', {
-					classes: result.rows,
-					user: req.user,
-					pageNum: pageNum,
-					pages: result.count,
+		switch (filter) {
+			case 'class_price':
+				result = await Class.findAndCountAll({
+					offset: offset,
 					limit: limit,
-					messages: req.flash('error'),
+					offset: offset,
+					limit: limit,
+					order: [['createdAt', 'DESC']],
+					where: {
+						category_high: {
+							[Op.like]: '%' + category + '%'
+						},
+						class_price: {
+							[Op.gt]: parseInt(keyword)
+						},
+					}
 				});
+				break;
+			case 'category':
+				result = await Class.findAndCountAll({
+					offset: offset,
+					limit: limit,
+					offset: offset,
+					limit: limit,
+					order: [['createdAt', 'DESC']],
+					where: {
+						category_high: {
+							[Op.like]: '%' + category + '%'
+						},
+						category_low: {
+							[Op.like]: '%' + keyword + '%'
+						},
+					}
+				});
+				break;
+			case 'teacher_name':
+				result = await Class.findAndCountAll({
+					offset: offset,
+					limit: limit,
+					offset: offset,
+					limit: limit,
+					order: [['createdAt', 'DESC']],
+					where: {
+						category_high: {
+							[Op.like]: '%' + category + '%'
+						},
+						teacher_name: {
+							[Op.like]: '%' + keyword + '%'
+						},
+					}
+				});
+				break;
+			default:
+				result = await Class.findAndCountAll({
+					offset: offset,
+					limit: limit,
+					order: [['createdAt', 'DESC']],
+					where: {
+						category_high: {
+							[Op.like]: '%' + category + '%'
+						},
+						class_title: {
+							[Op.like]: '%' + keyword + '%'
+						},
+					}
+				});
+		}
+
+		if (result) {
+			res.render('admin_list', {
+				classes: result.rows,
+				user: req.user,
+				pageNum,
+				pages: result.count,
+				limit,
+				messages: req.flash('error'),
 			})
-			.catch((error) => {
-				console.error(error);
-			});
 		} else {
-			Class.findAndCountAll({
-				offset: offset,
-				limit: limit,
-				order: [['createdAt', 'DESC']],
-				where: { category_high: category }
-			})
-			.then((result) => {
-					res.render('admin_list', {
-					classes: result.rows,
-					user: req.user,
-					pageNum: pageNum,
-					pages: result.count,
-					limit: limit,
-					queryCategory: category,
-				});
-			})
-			.catch((error) => {
-				console.error(error);
-			});
+			req.flash('error', 'DB 오류');
+			res.redirect('/');
 		}
 	} else {
 		res.render('admin_alluser', {
