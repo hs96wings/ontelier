@@ -17,8 +17,8 @@
         <div id="main-wrapper">
         <a href="/"><img src="/images/logo_1536x984.png" alt="Ontelier" class="logo"></a>
         <div class="search-box">
-            <input type="text" placeholder="취미를 검색해보세요!" class="search-input">
-            <input type="button" class="search-icon"/>
+            <input type="text" id="text" placeholder="취미를 검색해보세요!" class="search-input" onkeydown="enterSearch()">
+            <input type="button" class="search-icon" onclick="myFunction()"/>
         </div>
         <div class="right">
             {% if user and user.user_id %}
@@ -66,6 +66,18 @@
 
     </body>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script type="text/javascript">
+function enterSearch() {
+    if(event.keyCode == 13){
+        myFunction();  // 실행할 이벤트
+    }
+}
+function myFunction() {
+    var x = document.getElementById("text").value;
+    window.location.href = "/search?title=" + x;
+}
+</script>
 
     {% if messages and messages.length > 0 %}
     <script>alert("{{messages}}");</script>

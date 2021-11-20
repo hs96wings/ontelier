@@ -1,3 +1,18 @@
+{% extends 'main_layout.html' %}
+{% block content %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/javascripts/getParameter.js"></script>
+
+<div class="container">
+    <div class="class-container">
+
+<div class="class-wrapper">
+    <p class="pt10" id="list-text">search result</p>
+    <span class="pt27" id="list-title"> 검색 결과</span>
+
+        <div class="class-list">
+
 {% for class in classes %}
 <div class="class-item">
     <ul><a href="/class/{{class.id}}">
@@ -11,3 +26,25 @@
     </ul>
 </div>
 {% endfor %}
+
+          <!-- 클래스 리스트 열 맞추기 -->
+          {% if classes.length % 4 != 0 %}
+          <script>
+            for (var i = 0; i < 4 - ({{classes.length}} % 4) ; i++) {
+
+            document.write(`<div class="class-item"></div>`);
+
+          }
+          </script>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+  var keyword = getParameter("title");
+  $("#list-title").prepend(`"${keyword}"`);
+</script>
+{% endblock %}
