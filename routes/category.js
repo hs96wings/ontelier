@@ -64,6 +64,8 @@ router.get('/all', async (req, res, next) => {
 	let sort = req.query.sort;
 	let result;
 
+	if (category1 === undefined) category1 = '';
+	if (category2 === undefined) category2 = '';
 	if (sort === undefined) sort = "new";
 
 	switch (sort) {
