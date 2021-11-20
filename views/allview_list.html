@@ -7,6 +7,7 @@
 
 <link rel="stylesheet" href="/stylesheets/allview.css"/>
 
+
 <div class="container">
     <div class="class-container">
 
@@ -30,6 +31,17 @@
           </div>
 
           {% endfor %}
+
+          <!-- 클래스 리스트 열 맞추기 -->
+          {% if classes.length % 4 != 0 %}
+          <script>
+            for (var i = 0; i < 4 - ({{classes.length}} % 4) ; i++) {
+
+            document.write(`<div class="class-item"></div>`);
+
+          }
+          </script>
+          {% endif %}
 
         </div>
       </div>
@@ -58,7 +70,7 @@
     } else {
       /*
        211120 21:47
-       카테고리 수정하고 테스트하다가 알아낸건데 
+       카테고리 수정하고 테스트하다가 알아낸건데
        http://ontelier.co.kr/category/all?category1=스포츠&category2=요가
        라고 쓰면 DB 조회는 되는데 sort가 없어서 undefined undefined라고 뜨더라고요
        일단 임시로 정해놨어요

@@ -4,7 +4,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="/javascripts/classView.js"></script>
 
-
 <!-- 카테고리 메뉴 -->
 <div class="category-list-wrapper">
     <li class="dropdown">
@@ -135,7 +134,7 @@
 <!-- 인기 클래스 -->
 <div class="class-wrapper">
     <p class="pt10">popularity class Best 10</p>
-    <span class="pt27">인기 클래스 Best</span><a class="allview-btn pt10" href="/category/all?sort=best">전체보기</a>
+    <span class="pt27">인기 클래스 Best</span><a class="allview-btn pt10" href="/category/all?category1={{category1}}&category2={{category2}}&sort=best">전체보기</a>
         <div class="class-list">
             <!-- 클래스 리스트 -->
             {% for class in best %}
@@ -151,13 +150,18 @@
                 </ul>
             </div>
             {% endfor %}
+
+            <!-- 클래스 리스트 행 맞추기 -->
+            {% if best.length == 0 %}
+              <div class="class-item" style="height: 418px;"></div>
+            {% endif %}
         </div>
 </div>
 
 <!-- 특가 클래스 -->
 <div class="class-wrapper">
     <p class="pt10">time deal class</p>
-    <span class="pt27">오늘의 특가 클래스</span><a class="allview-btn pt10" href="/category/all">전체보기</a>
+    <span class="pt27">오늘의 특가 클래스</span><a class="allview-btn pt10" href="/category/all?category1={{category1}}&category2={{category2}}&sort=sale">전체보기</a>
         <div class="class-list">
             <!-- 클래스 리스트 -->
             {% for class in sale %}
@@ -173,6 +177,11 @@
                 </ul>
             </div>
             {% endfor %}
+
+            <!-- 클래스 리스트 행 맞추기 -->
+            {% if sale.length == 0 %}
+              <div class="class-item"></div>
+            {% endif %}
         </div>
 </div>
 
