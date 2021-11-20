@@ -23,21 +23,41 @@
 
 <!-- 페이지네이션 -->
 <ul class="pagination">
-    {% if queryCategory !== undefined %}
-        {% if pageNum | int > 1 %}
-            <li class="page-item"><a class="page-link" href="/admin?page={{pageNum | int - 1}}&category={{queryCategory}}">〈</a></li>
-        {% endif %}
-            <li class="page-item"><a class="page-link" href="/admin?page={{pageNum | int}}&category={{queryCategory}}">{{pageNum | int}}</a></li>
-        {% if pageNum < (pages / limit) %}
-            <li class="page-item"><a class="page-link" href="/admin?page={{pageNum | int + 1}}&category={{queryCategory}}">〉</a></li>
+    {% if filter !== '' %}
+        {% if queryCategory !== '' %}
+            {% if pageNum | int > 1 %}
+                <li class="page-item"><a class="page-link" href="/admin?page={{pageNum | int - 1}}&category={{queryCategory}}&filter={{filter}}&keyword={{keyword}}">〈</a></li>
+            {% endif %}
+                <li class="page-item"><a class="page-link" href="/admin?page={{pageNum | int}}&category={{queryCategory}}&filter={{filter}}&keyword={{keyword}}">{{pageNum | int}}</a></li>
+            {% if pageNum < (pages / limit) %}
+                <li class="page-item"><a class="page-link" href="/admin?page={{pageNum | int + 1}}&category={{queryCategory}}&filter={{filter}}&keyword={{keyword}}">〉</a></li>
+            {% endif %}
+        {% else %}
+            {% if pageNum | int > 1 %}
+                <li class="page-item"><a class="page-link" href="/admin?page={{pageNum | int - 1}}&filter={{filter}}&keyword={{keyword}}">〈</a></li>
+            {% endif %}
+                <li class="page-item"><a class="page-link" href="/admin?page={{pageNum | int}}&filter={{filter}}&keyword={{keyword}}">{{pageNum | int}}</a></li>
+            {% if pageNum < (pages / limit) %}
+                <li class="page-item"><a class="page-link" href="/admin?page={{pageNum | int + 1}}&filter={{filter}}&keyword={{keyword}}">〉</a></li>
+            {% endif %}
         {% endif %}
     {% else %}
-        {% if pageNum | int > 1 %}
-            <li class="page-item"><a class="page-link" href="/admin?page={{pageNum | int - 1}}">〈</a></li>
-        {% endif %}
-            <li class="page-item"><a class="page-link" href="/admin?page={{pageNum | int}}">{{pageNum | int}}</a></li>
-        {% if pageNum < (pages / limit) %}
-            <li class="page-item"><a class="page-link" href="/admin?page={{pageNum | int + 1}}">〉</a></li>
+        {% if queryCategory !== '' %}
+            {% if pageNum | int > 1 %}
+                <li class="page-item"><a class="page-link" href="/admin?page={{pageNum | int - 1}}&category={{queryCategory}}">〈</a></li>
+            {% endif %}
+                <li class="page-item"><a class="page-link" href="/admin?page={{pageNum | int}}&category={{queryCategory}}">{{pageNum | int}}</a></li>
+            {% if pageNum < (pages / limit) %}
+                <li class="page-item"><a class="page-link" href="/admin?page={{pageNum | int + 1}}&category={{queryCategory}}">〉</a></li>
+            {% endif %}
+        {% else %}
+            {% if pageNum | int > 1 %}
+                <li class="page-item"><a class="page-link" href="/admin?page={{pageNum | int - 1}}">〈</a></li>
+            {% endif %}
+                <li class="page-item"><a class="page-link" href="/admin?page={{pageNum | int}}">{{pageNum | int}}</a></li>
+            {% if pageNum < (pages / limit) %}
+                <li class="page-item"><a class="page-link" href="/admin?page={{pageNum | int + 1}}">〉</a></li>
+            {% endif %}
         {% endif %}
     {% endif %}
 </ul>

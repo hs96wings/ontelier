@@ -138,6 +138,9 @@ router.get('/', isLoggedIn, isAdmin, async (req, res) => {
 				pages: result.count,
 				limit,
 				messages: req.flash('error'),
+				queryCategory: category,
+				keyword,
+				filter,
 			})
 		} else {
 			req.flash('error', 'DB 오류');
