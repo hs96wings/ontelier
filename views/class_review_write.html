@@ -1,0 +1,51 @@
+{% extends 'main_layout.html' %}
+{% block content %}
+
+<div class="login-container">
+<div class="login-wrapper">
+
+<h2>후기 작성</h2><br>
+<form method="post" action="/class/review/write" enctype="multipart/form-data">
+    <table>
+        <tr>
+            <th>후기 점수</th>
+            <td><input type="range" name="review_score" maxlength="20" min="0" max="5" step="1"></td>
+        </tr>
+        <tr>
+            <th>후기</th>
+            <td><textarea name="review_text" cols="70" rows="10"></textarea></td>
+        </tr>
+        <tr>
+          <th>후기 이미지</th>
+          <label for="ex_file">이미지선택</label>
+          <input type="file" name="review_img" id="image" accept="image/*" onchange="setThumbnail(event);" multiple/>
+          <div id="image_container"></div>
+        </tr>
+    </table>
+
+     <br>
+
+    <input type="hidden" value="0" name="review_best_num">
+    <input type="submit" value="입력">
+    <input type="button" value="취소" onclick="history.back()">
+
+</div>
+</div>
+
+<script>
+  function setThumbnail(event) {
+    for (var image of event.target.files) {
+      var reader = new FileReader();
+
+      reader.onload = function(event) {
+        var img = document.createElement("img");
+        img.setAttribute("src", event.target.result); document.querySelector("div#image_container").appendChild(img);
+      };
+
+      console.log(image);
+      reader.readAsDataURL(image);
+    }
+  }
+</script>
+
+{% endblock %}

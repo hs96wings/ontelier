@@ -73,7 +73,7 @@
                     <li class="class-title">{{class.class_title}}</li>
                     </a>
                 </ul>
-                <button type="button" class="submit-button" id="mypage-submit-button">후기 작성</button>
+                <button type="button" class="submit-button" id="mypage-submit-button" onclick="location.href='/class/{{class.id}}/review/write'">후기 작성</button>
             </div>
             {% endfor %}
         </div>
