@@ -1,0 +1,74 @@
+form h3 {
+  width: 200px;
+  margin: 0 auto;
+  text-align: center;
+}
+form textarea {
+  padding: 10px;
+}
+.star-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.star {
+    position: relative;
+    font-size: 2rem;
+    color: #ddd;
+  }
+
+.star input {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.star span {
+  width: 0;
+  position: absolute;
+  left: 0;
+  color: red;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.file-box label {
+  display: inline-block;
+  padding: .5em .75em;
+  color: #999;
+  font-size: inherit;
+  line-height: normal;
+  vertical-align: middle;
+  background-color: #fdfdfd;
+  cursor: pointer;
+  border: 1px solid #ebebeb;
+  border-bottom-color: #e2e2e2;
+  border-radius: .25em;
+  margin: 20px 0;
+}
+
+.file-box input[type="file"] {  /* 파일 필드 숨기기 */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip:rect(0,0,0,0);
+  border: 0;
+}
+
+#image-container {
+  display: block;
+  overflow: hidden;
+}
+#image-container img {
+  border-radius: .35em;
+  margin-right: 10px;
+  width: 30%;
+  height: auto;
+  object-fit: cover;
+}
