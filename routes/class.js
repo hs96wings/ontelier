@@ -41,36 +41,36 @@ const upload = multer({
 });
 
 
-router.get('/:id', (req, res, next) => {
-    Class.findOne({
+router.get('/:id', async (req, res, next) => {
+    let result = await Class.findOne({
         where: {id: req.params.id}
-    })
-    .then((result) => {
+    });
+    if (result) {
         res.render('class_view', {
             class: result,
         });
-    })
-    .catch((error) => {
-        res.render('error');
-    })
+    } else {
+        req.flash('error', 'DB 오류');
+        res.redirect('/');
+    }
 });
 
-router.get('/:id/review', (req, res, next) => {
-    Review.findAll({
+router.get('/:id/review', async (req, res, next) => {
+    let result = await Review.findAll({
         where: { ClassId: req.params.id },
         include: {
 			model: Class,
 			attributes: ['class_title'],
 		},
-    })
-    .then((result) => {
+    });
+    if (result) {
         res.render('class_review', {
             reviews: result,
         });
-    })
-    .catch((error) => {
-        res.render('error');
-    })
+    } else {
+        req.flash('error', 'DB 오류');
+        res.redirect('/');
+    }
 });
 
 router.get('/:id/review/write', isLoggedIn, async (req, res, next) => {
@@ -129,17 +129,17 @@ router.get('/:id/payment', isLoggedIn, async (req, res, next) => {
         req.flash('error', '이미 구매한 상품입니다');
         res.redirect('/');
     } else {
-        Purchase.create({
-            ClassId: req.params.id,
-            UserUserId: req.user.user_id,
-        })
-        .then(() => {
+        try {
+            await Purchase.create({
+                ClassId: req.params.id,
+                UserUserId: req.user.user_id,
+            });
+            
             res.redirect('/mypage');
-        })
-        .catch((error) => {
+        } catch (error) {
             req.flash('error', '구매에 실패했습니다');
             res.redirect('/');
-        })
+        }
     }
 });
 
@@ -157,23 +157,22 @@ router.get('/contents/:id', async (req, res, next) => {
             }
         });
         if (isClass) {
-            Lecture.findAll({
+            let result = await Lecture.findAll({
                 where: {
                     ClassId: req.params.id,
                 }
-            })
-            .then((result) => {
+            });
+            if (result) {
                 res.render('class_contents', {
                     videos: result,
                     class: isClass
                 });
-            })
-            .catch(() => {
+            } else {
                 req.flash('error', '강의를 불러오지 못했습니다');
                 res.redirect('/mypage');
-            });
+            }
         } else {
-            req.flash('error', '없는 강의입니다');
+            req.flash('error', '존재하지 않는 강의입니다');
             res.redirect('/mypage');
         }
     } else {
