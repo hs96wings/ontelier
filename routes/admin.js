@@ -237,20 +237,15 @@ router.post('/delete', isLoggedIn, isAdmin, async (req, res) => {
 	res.redirect('/admin');
 });
 
-router.get('/alluser', isLoggedIn, isAdmin, (req, res) => {
+router.get('/alluser', isLoggedIn, isAdmin, async (req, res) => {
+	let result;
+
 	if (req.user.user_roll === 'admin') {
-		User.findAll({
+		result = await User.findAll({
 			order: [['createdAt', 'DESC']],
-		})
-		.then((result) => {
-			res.render('admin_alluser', {users: result});
-		})
-		.catch((error) => {
-			console.error(error);
-			res.status(500).send();
-		});
+		});	
 	} else {
-		User.findAll({
+		result = await User.findAll({
 			attributes: ['user_id', 'user_email', 'user_nickname', 'user_enrolldate', 'provider'],
 			include: {
 				model: Purchase,
@@ -258,46 +253,44 @@ router.get('/alluser', isLoggedIn, isAdmin, (req, res) => {
 				required: true,
 				include: [{model: Class, required: true}],
 			},
-		})
-		.then((result) => {
-			res.render('admin_alluser', {users: result});
-		})
-		.catch((error) => {
-			console.error(error);
-			res.status(500).send();
-		})
+		});
 	}
-})
 
-router.get('/class/:id', isLoggedIn, isAdmin, (req, res) => {
-	Class.findOne({where: { id: req.params.id }})
-	.then((result) => {
-		res.render('admin_list_view', {title: '글 조회', class: result});
-	})
-	.catch((error) => {
-		console.error(error);
-		next(error);
-	});
+	if (result) {
+		res.render('admin_alluser', {users: result});
+	} else {
+		req.flash('error', 'DB 오류');
+		res.redirect('/admin');
+	}
 });
 
-router.get('/review', isLoggedIn, isAdmin, (req, res) => {
-	Review.findAll({
+router.get('/class/:id', isLoggedIn, isAdmin, async (req, res) => {
+	let result = await Class.findOne({where: { id: req.params.id }});
+	if (result) {
+		res.render('admin_list_view', {title: '글 조회', class: result});
+	} else {
+		req.flash('error', 'DB 오류');
+		res.redirect('/admin');
+	}
+});
+
+router.get('/review', isLoggedIn, isAdmin, async (req, res) => {
+	let result = await Review.findAll({
 		include: {
 			model: Class,
 			attributes: ['class_title'],
 		},
 		order: [['createdAt', 'DESC']],
-	})
-	.then((result) => {
-			res.render('admin_review', {
-			title: '온뜰',
+	});
+	if (result) {
+		res.render('admin_review', {
+			title: '온뜰 - 후기',
 			reviews: result,
 		});
-	})
-	.catch((error) => {
-		res.render('admin_review', {title: '온뜰'});
-		console.error(error);
-	});
+	} else {
+		req.flash('error', 'DB 오류');
+		res.redirect('/admin');
+	}
 });
 
 router.get('/review/write', isLoggedIn, isAdmin, (req, res) => {
@@ -309,38 +302,38 @@ router.post('/review/write', isLoggedIn, isAdmin, async (req, res, next) => {
 	const user_nickname = req.user.user_nickname;
 	const user_id = req.user.user_id;
 
-	Review.create({
-		review_score: body.review_score,
-		review_best_num: body.review_best_num,
-		review_text: body.review_text,
-		reviewer: user_nickname,
-		UserUserId: user_id,
-		ClassId: 1,
-	})
-	.then(() => {
+	try {
+		await Review.create({
+			review_score: body.review_score,
+			review_best_num: body.review_best_num,
+			review_text: body.review_text,
+			reviewer: user_nickname,
+			UserUserId: user_id,
+			ClassId: 1,
+		});
+
 		res.redirect('/admin/review');
-	})
-	.catch((error) => {
-		console.error(error);
-		next(error);
-	});
+	} catch (error) {
+		req.flash('error', 'DB 오류');
+		res.redirect('/admin');
+	}
 });
 
-router.get('/review/:id', isLoggedIn, isAdmin, (req, res) => {
-	Review.findOne({
+router.get('/review/:id', isLoggedIn, isAdmin, async (req, res) => {
+	let result = await Review.findOne({
 		where: { id: req.params.id },
 		include: {
 			model: Class,
 			attributes: ['class_title'],
 		}
-	})
-	.then((result) => {
-		res.render('admin_review_view', {title: '후기 조회', review: result});
-	})
-	.catch((error) => {
-		console.error(error);
-		next(error);
 	});
+
+	if (result) {
+		res.render('admin_review_view', {title: '후기 조회', review: result});
+	} else {
+		req.flash('error', 'DB 오류');
+		res.redirect('/admin');
+	}
 });
 
 module.exports = router;
