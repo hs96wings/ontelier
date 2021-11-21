@@ -250,14 +250,17 @@ router.get('/alluser', isLoggedIn, isAdmin, (req, res) => {
 			res.status(500).send();
 		});
 	} else {
-		Purchase.findOne({
+		User.findAll({
+			attributes: ['user_id', 'user_email', 'user_nickname', 'user_enrolldate', 'provider'],
 			include: {
-				model: Class,
-				where: {teacher_name: req.user.user_nickname}
+				model: Purchase,
+				attributes: ['ClassId', 'UserUserId'],
+				required: true,
+				include: [{model: Class, required: true}],
 			},
 		})
 		.then((result) => {
-			res.render('admin_enrolluser', {users: result});
+			res.render('admin_alluser', {users: result});
 		})
 		.catch((error) => {
 			console.error(error);

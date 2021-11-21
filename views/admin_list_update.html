@@ -43,7 +43,7 @@
     <tr>
         <th>클래스소개</th>
         <td><form method="post">
-              <textarea id="summernote" name="class_info"></textarea>
+              <textarea id="summernote" name="class_info">{{class.class_info}}</textarea>
             </form></td>
     </tr>
     <tr>
@@ -70,21 +70,28 @@
     </tr>
     <tr>
         <th>커리큘럼</th>
-        <td><textarea name="class_cirriculum" rows="10">{{class_cirriculum}}</textarea></td>
+        <td><textarea name="class_cirriculum" rows="10">{{class.class_cirriculum}}</textarea></td>
     </tr>
     <tr>
         <th>가족동반</th>
         <td>
+            {% if class.class_family === 1 %}
             <input type="radio" id="family_yes" name="class_family" value="1" checked>
             <label for="family_yes">Yes</label>
             <input type="radio" id="family_no" name="class_family" value="0">
             <label for="family_no">No</label>
+            {% else %}
+            <input type="radio" id="family_yes" name="class_family" value="1">
+            <label for="family_yes">Yes</label>
+            <input type="radio" id="family_no" name="class_family" value="0" checked>
+            <label for="family_no">No</label>
+            {% endif %}
         </td>
     </tr>
     <tr>
         <th>할인률</th>
         <td>
-            <input type="number" name="class_discount" maxlength="20" value="{{class_discount}}" pattern="[0-9]+" min="0" max="100" value={{class.class_discount}} required>
+            <input type="number" name="class_discount" maxlength="20" pattern="[0-9]+" min="0" max="100" value="{{class.class_discount}}" required>
         </td>
     </tr>
 </table>
