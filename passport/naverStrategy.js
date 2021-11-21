@@ -12,7 +12,7 @@ module.exports = () => {
         console.log('naver profile', profile);
         try {
             const exUser = await User.findOne({
-                where: { snsId: profile.id, provider: 'naver' },
+                where: { user_id: profile.id, provider: 'naver' },
             });
             if (exUser) {
                 done(null, exUser);
@@ -34,7 +34,6 @@ module.exports = () => {
                     user_id: profile.id,
                     user_nickname: user_nickname,
                     user_email: user_email,
-                    snsId: profile.id,
                     provider: 'naver',
                 });
                 done(null, newUser);
