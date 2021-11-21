@@ -75,27 +75,28 @@ router.get('/', async (req, res, next) => {
 
 router.get('/login', isNotLoggedIn, (req, res) =>  {
 	res.render('login', {title: '온뜰 - 로그인', messages: req.flash('error')});
-	// res.render('login', {title: '온뜰 - 로그인'});
 });
 
 router.get('/join', isNotLoggedIn, (req, res) => {
 	res.render('join', {title: '온뜰 - 회원가입', messages: req.flash('error')});
 });
 
-router.get('/search', (req, res, next) => {
-	Class.findAll({
+router.get('/search', async (req, res, next) => {
+	let result = await Class.findAll({
 		where: {
 			'class_title': {
 				[Op.like]: '%' + req.query.title + '%',
 			},
 		},
-	})
-	.then((result) => {
-		res.render('search', {title: '온뜰 - 검색결과', classes: result});
-	})
-	.catch((error) => {
-		next(error);
 	});
+
+	if (result) {
+		let title = req.query.title + '" 검색결과';
+		res.render('search', {title, classes: result});
+	} else {
+		req.flash('error', 'DB 오류');
+		res.redirect('/');
+	}
 });
 
 module.exports = router;

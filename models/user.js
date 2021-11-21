@@ -48,10 +48,6 @@ module.exports = class User extends Sequelize.Model {
                 allowNull: false,
                 defaultValue: 'local',
             },
-            snsId: {
-                type: Sequelize.STRING(100),
-                allowNull: true,
-            },
         }, {
             sequelize,
             timestamps: true,
@@ -68,5 +64,6 @@ module.exports = class User extends Sequelize.Model {
         db.User.hasMany(db.Review);
         db.User.hasMany(db.Wishlist);
         db.User.hasMany(db.Purchase);
+        db.User.hasMany(db.Class);
     };
 };

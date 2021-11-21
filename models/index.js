@@ -2,7 +2,6 @@ const Sequelize = require('sequelize');
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config')[env];
 const Class = require('./class');
-const Conn = require('./conn');
 const User = require('./user');
 const Review = require('./review');
 const Wishlist = require('./wishlist');
@@ -16,7 +15,6 @@ const sequelize = new Sequelize(
 
 db.sequelize = sequelize;
 db.Class = Class;
-db.Conn = Conn;
 db.User = User;
 db.Review = Review;
 db.Wishlist = Wishlist;
@@ -24,7 +22,6 @@ db.Purchase = Purchase;
 db.Lecture = Lecture;
 
 Class.init(sequelize);
-Conn.init(sequelize);
 User.init(sequelize);
 Review.init(sequelize);
 Wishlist.init(sequelize);

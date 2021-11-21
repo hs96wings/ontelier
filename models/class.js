@@ -31,7 +31,7 @@ module.exports = class Class extends Sequelize.Model {
                 allowNull: false,
                 defaultValue: Sequelize.NOW(),
                 get() {
-                    const d = this.getDataValue('user_enrolldate');
+                    const d = this.getDataValue('class_enrolldate');
                     return moment(d).format("YYYY/MM/DD H:mm:ss");
                 }
             },
@@ -93,5 +93,6 @@ module.exports = class Class extends Sequelize.Model {
 		db.Class.hasMany(db.Wishlist);
 		db.Class.hasMany(db.Purchase);
 		db.Class.hasMany(db.Lecture);
+		db.Class.belongsTo(db.User);
 	}
 }

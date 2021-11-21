@@ -57,7 +57,11 @@ router.get('/:id', (req, res, next) => {
 
 router.get('/:id/review', (req, res, next) => {
     Review.findAll({
-        where: { ClassId: req.params.id }
+        where: { ClassId: req.params.id },
+        include: {
+			model: Class,
+			attributes: ['class_title'],
+		},
     })
     .then((result) => {
         res.render('class_review', {

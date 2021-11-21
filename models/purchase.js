@@ -9,7 +9,7 @@ module.exports = class Purchase extends Sequelize.Model {
                 allowNull: false,
                 defaultValue: Sequelize.NOW(),
                 get() {
-                    const d = this.getDataValue('user_enrolldate');
+                    const d = this.getDataValue('purchase_enrolldate');
                     return moment(d).format("YYYY/MM/DD H:mm:ss");
                 }
             },

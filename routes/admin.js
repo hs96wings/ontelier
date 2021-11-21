@@ -9,7 +9,7 @@ const User = require('../models/user');
 const Review = require('../models/review');
 const Purchase = require('../models/purchase');
 
-const { isLoggedIn, isAdmin, isSuper } = require('./middlewares');
+const { isLoggedIn, isAdmin } = require('./middlewares');
 
 const router = express.Router();
 
@@ -58,78 +58,59 @@ router.get('/', isLoggedIn, isAdmin, async (req, res) => {
 	}
 
 	if (!filter) filter = '';
+	let filter_condition;
 	if (!keyword) keyword = '';
 	if (!category) category = '';
 	
-	if (user_roll === 'admin') {
-		switch (filter) {
-			case 'class_price':
-				result = await Class.findAndCountAll({
-					offset: offset,
-					limit: limit,
-					offset: offset,
-					limit: limit,
-					order: [['createdAt', 'DESC']],
-					where: {
-						category_high: {
-							[Op.like]: '%' + category + '%'
-						},
-						class_price: {
-							[Op.gt]: parseInt(keyword)
-						},
-					}
-				});
-				break;
-			case 'category':
-				result = await Class.findAndCountAll({
-					offset: offset,
-					limit: limit,
-					offset: offset,
-					limit: limit,
-					order: [['createdAt', 'DESC']],
-					where: {
-						category_high: {
-							[Op.like]: '%' + category + '%'
-						},
-						category_low: {
-							[Op.like]: '%' + keyword + '%'
-						},
-					}
-				});
-				break;
-			case 'teacher_name':
-				result = await Class.findAndCountAll({
-					offset: offset,
-					limit: limit,
-					offset: offset,
-					limit: limit,
-					order: [['createdAt', 'DESC']],
-					where: {
-						category_high: {
-							[Op.like]: '%' + category + '%'
-						},
-						teacher_name: {
-							[Op.like]: '%' + keyword + '%'
-						},
-					}
-				});
-				break;
-			default:
-				result = await Class.findAndCountAll({
-					offset: offset,
-					limit: limit,
-					order: [['createdAt', 'DESC']],
-					where: {
-						category_high: {
-							[Op.like]: '%' + category + '%'
-						},
-						class_title: {
-							[Op.like]: '%' + keyword + '%'
-						},
-					}
-				});
-		}
+	switch (filter) {
+		case 'class_price':
+			filter_condition = { 
+				class_price: {
+					[Op.gt]: parseInt(keyword)
+				},
+				category_high: {
+					[Op.like]: '%' + category + '%'
+				}
+			};
+			break;
+		case 'category':
+			filter_condition =  {
+				category_high: {
+					[Op.like]: '%' + category + '%'
+				},
+				category_low: {
+					[Op.like]: '%' + keyword + '%'
+				},
+			};
+			break;
+		case 'teacher_name':
+			filter_condition = {
+				category_high: {
+					[Op.like]: '%' + category + '%'
+				},
+				teacher_name: {
+					[Op.like]: '%' + keyword + '%'
+				},
+			};
+			break;
+		default:
+			filter_condition = {
+				category_high: {
+					[Op.like]: '%' + category + '%'
+				},
+				class_title: {
+					[Op.like]: '%' + keyword + '%'
+				},
+			};
+	}
 
+	if (user_roll === 'admin') {
+		result = await Class.findAndCountAll({
+			offset: offset,
+			limit: limit,
+			order: [['createdAt', 'DESC']],
+			where: filter_condition,
+		});
 		if (result) {
 			res.render('admin_list', {
 				classes: result.rows,
@@ -137,15 +118,35 @@ router.get('/', isLoggedIn, isAdmin, async (req, res) => {
 				pageNum,
 				pages: result.count,
 				limit,
-				messages: req.flash('error'),
-				queryCategory: category,
 				keyword,
 				filter,
-			})
+				queryCategory: category,
+				messages: req.flash('error')
+			});
 		} else {
 			req.flash('error', 'DB 오류');
 			res.redirect('/');
 		}
+	} else if (user_roll === 'bizz') {
+		result = await Class.findAndCountAll({
+			offset,
+			limit,
+			order: [['createdAt', 'DESC']],
+			where: {
+				UserUserId: req.user.user_id
+			}
+		});
+		res.render('admin_list', {
+			classes: result.rows,
+			user: req.user,
+			pageNum,
+			pages: result.count,
+			limit,
+			keyword,
+			filter,
+			queryCategory: category,
+			messages: req.flash('error')
+		})
 	} else {
 		res.render('admin_alluser', {
 			user: req.user,
@@ -153,13 +154,14 @@ router.get('/', isLoggedIn, isAdmin, async (req, res) => {
 	}
 });
 
-router.get('/write', isLoggedIn, isSuper, (req, res) => {
+router.get('/write', isLoggedIn, isAdmin, (req, res) => {
 	res.render('admin_list_write', {title: 'Ontelier'});
 });
 
-router.post('/write', isLoggedIn, isSuper, upload.single('class_img'), async (req, res, next) => {
-	const body = req.body;
+router.post('/write', isLoggedIn, isAdmin, upload.single('class_img'), async (req, res, next) => {
+	const {class_title, class_price, class_score, class_family, category_high, category_low, class_info, teacher_name, teacher_info, class_cirriculum, class_discount} = req.body;
 	let filename;
+	let result;
 
 	if (req.file === undefined) {
 		filename = '';
@@ -167,42 +169,38 @@ router.post('/write', isLoggedIn, isSuper, upload.single('class_img'), async (re
 		filename = `/images/uploads/${req.file.filename}`;
 	}
 
-	Class.create({
-		class_title: body.class_title,
-		class_price: body.class_price,
-		class_score: body.class_score,
-		class_img: filename,
-		class_family: body.class_family,
-		category_high: body.category_high,
-		category_low: body.category_low,
-		class_info: body.class_info,
-		teacher_name: body.teacher_name,
-		teacher_info: body.teacher_info,
-		class_cirriculum: body.class_cirriculum,
-		class_discount: body.class_discount,
-	})
-	.then(() => {
+	try {
+		result = await Class.create({
+			class_title, class_price, class_score,
+			class_img: filename,
+			class_family, category_high, category_low, class_info,
+			teacher_name, teacher_info, class_cirriculum, class_discount,
+			UserUserId: req.user.user_id,
+		});
+
 		res.redirect('/admin');
-	})
-	.catch((error) => {
-		console.error(error);
-		next(error);
-	});
+	} catch (error) {
+		req.flash('error', 'DB 오류');
+		res.redirect('/');
+	}
 });
 
-router.get('/update/:id', isLoggedIn, isSuper, (req, res) => {
-	Class.findOne({where: { id: req.params.id }})
-	.then((result) => {
-		res.render('admin_list_update', {title: '글 수정', class: result});
-	})
-	.catch((error) => {
-		console.error(error);
-		next(error);
-	});
-})
+router.get('/update/:id', isLoggedIn, isAdmin, async (req, res) => {
+	let result = await Class.findOne({where: {id: req.params.id}});
+	if (result) {
+		res.render('admin_list_update', {
+			title: '클래스 수정',
+			class: result
+		});
+	} else {
+		req.flash('error', 'DB 오류');
+		res.redirect('/admin');
+	}
+});
 
-router.post('/update', isLoggedIn, isSuper, upload.single('class_img'), (req, res) => {
+router.post('/update', isLoggedIn, isAdmin, upload.single('class_img'), async (req, res) => {
 	const body = req.body;
+	const { id, class_title, class_price, class_score, class_family, category_high, category_low, class_info, teacher_name, teacher_info, class_cirriculum, class_discount} = req.body;
 
 	let filename;
 
@@ -212,44 +210,31 @@ router.post('/update', isLoggedIn, isSuper, upload.single('class_img'), (req, re
 		filename = `/images/uploads/${req.file.filename}`;
 	}
 
-	Class.update({
-		class_title: body.class_title,
-		class_price: body.class_price,
-		class_score: body.class_score,
-		class_img: filename,
-		class_family: body.class_family,
-		category_high: body.category_high,
-		category_low: body.category_low,
-		class_info: body.class_info,
-		teacher_name: body.teacher_name,
-		teacher_info: body.teacher_info,
-		class_cirriculum: body.class_cirriculum,
-		class_discount: body.class_discount,
-	}, {
-		where: { id: body.id }
-	})
-	.then(() => {
-		res.redirect('/admin');
-	})
-	.catch((error) => {
-		console.error(error);
-		next(error);
-	});
+	try {
+		await Class.update({
+			class_title, class_price, class_score,
+			class_img: filename,
+			class_family, category_high, category_low, class_info,
+			teacher_name, teacher_info, class_cirriculum, class_discount,
+		}, {
+			where: {
+				id,
+				UserUserId: req.user.user_id,
+			}
+		});
+	} catch (error) {
+		req.flash('error', 'DB 오류');
+	}
+	res.redirect('/admin');
 });
 
-router.post('/delete', isLoggedIn, isSuper, (req, res) => {
-	const body = req.body;
-
-	Class.destroy({
-		where: { id: body.id }
-	})
-	.then(() => {
-		res.redirect('/admin');
-	})
-	.catch((error) => {
-		console.error(error);
-		next(error);
-	});
+router.post('/delete', isLoggedIn, isAdmin, async (req, res) => {
+	try {
+		await Class.destroy({where: {id: req.body.id}});
+	} catch (error) {
+		req.flash('error', 'DB 오류');
+	}
+	res.redirect('/admin');
 });
 
 router.get('/alluser', isLoggedIn, isAdmin, (req, res) => {
@@ -281,7 +266,7 @@ router.get('/alluser', isLoggedIn, isAdmin, (req, res) => {
 	}
 })
 
-router.get('/class/:id', isLoggedIn, isSuper, (req, res) => {
+router.get('/class/:id', isLoggedIn, isAdmin, (req, res) => {
 	Class.findOne({where: { id: req.params.id }})
 	.then((result) => {
 		res.render('admin_list_view', {title: '글 조회', class: result});
@@ -292,7 +277,7 @@ router.get('/class/:id', isLoggedIn, isSuper, (req, res) => {
 	});
 });
 
-router.get('/review', isLoggedIn, isSuper, (req, res) => {
+router.get('/review', isLoggedIn, isAdmin, (req, res) => {
 	Review.findAll({
 		include: {
 			model: Class,
@@ -312,11 +297,11 @@ router.get('/review', isLoggedIn, isSuper, (req, res) => {
 	});
 });
 
-router.get('/review/write', isLoggedIn, isSuper, (req, res) => {
+router.get('/review/write', isLoggedIn, isAdmin, (req, res) => {
 	res.render('admin_review_write', {title: '온뜰 - Admin - 후기'});
 });
 
-router.post('/review/write', isSuper, async (req, res, next) => {
+router.post('/review/write', isLoggedIn, isAdmin, async (req, res, next) => {
 	const body = req.body;
 	const user_nickname = req.user.user_nickname;
 	const user_id = req.user.user_id;
@@ -338,7 +323,7 @@ router.post('/review/write', isSuper, async (req, res, next) => {
 	});
 });
 
-router.get('/review/:id', isLoggedIn, isSuper, (req, res) => {
+router.get('/review/:id', isLoggedIn, isAdmin, (req, res) => {
 	Review.findOne({
 		where: { id: req.params.id },
 		include: {

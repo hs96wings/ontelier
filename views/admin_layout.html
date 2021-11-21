@@ -25,11 +25,11 @@
 <!----- 메뉴 영역 ----->
     <div id="menu">
         <ul class="menu-item">
-            {% if user and user.user_roll === 'admin' %}
             <li class="nav" id="class-menu">
                 <a href="#class-menu"><div class="pt24">클래스</div></a>
                 <div class="submenu">
                     <a href="/admin">전체보기</a>
+                    {% if user and user.user_roll === 'admin' %}
                     <a href="/admin?category=DIY/수공예">수공예/DIY</a>
                     <a href="/admin?category=예술문화">예술문화</a>
                     <a href="/admin?category=스포츠">스포츠</a>
@@ -37,9 +37,9 @@
                     <a href="/admin?category=요리">요리</a>
                     <a href="/admin?category=음악">음악</a>
                     <a href="/admin?category=디자인/개발">디자인/개발</a>
+                    {% endif %}
                 </div>
             </li>
-            {% endif %}
             <li class="nav" id="member-menu">
             <a href="#member-menu"><div class="pt24">회원관리</div></a>
                 <div class="submenu">
@@ -47,14 +47,13 @@
                     <a href="">전체페이지</a>
                 </div>
             </li>
-            {% if user and user.user_roll === 'admin' %}
+            
             <li class="nav" id="cs-menu">
             <a href="#cs-menu"><div class="pt24">CS관리</div></a>
                 <div class="submenu">
                     <a href="/admin/review">후기/Q&A 관리</a>
                 </div>
             </li>
-            {% endif %}
         </ul>
     </div>
 
