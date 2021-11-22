@@ -1,12 +1,13 @@
 {% extends 'main_layout.html' %}
 {% block content %}
+
 <div class="login-container">
 <div class="login-wrapper">
 
 <h2>프로필 정보 수정</h2><br>
 <form class="form" action="/mypage/update" method="post" enctype="multipart/form-data">
 
-        <div class="profile-img">
+        <div class="profile-img" id="profile-img">
 
           {% if user.user_profile_url %}
           <img class="profile-pic" src="{{user.user_profile_url}}">
@@ -17,9 +18,11 @@
         </div><br>
 
         <input type="hidden" value="{{user.user_profile_url}}" name="original_img">
-        <img src="{{user.user_profile_url}}">
 
-        <label for="ex_file"></label><input type="file" name="user_profile_url">
+        <div class="file-box">
+          <label for="ex_file">사진 올리기</label>
+          <input type="file" name="user_profile_url" id="ex_file" accept="image/*" onchange="setThumbnail(event);"/>
+        </div>
 
         <br>
 
@@ -36,10 +39,26 @@
         <input type="text" name="user_phone" class="input-box" maxlength="40" value="{{user.user_phone}}">
 
     <input type="hidden" value="{{user.user_id}}" name="user_id">
-    <input type="submit" class="submit-button" value="수정">
+    <input type="submit" id="user-submit" class="submit-button" value="수정">
 
 </form>
 
 </div>
 </div>
+
+<script type="text/javascript">
+  function setThumbnail(event) {
+    for (var image of event.target.files) {
+      var reader = new FileReader();
+
+      reader.onload = function(event) {
+        var img = `<img class="profile-pic" src="${event.target.result}">`;
+        document.getElementById("profile-img").innerHTML = img;
+      };
+
+      console.log(image);
+      reader.readAsDataURL(image);
+    }
+  }
+</script>
 {% endblock %}
