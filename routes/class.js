@@ -45,9 +45,13 @@ router.get('/:id', async (req, res, next) => {
     let result = await Class.findOne({
         where: {id: req.params.id}
     });
+    let reviews = await Review.findAll({
+        where: {ClassId: req.params.id}
+    });
     if (result) {
         res.render('class_view', {
             class: result,
+            reviews
         });
     } else {
         req.flash('error', 'DB 오류');
