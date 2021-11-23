@@ -123,28 +123,39 @@ router.post('/review/write', isLoggedIn, upload.single('review_img'), async (req
 });
 
 router.get('/:id/payment', isLoggedIn, async (req, res, next) => {
-    const isPurchase = await Purchase.findOne({
-        where: {
-            UserUserId: req.user.user_id,
-            ClassId: req.params.id,
-        }
+    const payClass = await Class.findOne({
+        where: { id: req.params.id }
     });
-    if (isPurchase) {
-        req.flash('error', '이미 구매한 상품입니다');
-        res.redirect('/');
+    if (payClass) {
+        res.render('class_payment', {
+            class: payClass
+        });
     } else {
-        try {
-            await Purchase.create({
-                ClassId: req.params.id,
-                UserUserId: req.user.user_id,
-            });
-            
-            res.redirect('/mypage');
-        } catch (error) {
-            req.flash('error', '구매에 실패했습니다');
-            res.redirect('/');
-        }
+        req.flash('error', '오류가 발생했습니다');
+        res.redirect('/');
     }
+    // const isPurchase = await Purchase.findOne({
+    //     where: {
+    //         UserUserId: req.user.user_id,
+    //         ClassId: req.params.id,
+    //     }
+    // });
+    // if (isPurchase) {
+    //     req.flash('error', '이미 구매한 상품입니다');
+    //     res.redirect('/');
+    // } else {
+    //     try {
+    //         await Purchase.create({
+    //             ClassId: req.params.id,
+    //             UserUserId: req.user.user_id,
+    //         });
+            
+    //         res.redirect('/mypage');
+    //     } catch (error) {
+    //         req.flash('error', '구매에 실패했습니다');
+    //         res.redirect('/');
+    //     }
+    // }
 });
 
 router.get('/contents/:id', async (req, res, next) => {
