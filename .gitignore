@@ -7,7 +7,6 @@
 # Ignore Folder
 .ssh/
 node_modules/
-migrations/
 seeders/
 config/
 public/images/
