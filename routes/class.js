@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const axios = require('axios');
 
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const Class = require('../models/class');
@@ -129,21 +130,87 @@ router.get('/:id/payment', isLoggedIn, async (req, res, next) => {
             ClassId: req.params.id,
         }
     });
+
     if (isPurchase) {
-        req.flash('error', '이미 구매한 상품입니다');
+        req.flash('error', '이미 구매한 강의입니다');
         res.redirect('/');
     } else {
-        try {
+        const payClass = await Class.findOne({
+            where: { id: req.params.id }
+        });
+        if (payClass) {
+            res.render('class_payment', {
+                class: payClass
+            });
+        } else {
+            req.flash('error', '오류가 발생했습니다');
+            res.redirect('/');
+        }
+    }
+});
+
+router.post('/:id/payment/complete', async(req, res) => {
+    try {
+        // 결제 번호, 주문 번호 추출
+        const { imp_uid, merchant_uid } = req.body;
+        // 결제 정보 조회하기
+        // 액세스 토큰(access token) 발급 받기
+        const getToken = await axios({
+            url: "https://api.iamport.kr/users/getToken",
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            data: {
+                imp_key: process.env.IAMPORT_ID,
+                imp_secret: process.env.IAMPORT_SECRET,
+            }
+        });
+        const { access_token } = getToken.data.response; // 인증 토큰
+
+        // imp_uid로 아임포트 서버에서 결제 정보 조회
+        const getPaymentData = await axios({
+            url: `https://api.iamport.kr/payments/${imp_uid}`,
+            method: "GET",
+            headers: { "Authorization": access_token }
+        });
+        const paymentData = getPaymentData.data.response;
+        
+        // 금액 조회
+        const order = await Class.findOne({where: {id: req.params.id }});
+        const price = order.class_price;
+        const discount = order.class_discount;
+        const amountToBePaid = price - (price * discount / 100);
+
+        // 결제 검증
+        const { amount, status } = paymentData;
+        // 결제금액 일치
+        if (amount === amountToBePaid) {
             await Purchase.create({
                 ClassId: req.params.id,
                 UserUserId: req.user.user_id,
+                merchant_uid,
             });
-            
-            res.redirect('/mypage');
-        } catch (error) {
-            req.flash('error', '구매에 실패했습니다');
-            res.redirect('/');
+
+            // 결제 완료
+            switch (status) {
+                // 무통장 입금?
+                case 'ready':
+                    const { vbank_num, vbank_date, vbank_name } = paymentData;
+                    // await Bank.create
+                    res.send({status: 'vbankIssued', message: '가상계좌 발급 성공'});
+                    break;
+                // 결제 완료
+                case 'paid':
+                    res.send({status: 'success', message: '결제 성공'});
+                    break;
+            }
+        } else {
+            throw { status: 'forgery', message: '위조된 결제시도'};
         }
+    } catch (e) {
+        res.status(400).send(e);
     }
 });
 
