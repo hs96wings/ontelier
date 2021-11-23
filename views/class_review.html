@@ -1,35 +1,151 @@
 {% extends 'main_layout.html' %}
 {% block content %}
 
-<p>후기 {{reviews.length}}개</p>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
-{% for review in reviews %}
-    <table>
-        <tr>
-            <th>후기번호</th>
-            <td>{{review.id}}</td>
-        </tr>
-        <tr>
-            <th>작성자</th>
-            <td>{{review.reviewer}}</td>
-        </tr>
-        <tr>
-            <th>강의이름</th>
-            <td>{{review.Class.class_title}}</td>
-        </tr>
-        <tr>
-            <th>후기점수</th>
-            <td>{{review.review_score}}</td>
-        </tr>
-        <tr>
-            <th>도움이 됐어요!</th>
-            <td>{{review.review_best_num}}</td>
-        </tr>
-        <tr>
-            <th>리뷰 이미지</th>
-            <td><img src="{{review.review_img}}"></td>
-        </tr>
-    </table>
-{% endfor %}
+<div class="review-container">
+
+<div class="review-score-wrapper">
+
+      <p>후기 {{reviews.length}}개</p>
+
+      <p id="class-score-avg">(후기평균점수)</p>
+
+      <div class="review-star-wrapper">
+        <div class="class-star-wrapper">
+          <span class="star">★★★★★</span><span class="star-fill">★★★★★</span>
+        </div>
+      </div>
+
+      <div class="score-bar-wrapper">
+        <div class="score-bar-item">
+          <span>5점</span><progress class="score-bar" id="score-bar5" value="0" max="100"></progress><span class="score-num" id="score-num5"></span>
+        </div>
+        <div class="score-bar-item">
+          <span>4점</span><progress class="score-bar" id="score-bar4" value="0" max="100"></progress><span class="score-num" id="score-num4"></span>
+        </div>
+        <div class="score-bar-item">
+          <span>3점</span><progress class="score-bar" id="score-bar3" value="0" max="100"></progress><span class="score-num" id="score-num3"></span>
+        </div>
+        <div class="score-bar-item">
+          <span>2점</span><progress class="score-bar" id="score-bar2" value="0" max="100"></progress><span class="score-num" id="score-num2"></span>
+        </div>
+        <div class="score-bar-item">
+          <span>1점</span><progress class="score-bar" id="score-bar1" value="0" max="100"></progress><span class="score-num" id="score-num1"></span>
+        </div>
+        <div class="score-bar-item">
+          <span>0점</span><progress class="score-bar" id="score-bar0" value="0" max="100"></progress><span class="score-num" id="score-num0"></span>
+        </div>
+      </div>
+
+</div>
+
+<div class="review-list-wrpper">
+
+  <div class="list-filter">
+    <li class="dropdown">
+    <div class="filter-title"><span id="filter-title">최신순</span> ▼</div>
+    <div class="dropdown-content">
+        <a href="#">최신순</a>
+        <a href="#">도움이 많이 된 순</a>
+        <a href="#">별점 높은 순</a>
+        <a href="#">별점 낮은 순</a>
+    </div>
+  </li>
+  </div>
+            <!-- 클래스 리스트 -->
+    {% for review in reviews %}
+
+
+        <div class="class_review_wrapper" id="review_id{{review.id}}">
+
+          <span class="pt20">{{review.reviewer}} 님</span>
+          <div class="class-star-wrapper">
+            <span class="star">★★★★★</span><span class="star-fill">★★★★★</span>
+          </div>
+          <span class="date">{{review.review_enrolldate.split(" ")[0].replace('/', '-').replace('/', '-')}}</span>
+          <p>{{review.review_text}}</p>
+
+          <span>{{review.review_best_num}} 도움이 됐어요!</span>
+
+          {% if review.review_img %}
+          <div class="class-review-img">
+            <img src="{{review.review_img}}">
+          </div>
+          {% endif %}
+
+        </div>
+
+        <script type="text/javascript">
+          document.querySelector(`#review_id{{review.id}} .star-fill`).style.width = `{{review.review_score * 20}}%`
+        </script>
+
+    {% endfor %}
+
+</div>
+
+</div>
+
+  <script type="text/javascript">
+    var five = 0; four = 0; three = 0; two = 0; one = 0; zero = 0; score_five = 0; score_four = 0; score_three = 0; score_two = 0; score_one = 0; score_zero = 0; score_avg = 0; score_sum = 0; five_pct = 0; four_pct = 0; three_pct = 0; two_pct = 0; one_pct = 0; zero_pct = 0;
+    </script>
+
+  {% for review in reviews %}
+  <script>
+    if ( {{review.review_score}} >= 4.5 ) {
+      five += 1;
+      score_five += {{review.review_score}};
+    } else if ( {{review.review_score}} >= 3.5 && {{review.review_score}} <= 4.0) {
+      four += 1;
+      score_four += {{review.review_score}};
+    } else if ( {{review.review_score}} >= 2.5 && {{review.review_score}} <= 3.0) {
+      three += 1;
+      score_three += {{review.review_score}};
+    } else if ( {{review.review_score}} >= 1.5 && {{review.review_score}} <= 2.0) {
+      two += 1;
+      score_two += {{review.review_score}};
+    } else if ( {{review.review_score}} >= 0.5 && {{review.review_score}} <= 4.0) {
+      one += 1;
+      score_one += {{review.review_score}};
+    } else {
+      zero += 1;
+      score_zero += {{review.review_score}};
+    }
+  </script>
+  {% endfor %}
+
+  <script type="text/javascript">
+
+      var score_sum = score_five + score_four + score_three + score_two + score_one; // 점수 총합
+      var score_avg = score_sum / {{reviews.length}}; // 점수 평균
+
+      // 점수바 퍼센티지 계산
+      var five_pct = five / {{reviews.length}} * 100;
+      var four_pct = four / {{reviews.length}} * 100;
+      var three_pct = three / {{reviews.length}} * 100;
+      var two_pct = two / {{reviews.length}} * 100;
+      var one_pct = one / {{reviews.length}} * 100;
+      var zero_pct = zero / {{reviews.length}} * 100;
+
+
+      document.getElementById("score-bar5").value = five_pct;
+      document.getElementById("score-bar4").value = four_pct;
+      document.getElementById("score-bar3").value = three_pct;
+      document.getElementById("score-bar2").value = two_pct;
+      document.getElementById("score-bar1").value = one_pct;
+      document.getElementById("score-bar0").value = zero_pct;
+
+
+      document.getElementById("class-score-avg").innerHTML = score_avg;
+
+      document.getElementById("score-num5").innerHTML = five;
+      document.getElementById("score-num4").innerHTML = four;
+      document.getElementById("score-num3").innerHTML = three;
+      document.getElementById("score-num2").innerHTML = two;
+      document.getElementById("score-num1").innerHTML = one;
+      document.getElementById("score-num0").innerHTML = zero;
+
+      document.querySelector(`.review-star-wrapper .class-star-wrapper .star-fill`).style.width = `${score_avg * 20}%`
+  </script>
 
 {% endblock %}

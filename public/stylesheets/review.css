@@ -6,31 +6,51 @@ form h3 {
 form textarea {
   padding: 10px;
 }
-.star-wrapper {
-    display: flex;
-    justify-content: center;
+progress {
+  -webkit-appearance: none;
+  width: 466px;
+  height: 10px;
+}
+.score-bar-item {
+  padding: 7.5px;
+}
+.score-bar-item span {
+  margin: 0 15px;
+}
+::-webkit-progress-bar {
+  background-color: #c6c6c6;
 }
 
-.star {
-    position: relative;
-    font-size: 2rem;
-    color: #ddd;
-  }
+::-webkit-progress-value {
+  background-color: #85b830;
+}
 
-.star input {
-  width: 100%;
-  height: 100%;
+.score-bar {
+  animation: progressbar 0.5s ease-out;
+  border: 0;
+  background-color: #c6c6c6;
+}
+
+.review-star-wrapper .class-star-wrapper {
+  display: inline-block;
+  position: relative;
+  height: 17px;
+  width: 73px;
+}
+.review-star-wrapper  .class-star-wrapper .star {
+  font-size: 1em;
+  margin-left: 5px;
   position: absolute;
   left: 0;
-  opacity: 0;
-  cursor: pointer;
+  color: #ddd;
 }
-
-.star span {
-  width: 0;
+.review-star-wrapper  .class-star-wrapper .star-fill {
+  font-size: 1em;
+  margin-left: 5px;
   position: absolute;
   left: 0;
   color: red;
+  width: 0;
   overflow: hidden;
   pointer-events: none;
 }
