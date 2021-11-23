@@ -108,6 +108,10 @@
 <script src="/javascripts/summerNote.js"></script>
 
 <script>
+  //값 가져오기
+    $('textarea[name="class_info"]').summernote('code', `{{class.class_info | safe }}`);
+
+
     function categoryKindChange(e) {
         var diy = ["뜨개질", "자수", "비누/캔들/향", "라탄공예", "가죽공예", "레진공예", "도예", "플라워도예"];
         var culture = ["마카색/연필/수채화", "오일파스텔", "아크릴화", "유화", "캘리그라피", "디지털드로잉", "웹툰", "사진영상"];
