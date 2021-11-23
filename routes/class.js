@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const axios = require('axios');
 
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const Class = require('../models/class');
@@ -123,16 +124,28 @@ router.post('/review/write', isLoggedIn, upload.single('review_img'), async (req
 });
 
 router.get('/:id/payment', isLoggedIn, async (req, res, next) => {
-    const payClass = await Class.findOne({
-        where: { id: req.params.id }
+    const isPurchase = await Purchase.findOne({
+        where: {
+            UserUserId: req.user.user_id,
+            ClassId: req.params.id,
+        }
     });
-    if (payClass) {
-        res.render('class_payment', {
-            class: payClass
-        });
-    } else {
-        req.flash('error', '오류가 발생했습니다');
+
+    if (isPurchase) {
+        req.flash('error', '이미 구매한 강의입니다');
         res.redirect('/');
+    } else {
+        const payClass = await Class.findOne({
+            where: { id: req.params.id }
+        });
+        if (payClass) {
+            res.render('class_payment', {
+                class: payClass
+            });
+        } else {
+            req.flash('error', '오류가 발생했습니다');
+            res.redirect('/');
+        }
     }
 });
 
@@ -142,47 +155,38 @@ router.post('/:id/payment/complete', async(req, res) => {
         const { imp_uid, merchant_uid } = req.body;
         // 결제 정보 조회하기
         // 액세스 토큰(access token) 발급 받기
-        console.log('--------------------');
-        console.log('토큰을 조회하겟다');
-        console.log('--------------------');
         const getToken = await axios({
             url: "https://api.iamport.kr/users/getToken",
             method: "post",
-            headers: {'Content-Type': 'application/json'},
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
             data: {
-                imp_key: process.env.IAMPORT,
+                imp_key: process.env.IAMPORT_ID,
                 imp_secret: process.env.IAMPORT_SECRET,
             }
         });
         const { access_token } = getToken.data.response; // 인증 토큰
-        console.log('--------------------');
-        console.log('토큰은: ' + access_token);
-        console.log('--------------------');
 
         // imp_uid로 아임포트 서버에서 결제 정보 조회
         const getPaymentData = await axios({
             url: `https://api.iamport.kr/payments/${imp_uid}`,
-            method: 'get',
-            headers: {'Authorization': access_token}
+            method: "GET",
+            headers: { "Authorization": access_token }
         });
         const paymentData = getPaymentData.data.response;
         
         // 금액 조회
-        const order = await Class.findOne({where: {id: req.params.id}});
+        const order = await Class.findOne({where: {id: req.params.id }});
         const price = order.class_price;
         const discount = order.class_discount;
         const amountToBePaid = price - (price * discount / 100);
-        console.log('--------------------');
-        console.log('할인가격:' + amountToBePaid);
-        console.log('--------------------');
 
         // 결제 검증
         const { amount, status } = paymentData;
         // 결제금액 일치
         if (amount === amountToBePaid) {
-            console.log('--------------------');
-            console.log('일치!');
-            console.log('--------------------');
             await Purchase.create({
                 ClassId: req.params.id,
                 UserUserId: req.user.user_id,

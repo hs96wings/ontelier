@@ -8,6 +8,7 @@ const dotenv = require('dotenv');
 const passport = require('passport');
 const favicon = require('serve-favicon');
 const flash = require('connect-flash');
+const axios = require('axios');
 
 dotenv.config();
 const indexRouter = require('./routes/index');

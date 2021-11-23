@@ -3,7 +3,7 @@
 {{class.class_title}}<br>
 {{class.class_price}}<br>
 <button onclick="requestPay()">결제하기</button>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 
 <script>
@@ -14,22 +14,24 @@
             pg: 'html5_inicis',
             pay_method: 'card',
             merchant_uid: 'merchant_' + new Date().getTime(),
-            name: '주문명:결제테스트',
+            name: '온뜰 강의 구매',
             amount: "{{class.class_price - (class.class_price * class.class_discount / 100)}}",
             buyer_email: "{{user.user_email}}",
             buyer_name: "{{user.user_nickname}}",
             buyer_tel: "{{user.user_phone}}",
         }, function(rsp) {
             if (rsp.success) {
-                console.log('결제 가즈아');
                 jQuery.ajax({
-                    url: "http://ontelier.co.kr/class/{{class.id}}/payment/complete",
+                    url: "/class/{{class.id}}/payment/complete",
                     method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    data: {
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    data: JSON.stringify({
                         imp_uid: rsp.imp_uid,
-                        merchant_uid: rsp.merchant_uid,
-                    }
+                        merchant_uid: rsp.merchant_uid
+                    })
                 }).done(function(data) {
                     // 가맹점 서버 결제 API 성공시 로직
                     switch (data.status) {
@@ -40,13 +42,13 @@
                         case 'success':
                             alert('결제 성공');
                             break;
-                        // window.location.href='http://ontelier.co.kr/mypage'
                     }
+                    window.location.href='/mypage';
                 });
             } else {
                 alert('결제에 실패하였습니다. 에러 내용: ' + rsp.error_msg);
             }
-        })
+        });
     }
 </script>
 {% endblock %}
