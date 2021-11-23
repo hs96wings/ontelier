@@ -1,7 +1,7 @@
 // 썸머노트 실행 스크립트
 
   $('#summernote').summernote({
-		height: 300,
+		height: 600,
 		width : 1000,
 		minHeight: null,
 		maxHeight: null,

@@ -7,7 +7,7 @@
 
 .container {
     display: grid;
-    grid-template-areas: 
+    grid-template-areas:
             ". header header ."
             ". menu content .";
     grid-template-columns: 1fr 1fr 3.5fr 1fr;
@@ -30,7 +30,7 @@
     left: 0;
     right: 0;
     margin: 0;
-  
+
     height: 60px;
     background: white;
     font-size: 15px;
@@ -55,7 +55,7 @@
     justify-content: flex-start;
     align-items: center;
   }
-  
+
 .name {
     display: inline-block;
     vertical-align: bottom;
@@ -120,7 +120,7 @@ li {
     font-size: 14px;
     border-bottom: 1px solid #eaeaea;
     position: relative;
-    
+
 }
 .submenu a:after{
     content: '';
@@ -205,6 +205,10 @@ border: 0;
 
 }
 
+.note-editable img {
+  max-width: 100%;
+}
+
 th, td {
     border-bottom: 1px solid #bfbfbf;
     font-size: 14px;
@@ -224,7 +228,9 @@ td a {
 td a:hover {
     color: #85b830;
 }
-
+td img {
+  max-width: 100%;
+}
 .pagination {
     display: flex;
     justify-content: center;
