@@ -33,6 +33,10 @@
             {% endif %}
         {% endif %}
 
+        {% if user and user.user_roll === 'bizz' %}
+        <p>{{user.bizz_license}}</p>
+        {% endif %}
+
         <p class="mypage-email">{{user.user_email}}</p>
 
 

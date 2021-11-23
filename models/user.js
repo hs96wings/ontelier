@@ -48,6 +48,10 @@ module.exports = class User extends Sequelize.Model {
                 allowNull: false,
                 defaultValue: 'local',
             },
+            bizz_license: {
+                type: Sequelize.STRING(10),
+                allowNull: true,
+            }
         }, {
             sequelize,
             timestamps: true,

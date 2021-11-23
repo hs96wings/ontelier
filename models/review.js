@@ -5,7 +5,7 @@ module.exports = class Review extends Sequelize.Model {
 	static init(sequelize) {
 		return super.init({
 			review_score: {
-				type: Sequelize.INTEGER,
+				type: Sequelize.FLOAT,
 				allowNull: true,
 				defaultValue: 0,
 			},
