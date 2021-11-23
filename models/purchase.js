@@ -13,6 +13,10 @@ module.exports = class Purchase extends Sequelize.Model {
                     return moment(d).format("YYYY/MM/DD H:mm:ss");
                 }
             },
+			merchant_uid: {
+				type: Sequelize.STRING(40),
+				allowNull: false,
+			},
 		}, {
 			sequelize,
 			timestamps: true,
