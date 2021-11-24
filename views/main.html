@@ -1,5 +1,7 @@
 {% extends 'main_layout.html' %}
+
 {% block content %}
+
 
 <!-- 배너 영역 -->
 <div class="banner autoplay">
@@ -36,11 +38,20 @@
         <div class="class-list">
             <!-- 클래스 리스트 -->
             {% for class in best %}
+
+            {% set sale_price = class.class_price * ( (100 - class.class_discount) / 100 ) %}
+
             <div class="class-item">
                 <ul><a href="/class/{{class.id}}">
                     <li><div class="class-image"><img class="class-thumbnail" src="{{class.class_img}}"></div></li>
                     <li class="class-title">{{class.class_title}}</li>
-                    <li class="class-price">{{class.class_price.toLocaleString('ko-KR')}}원</li>
+                    <li class="class-price">
+                        {% if class.class_discount %}
+                        <span class="discount">{{class.class_discount}}%</span>
+                        <span class="price">{{class.class_price.toLocaleString('ko-KR')}}원</span>
+                        {% endif %}
+                        <span class="sale_price">{{sale_price.toLocaleString('ko-KR')}}원</span><br>
+                    </li>
                     <li class="class-score">
                         <span class="pt14">{{"★".repeat(class.class_score) + ("☆".repeat(5 - class.class_score) )}}</span>
                         <span class="pt10 gray">(146)<!--후기개수--></span> <!--임시. review 테이블에서 개수 가져오기-->
@@ -58,11 +69,20 @@
         <div class="class-list">
             <!-- 클래스 리스트 -->
             {% for class in sale %}
+
+            {% set sale_price = class.class_price * ( (100 - class.class_discount) / 100 ) %}
+
             <div class="class-item">
                 <ul><a href="/class/{{class.id}}">
                     <li><div class="class-image"><img class="class-thumbnail" src="{{class.class_img}}"></div></li>
                     <li class="class-title">{{class.class_title}}</li>
-                    <li class="class-price">{{class.class_price.toLocaleString('ko-KR')}}원</li>
+                    <li class="class-price">
+                        {% if class.class_discount %}
+                        <span class="discount">{{class.class_discount}}%</span>
+                        <span class="price">{{class.class_price.toLocaleString('ko-KR')}}원</span>
+                        {% endif %}
+                        <span class="sale_price">{{sale_price.toLocaleString('ko-KR')}}원</span><br>
+                    </li>
                     <li class="class-score">
                         <span class="pt14">{{"★".repeat(class.class_score) + ("☆".repeat(5 - class.class_score) )}}</span>
                         <span class="pt10 gray">(146)<!--후기개수--></span> <!--임시. review 테이블에서 개수 가져오기-->
@@ -80,11 +100,20 @@
         <div class="class-list">
             <!-- 클래스 리스트 -->
             {% for class in newes %}
+
+            {% set sale_price = class.class_price * ( (100 - class.class_discount) / 100 ) %}
+
             <div class="class-item">
                 <ul><a href="/class/{{class.id}}">
                     <li><div class="class-image"><img class="class-thumbnail" src="{{class.class_img}}"></div></li>
                     <li class="class-title">{{class.class_title}}</li>
-                    <li class="class-price">{{class.class_price.toLocaleString('ko-KR')}}원</li>
+                    <li class="class-price">
+                        {% if class.class_discount %}
+                        <span class="discount">{{class.class_discount}}%</span>
+                        <span class="price">{{class.class_price.toLocaleString('ko-KR')}}원</span>
+                        {% endif %}
+                        <span class="sale_price">{{sale_price.toLocaleString('ko-KR')}}원</span><br>
+                    </li>
                     <li class="class-score">
                         <span class="pt14">{{"★".repeat(class.class_score) + ("☆".repeat(5 - class.class_score) )}}</span>
                         <span class="pt10 gray">(146)<!--후기개수--></span> <!--임시. review 테이블에서 개수 가져오기-->
@@ -102,11 +131,20 @@
         <div class="class-list">
             <!-- 클래스 리스트 -->
             {% for class in family %}
+
+            {% set sale_price = class.class_price * ( (100 - class.class_discount) / 100 ) %}
+
             <div class="class-item">
                 <ul><a href="/class/{{class.id}}">
                     <li><div class="class-image"><img class="class-thumbnail" src="{{class.class_img}}"></div></li>
                     <li class="class-title">{{class.class_title}}</li>
-                    <li class="class-price">{{class.class_price.toLocaleString('ko-KR')}}원</li>
+                    <li class="class-price">
+                        {% if class.class_discount %}
+                        <span class="discount">{{class.class_discount}}%</span>
+                        <span class="price">{{class.class_price.toLocaleString('ko-KR')}}원</span>
+                        {% endif %}
+                        <span class="sale_price">{{sale_price.toLocaleString('ko-KR')}}원</span><br>
+                    </li>
                     <li class="class-score">
                         <span class="pt14">{{"★".repeat(class.class_score) + ("☆".repeat(5 - class.class_score) )}}</span>
                         <span class="pt10 gray">(146)<!--후기개수--></span> <!--임시. review 테이블에서 개수 가져오기-->
@@ -124,11 +162,20 @@
         <div class="class-list">
             <!-- 클래스 리스트 -->
             {% for class in reviews %}
+
+            {% set sale_price = class.class_price * ( (100 - class.class_discount) / 100 ) %}
+
             <div class="class-item">
                 <ul><a href="/class/{{class.id}}">
                     <li><div class="class-image"><img class="class-thumbnail" src="{{class.class_img}}"></div></li>
                     <li class="class-title">{{class.class_title}}</li>
-                    <li class="class-price">{{class.class_price.toLocaleString('ko-KR')}}원</li>
+                    <li class="class-price">
+                        {% if class.class_discount %}
+                        <span class="discount">{{class.class_discount}}%</span>
+                        <span class="price">{{class.class_price.toLocaleString('ko-KR')}}원</span>
+                        {% endif %}
+                        <span class="sale_price">{{sale_price.toLocaleString('ko-KR')}}원</span><br>
+                    </li>
                     <li class="class-score">
                         <span class="pt14">{{"★".repeat(class.class_score) + ("☆".repeat(5 - class.class_score) )}}</span>
                         <span class="pt10 gray">(146)<!--후기개수--></span> <!--임시. review 테이블에서 개수 가져오기-->
