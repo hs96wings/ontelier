@@ -218,7 +218,7 @@ h3 {
   margin-left: 5px;
   position: absolute;
   left: 0;
-  color: red;
+  color: #7e7e7f;
   width: 0;
   overflow: hidden;
   pointer-events: none;
@@ -230,6 +230,7 @@ h3 {
     overflow: hidden;
     border-radius: .35em;
     margin-left: 4px;
+    margin-top: 10px;
 }
 .class-review-img img {
   width: 100%;

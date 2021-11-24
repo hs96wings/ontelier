@@ -9,13 +9,18 @@
 
       <p>후기 {{reviews.length}}개</p>
 
-      <p id="class-score-avg">(후기평균점수)</p>
+      <div class="score-wrapper">
 
-      <div class="review-star-wrapper">
-        <div class="class-star-wrapper">
-          <span class="star">★★★★★</span><span class="star-fill">★★★★★</span>
+        <p id="class-score-avg">(후기평균점수)</p>
+
+        <div class="review-star-wrapper">
+          <div class="class-star-wrapper">
+            <span class="star">★★★★★</span><span class="star-fill">★★★★★</span>
+          </div>
         </div>
+
       </div>
+
 
       <div class="score-bar-wrapper">
         <div class="score-bar-item">
@@ -40,7 +45,7 @@
 
 </div>
 
-<div class="review-list-wrpper">
+<div class="review-list-wrapper">
 
   <div class="list-filter">
     <li class="dropdown">
@@ -53,20 +58,27 @@
     </div>
   </li>
   </div>
-            <!-- 클래스 리스트 -->
+    <!-- 후기 리스트 -->
     {% for review in reviews %}
 
 
         <div class="class_review_wrapper" id="review_id{{review.id}}">
-
-          <span class="pt20">{{review.reviewer}} 님</span>
-          <div class="class-star-wrapper">
-            <span class="star">★★★★★</span><span class="star-fill">★★★★★</span>
+          <div class="profile-img">
+            <img src="{{review.User.user_profile_url}}">
           </div>
-          <span class="date">{{review.review_enrolldate.split(" ")[0].replace('/', '-').replace('/', '-')}}</span>
+          <div class="review-profile-wrapper">
+            <span class="pt20">{{review.reviewer}} 님</span><br>
+            <div class="class-star-wrapper">
+              <span class="star">★★★★★</span><span class="star-fill">★★★★★</span>
+            </div>
+            <span class="date">{{review.review_enrolldate.split(" ")[0].replace('/', '-').replace('/', '-')}}</span>
+          </div>
           <p>{{review.review_text}}</p>
 
-          <span>{{review.review_best_num}} 도움이 됐어요!</span>
+          <span class="thumbsup-text">
+            <button type="button" onClick="thumbsUp({{review.ClassId}}, {{review.id}})"><img src="/images/thumbs-up.png"></button>
+            <span id="thumbsup-num">{{review.review_best_num}}</span> 도움이 됐어요!
+          </span>
 
           {% if review.review_img %}
           <div class="class-review-img">
@@ -85,7 +97,7 @@
 </div>
 
 </div>
-
+  <script src="/javascripts/thumbsUp.js"></script>
   <script type="text/javascript">
     var five = 0; four = 0; three = 0; two = 0; one = 0; zero = 0; score_five = 0; score_four = 0; score_three = 0; score_two = 0; score_one = 0; score_zero = 0; score_avg = 0; score_sum = 0; five_pct = 0; four_pct = 0; three_pct = 0; two_pct = 0; one_pct = 0; zero_pct = 0;
     </script>
