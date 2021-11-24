@@ -19,7 +19,7 @@
 
             <div class="file-box">
               <label for="ex_file">사진 올리기</label>
-              <input type="file" name="review_img" id="ex_file" accept="image/*" onchange="setThumbnail(event);" multiple/>
+              <input type="file" name="review_img" id="ex_file" accept="image/*" onchange="setThumbnail(event);"/>
               <div id="image-container"></div>
             </div>
 
@@ -27,27 +27,32 @@
 
     <input type="hidden" value="0" name="review_best_num">
     <input type="hidden" value="{{result.id}}" name="class_id">
-    <input type="submit" class="submit-button" value="입력">
-    <input type="button" class="submit-button" value="취소" onclick="history.back()">
+
+    <div class="big-button-wrapper">
+      <input type="submit" class="submit-button" value="입력">
+      <input type="button" class="submit-button" value="취소" onclick="history.back()">
+    </div>
 
 </div>
 </div>
 
 <script>
-  function setThumbnail(event) {
-    for (var image of event.target.files) {
-      var reader = new FileReader();
+  // 이미지 미리보기
 
-      reader.onload = function(event) {
-        var img = document.createElement("img");
-        img.setAttribute("src", event.target.result); document.querySelector("div#image-container").appendChild(img);
-      };
+    function setThumbnail(event) {
+      for (var image of event.target.files) {
+        var reader = new FileReader();
 
-      console.log(image);
-      reader.readAsDataURL(image);
+        reader.onload = function(event) {
+          var img = `<img src="${event.target.result}">`;
+          document.getElementById("image-container").innerHTML = img;
+        };
+
+        console.log(image);
+        reader.readAsDataURL(image);
+      }
     }
-  }
-
+// 별점 바 클릭
   const drawStar = (target) => {
    document.querySelector(`.star span`).style.width = `${target.value * 20}%`;
  }
