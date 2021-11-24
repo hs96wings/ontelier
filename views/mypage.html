@@ -23,15 +23,15 @@
 
         <div class="profile-text">
 
-        {% if user and user.provider === 'local' %}
+
         <span class="mypage-nickname">{{user.user_nickname}} 님</span>
-        {% else %}
+
             {% if user.provider === 'kakao' %}
             <span>카카오 계정</span>
-            {% else %}
+            {% endif %}
+            {% if user.provider === 'naver' %}
             <span>네이버 계정</span>
             {% endif %}
-        {% endif %}
 
         {% if user and user.user_roll === 'bizz' %}
         <p>{{user.bizz_license}}</p>

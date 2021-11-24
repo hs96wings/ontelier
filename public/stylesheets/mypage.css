@@ -7,7 +7,6 @@
   display: block;
   width: 150px;
   text-align: center;
-  margin: auto;
   padding: 0;
 }
 
@@ -55,16 +54,21 @@
   height: 130px;
   width: 200px;
 }
+
 .mypage-nickname {
-  font-size: 22px;
+  font-size: 22px !important;
   font-stretch: normal;
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: normal;
   text-align: left;
-  color: #231815;
+  color: #231815 !important;
 }
 
+.profile-text span {
+  font-size: 1em;
+  color: #7e7e7f;
+}
 .mypage-email {
   font-size: 12px;
   font-weight: normal;
@@ -74,6 +78,7 @@
   letter-spacing: normal;
   text-align: left;
   color: #7e7e7f;
+  padding-top: 4px;
 }
 
 #info-edit-btn {
@@ -81,6 +86,7 @@
   height: 38px;
   font-size: 15px;
   padding: 0;
+  margin: 16px auto auto auto;
 }
 
 .mypage-button-wrapper {

@@ -60,6 +60,7 @@
   margin: 5px;
   right: 0;
   height: 27.8px;
+  padding: 0 5px;
   background-color: #f8f8f9;
   border: 0;
   cursor: pointer;
@@ -75,7 +76,7 @@
   position: relative;
   text-align: center;
   top: 0;
-  width: 420px;
+  width: 220px;
   height: 31.6px;
   margin: 0 30px;
 }
