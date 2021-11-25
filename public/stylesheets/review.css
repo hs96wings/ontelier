@@ -70,14 +70,12 @@ progress {
 }
 .review-star-wrapper  .class-star-wrapper .star {
   font-size: 1em;
-  margin-left: 5px;
   position: absolute;
   left: 0;
   color: #ddd;
 }
 .review-star-wrapper  .class-star-wrapper .star-fill {
   font-size: 1em;
-  margin-left: 5px;
   position: absolute;
   left: 0;
   color: #85b830;
@@ -168,6 +166,10 @@ progress {
   font-size: 25px;
 }
 
+.list-filter {
+    width: fit-content;
+}
+
 .filter-title {
   font-size: 27px;
   padding: 19px;
@@ -195,18 +197,31 @@ progress {
 }
 
 .thumbsup-text {
+  font-size: 0.85em;
   margin-bottom: 10px;
+  vertical-align: middle;
 }
 .thumbsup-text img {
   width: 13px;
   height: 13px;
-  margin-right: 10px;
 }
 .thumbsup-text button {
   border: none;
   background-color: transparent;
   cursor: pointer;
+  vertical-align: middle;
+  width: 13px;
+  margin-right: 6px;
 }
 .review-list-wrapper .class_review_wrapper {
   margin: 50px 0;
 }
+
+.review-list-wrapper {
+  width: 100%;
+}
+
+.review-list-wrapper > p {
+    color: #7e7e7f;
+    text-align: center;
+    margin-top: 50px;
