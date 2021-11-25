@@ -160,7 +160,10 @@ progress {
   font-size: 25px;
   font-weight: 700;
 }
-
+#class-score-avg img {
+  height: 30px;
+  width: 30px;
+}
 .review-score-wrapper > p {
   margin: 60px 0 40px 0;
   font-size: 25px;
@@ -190,6 +193,8 @@ progress {
   float: none;
   padding-left: 10px;
   vertical-align: top;
+  font-size: 0.8em;
+  line-height: 1.5em;
 }
 
 .review-profile-wrapper > .pt20 {
@@ -200,6 +205,7 @@ progress {
   font-size: 0.85em;
   margin-bottom: 10px;
   vertical-align: middle;
+  font-weight: 400;
 }
 .thumbsup-text img {
   width: 13px;

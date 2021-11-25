@@ -76,7 +76,7 @@
           <p>{{review.review_text}}</p>
 
           <span class="thumbsup-text">
-            <button type="button" onClick="thumbsUp({{review.ClassId}}, {{review.id}})"><img src="/images/thumbs-up.png"></button>
+            <button type="button" onClick="thumbsUp({{review.ClassId}}, {{review.id}})" class="like-cnt unchecked" id="like-cnt"><img src="/images/thumbs-up.png" class="like-btn"></button>
             <span id="thumbsup-num">{{review.review_best_num}}</span> 도움이 됐어요!
           </span>
 
@@ -89,7 +89,7 @@
         </div>
 
         <script type="text/javascript">
-          document.querySelector(`#review_id{{review.id}} .star-fill`).style.width = `{{review.review_score * 20}}%`
+          document.querySelector(`#review_id{{review.id}} .star-fill`).style.width = `{{review.review_score * 20 + 5}}%`
         </script>
 
     {% endfor %}
@@ -101,6 +101,10 @@
 </div>
 
 </div>
+
+  <script src="https://cdn.jsdelivr.net/mojs/latest/mo.min.js"></script>
+  <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/DrawSVGPlugin.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
   <script src="/javascripts/thumbsUp.js"></script>
   <script type="text/javascript">
     var five = 0; four = 0; three = 0; two = 0; one = 0; zero = 0; score_five = 0; score_four = 0; score_three = 0; score_two = 0; score_one = 0; score_zero = 0; score_avg = 0; score_sum = 0; five_pct = 0; four_pct = 0; three_pct = 0; two_pct = 0; one_pct = 0; zero_pct = 0;
@@ -150,7 +154,7 @@
         two_pct = 0;
         one_pct = 0;
         zero_pct = 0;
-        score_avg = `😢`;
+        score_avg = `<img src="/images/no-review-icon.png">`;
       }
 
       document.getElementById("score-bar5").value = five_pct;
@@ -170,7 +174,7 @@
       document.getElementById("score-num1").innerHTML = one;
       document.getElementById("score-num0").innerHTML = zero;
 
-      document.querySelector(`.review-star-wrapper .class-star-wrapper .star-fill`).style.width = `${score_avg * 20}%`
+      document.querySelector(`.review-star-wrapper .class-star-wrapper .star-fill`).style.width = `${score_avg * 20 + 5}%`
   </script>
 
 {% endblock %}

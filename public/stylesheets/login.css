@@ -44,7 +44,6 @@ body {
     padding-left: 10px;
     margin: 5px 0;
     border: solid 1px #c6c6c6;
-    font-family:"굴림";
 }
 
 .input-box::placeholder {

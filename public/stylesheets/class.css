@@ -81,7 +81,7 @@ h3 {
 }
 .class_title {
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 700;
   margin-bottom: 30px;
 }
 
@@ -98,6 +98,7 @@ h3 {
   width: 75px;
   height: 20px;
   margin-left: auto;
+  font-weight: 500;
 }
 .discount {
   font-size: 14px;
@@ -105,6 +106,7 @@ h3 {
   width: 30px;
   height: 20px;
   margin-left: auto;
+  font-weight: 500;
 }
 
 .like-button {
@@ -162,7 +164,7 @@ h3 {
 
 .pt20 {
   font-size: 20px;
-  font-weight: normal;
+  font-weight: 500;
   font-stretch: normal;
   font-style: normal;
   line-height: 1.2;
@@ -172,14 +174,16 @@ h3 {
 }
 .date {
   float: right;
-  font-size: 14px;
-  font-weight: normal;
+  font-weight: 200;
   font-stretch: normal;
   font-style: normal;
   line-height: 22px;
   letter-spacing: normal;
   text-align: center;
   color: #7e7e7f;
+  vertical-align: top;
+  font-size: 0.8em;
+  line-height: 1.5em;
 }
 
 .class_review_wrapper,
@@ -190,7 +194,7 @@ h3 {
 
 .class_review_wrapper p, .class_QnA_wrapper p, .class_more_button {
   font-size: 17px;
-  font-weight: normal;
+  font-weight: 300;
   font-stretch: normal;
   font-style: normal;
   line-height: 1.5;
