@@ -6,6 +6,7 @@ const axios = require('axios');
 const sequelize = require('sequelize');
 
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
+const User = require('../models/user');
 const Class = require('../models/class');
 const Review = require('../models/review');
 const Purchase = require('../models/purchase');
@@ -68,6 +69,10 @@ router.get('/:id/review', async (req, res, next) => {
 			model: Class,
 			attributes: ['class_title'],
 		},
+        include: {
+            model: User,
+            attributes: ['user_id', 'user_email', 'user_nickname', 'user_profile_url']
+        }
     });
     if (result) {
         res.render('class_review', {
