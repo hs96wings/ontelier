@@ -41,7 +41,7 @@
       {% endif %}
       <span class="sale_price">{{sale_price.toLocaleString('ko-KR')}}원</span><br>
 
-      <button type="button" class="like-button" name="button" onclick="inWishlist();">♥ {{wishlist_num}}</button>
+      <button type="button" class="like-button" name="button" onclick="inWishlist();"> <span id="heart" class="unchecked">♥</span><span id="wishlist_num">{{wishlist_num}}</span></button>
       <button class="submit-button" id="class-submit-button" type="button" onclick="location.href='/class/{{class.id}}/payment'">신청하기</button>
 
   </div>
@@ -164,7 +164,15 @@
       type: "POST",
       url: `/class/{{class.id}}/wish`,
       success: function(response) {
-        alert(response.message);
+        console.log(response.message);
+
+        if ($(`#heart`).attr("class") == "unchecked") { // 클래스명이 unchecked 일 시
+          $(`#heart`).attr("class", "checked"); // 클래스명 checked로 변경
+        } else {
+          $(`#heart`).attr("class", "unchecked"); // 클래스명 unchecked로 변경
+        }
+
+        $(`#wishlist_num`).html(response.num); // 서버로부터 변경된 값 받아서 넣기
       },
       error: function (request, status, error) {
         alert(error);

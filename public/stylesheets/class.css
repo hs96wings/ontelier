@@ -266,3 +266,15 @@ h3 {
 .class_space {
   height: 70px;
 }
+
+.like-button .unchecked {
+  color: #c6c6c6;
+}
+
+.like-button .checked {
+  color: #474747;
+}
+
+#heart {
+  padding: 5px;
+}
