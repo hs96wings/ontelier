@@ -292,7 +292,17 @@ router.post('/:id/wish', isLoggedIn, async(req, res) => {
         }
     });
     if (isWish) {
-        res.send({status: 'fail', message: '이미 찜목록에 있는 강의입니다'});
+        try {
+            await Wishlist.destroy({
+                where: {
+                    ClassId: req.params.id,
+                    UserUserId: req.user.user_id,
+                }
+            });
+            res.send({status: 'success', message: '위시리스트에서 강의를 뺐습니다'});
+        } catch (e) {
+            throw { status: 'fail', message: 'DB 오류'};
+        }
     } else {
         try {
             await Wishlist.create({
