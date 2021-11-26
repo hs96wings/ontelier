@@ -3,8 +3,10 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
+const sequelize = require('sequelize');
 
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
+const User = require('../models/user');
 const Class = require('../models/class');
 const Review = require('../models/review');
 const Purchase = require('../models/purchase');
@@ -67,6 +69,10 @@ router.get('/:id/review', async (req, res, next) => {
 			model: Class,
 			attributes: ['class_title'],
 		},
+        include: {
+            model: User,
+            attributes: ['user_id', 'user_email', 'user_nickname', 'user_profile_url']
+        }
     });
     if (result) {
         res.render('class_review', {
@@ -250,6 +256,31 @@ router.get('/contents/:id', async (req, res, next) => {
         req.flash('error', '구매하지 않은 강의입니다');
         res.redirect('/');
     }
+});
+
+router.post('/:id/review/like', async(req, res) => {
+    const { ClassId, id } = req.body;
+  
+    const change = await Review.update({
+        review_best_num: sequelize.literal('review_best_num + 1'),
+    }, {
+        where: {id, ClassId}
+    });
+    if (change) {
+        console.log(change);
+        const result = await Review.findOne({
+            where: {id, ClassId}
+        });
+        if (result) {
+            console.log(result);
+            res.send({status: 'success', message: '좋아요', num: result.review_best_num});
+        } else {
+            throw { status: 'fail', message: 'DB 오류'};
+        }
+    } else {
+        throw { status: 'fail', message: 'DB 오류'};
+    }
+
 });
 
 module.exports = router;

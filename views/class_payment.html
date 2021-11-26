@@ -1,13 +1,12 @@
 {% extends 'main_layout.html' %}
 {% block content %}
 {{class.class_title}}<br>
-{{class.class_price}}<br>
+{{class.class_price - (class.class_price * class.class_discount / 100)}}<br>
 <button onclick="requestPay()">결제하기</button>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 
 <script>
-    console.log("할인된 가격: {{class.class_price - (class.class_price * class.class_discount / 100)}}");
     IMP.init('imp00447746');
     function requestPay() {
         IMP.request_pay({
