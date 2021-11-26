@@ -11,6 +11,7 @@ const Class = require('../models/class');
 const Review = require('../models/review');
 const Purchase = require('../models/purchase');
 const Lecture = require('../models/lecture');
+const Wishlist = require('../models/wishlist');
 
 const router = express.Router();
 
@@ -280,7 +281,29 @@ router.post('/:id/review/like', async(req, res) => {
     } else {
         throw { status: 'fail', message: 'DB 오류'};
     }
-
 });
+
+router.post('/:id/wish', isLoggedIn, async(req, res) => {
+    req.params.id;
+    const isWish = await Wishlist.findOne({
+        where: {
+            ClassId: req.params.id,
+            UserUserId: req.user.user_id,
+        }
+    });
+    if (isWish) {
+        res.send({status: 'fail', message: '이미 찜목록에 있는 강의입니다'});
+    } else {
+        try {
+            await Wishlist.create({
+                ClassId: req.params.id,
+                UserUserId: req.user.user_id,
+            });
+            res.send({status: 'success', message: '찜목록에 넣었습니다'});
+        } catch (e) {
+            throw { status: 'fail', message: 'DB 오류'};
+        }
+    }
+})
 
 module.exports = router;

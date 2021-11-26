@@ -17,7 +17,12 @@ module.exports = () => {
                     done(null, exUser);
                 // user_id는 맞지만 비밀번호가 다름
                 } else {
-                    done(null, false, { message: '비밀번호가 일치하지 않습니다' });
+                    const isSNS = await User.findOne({where: { user_id }});
+                    if (isSNS) {
+                        done(null, false, { message: '소셜 로그인으로 해주세요' });
+                    } else {
+                        done(null, false, { message: '비밀번호가 일치하지 않습니다' });
+                    }
                 }
             // user_id가 DB에 없을 때
             } else {
