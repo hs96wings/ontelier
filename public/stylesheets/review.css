@@ -182,7 +182,11 @@ progress {
   width: 60px;
   height: 60px;
 }
-
+.class_review_wrapper .profile-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 .review-profile-wrapper {
   display: inline-block;
   height: 40px;
