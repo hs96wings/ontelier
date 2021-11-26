@@ -12,6 +12,7 @@ const Review = require('../models/review');
 const Purchase = require('../models/purchase');
 const Lecture = require('../models/lecture');
 const Wishlist = require('../models/wishlist');
+const Thumbsup = require('../models/thumbsup');
 
 const router = express.Router();
 
@@ -271,25 +272,91 @@ router.get('/contents/:id', async (req, res, next) => {
 router.post('/:id/review/like', async(req, res) => {
     const { ClassId, id } = req.body;
   
-    const change = await Review.update({
-        review_best_num: sequelize.literal('review_best_num + 1'),
-    }, {
-        where: {id, ClassId}
+    const isThumbs = await Thumbsup.findOne({
+        where: {
+            ReviewId: id,
+            UserUserId: req.user.user_id,
+        }
     });
-    if (change) {
-        console.log(change);
-        const result = await Review.findOne({
-            where: {id, ClassId}
-        });
-        if (result) {
-            console.log(result);
-            res.send({status: 'success', message: '좋아요', num: result.review_best_num});
-        } else {
-            throw { status: 'fail', message: 'DB 오류'};
+    if (isThumbs) {
+        try {
+            await Thumbsup.destroy({
+                where: {
+                    ReviewId: id,
+                    UserUserId: req.user.user_id
+                }
+            });
+            const change = await Review.update({
+                review_best_num: sequelize.literal('review_best_num - 1'),
+            }, {
+                where: {
+                    id, ClassId
+                }
+            });
+            if (change) {
+                const num = await Review.findOne({
+                    where: {id, ClassId}
+                });
+                if (num) {
+                    res.send({status: 'success', message: '좋아요를 취소했습니다', num: num.review_best_num});
+                } else {
+                    throw { status: 'fail', message: 'DB 오류'};
+                }
+            } else {
+                throw { status: 'fail', message: 'DB 오류'};
+            }
+        } catch (e) {
+            res.status(400).send(e);
         }
     } else {
-        throw { status: 'fail', message: 'DB 오류'};
+        try {
+            await Thumbsup.create({
+                ReviewId: id,
+                UserUserId: req.user.user_id
+            });
+            const change = await Review.update({
+                review_best_num: sequelize.literal('review_best_num + 1'),
+            }, {
+                where: {
+                    id, ClassId
+                }
+            });
+            if (change) {
+                const num = await Review.findOne({
+                    where: {id, ClassId}
+                });
+                if (num) {
+                    res.send({status: 'success', message: '좋아요를 눌렀습니다', num: num.review_best_num});
+                } else {
+                    throw { status: 'fail', message: 'DB 오류'};
+                }
+            } else {
+                throw { status: 'fail', message: 'DB 오류'};
+            }
+        } catch (e) {
+            res.status(400).send(e);
+        }
     }
+    // }
+    // const change = await Review.update({
+    //     review_best_num: sequelize.literal('review_best_num + 1'),
+    // }, {
+    //     where: {id, ClassId}
+    // });
+    // if (change) {
+    //     console.log(change);
+    //     const result = await Review.findOne({
+    //         where: {id, ClassId}
+    //     });
+    //     if (result) {
+    //         console.log(result);
+    //         res.send({status: 'success', message: '좋아요', num: result.review_best_num});
+    //     } else {
+    //         throw { status: 'fail', message: 'DB 오류'};
+    //     }
+    // } else {
+    //     throw { status: 'fail', message: 'DB 오류'};
+    // }
 });
 
 router.post('/:id/wish', isLoggedIn, async(req, res) => {
