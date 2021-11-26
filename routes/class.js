@@ -52,10 +52,19 @@ router.get('/:id', async (req, res, next) => {
     let reviews = await Review.findAll({
         where: {ClassId: req.params.id}
     });
+    let wishlist = await Wishlist.findAndCountAll({
+        include: {
+            model: Class,
+            where: {
+                'id': req.params.id
+            }
+        }
+    });
     if (result) {
         res.render('class_view', {
             class: result,
-            reviews
+            reviews,
+            wishlist_num: wishlist.count
         });
     } else {
         req.flash('error', 'DB 오류');

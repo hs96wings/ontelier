@@ -41,7 +41,7 @@
       {% endif %}
       <span class="sale_price">{{sale_price.toLocaleString('ko-KR')}}원</span><br>
 
-      <button type="button" class="like-button" name="button" onclick="inWishlist();">♥ 24</button>
+      <button type="button" class="like-button" name="button" onclick="inWishlist();">♥ {{wishlist_num}}</button>
       <button class="submit-button" id="class-submit-button" type="button" onclick="location.href='/class/{{class.id}}/payment'">신청하기</button>
 
   </div>
