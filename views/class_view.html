@@ -159,6 +159,26 @@
 
 </div>
 <script>
+    $(document).ready(function(){
+
+      $.ajax({
+          type : "GET",
+          url : "/mypage/wishlist",
+          dataType : "json",
+          error : function(request, status, error){
+              alert(error);
+          },
+          success : function(Wish_data){
+            // 유저 찜목록에 이 클래스가 있으면
+            var isInWishlist = Wish_data.some(class_id => class_id.ClassId == {{class.id}});
+            if ( isInWishlist ) {
+              $(`#heart`).attr("class", "checked"); // 클래스명 checked로 변경
+            }
+
+          }
+
+      });
+  });
   function inWishlist() {
     $.ajax({
       type: "POST",
