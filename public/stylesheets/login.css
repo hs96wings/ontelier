@@ -54,7 +54,7 @@ body {
 .submit-button {
     width: 161px;
     height: 50px;
-    padding: 14px 46px;
+    /* padding: 14px 46px; */
     background-color: #85b830;
     border: 0;
     cursor: pointer;
