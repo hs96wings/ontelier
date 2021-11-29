@@ -114,12 +114,15 @@ router.get('/reviews', isLoggedIn, async (req, res, next) => {
 });
 
 router.get('/wishlist', isLoggedIn, async (req, res, next) => {
-    const myWishlist = await Wishlist.findAll({where: {UserUserId: req.user.user_id}});
+    const myWishlist = await Wishlist.findAll({
+        where: {
+            UserUserId: req.user.user_id,
+        }
+    });
     if (myWishlist) {
-        res.json(myWishlist);
+        res.send({status: 'success', Wish_data: myWishlist});
     } else {
-        req.flash('error', 'DB 오류');
-        res.redirect('/mypage');
+        throw { status: 'fail', message: 'DB 오류'};
     }
 });
 

@@ -61,11 +61,24 @@ router.get('/:id', async (req, res, next) => {
             }
         }
     });
+    let userWish;
+    if (req.user && req.user.user_id) {
+        userWish = await Wishlist.findOne({
+            where: {
+                ClassId: req.params.id,
+                UserUserId: req.user.user_id,
+            }
+        });
+        if (!userWish) userWish = null;
+    } else {
+        userWish = null;
+    }
     if (result) {
         res.render('class_view', {
             class: result,
             reviews,
-            wishlist_num: wishlist.count
+            wishlist_num: wishlist.count,
+            userWish,
         });
     } else {
         req.flash('error', 'DB 오류');
@@ -375,7 +388,16 @@ router.post('/:id/wish', isLoggedIn, async(req, res) => {
                     UserUserId: req.user.user_id,
                 }
             });
-            res.send({status: 'success', message: '위시리스트에서 강의를 뺐습니다'});
+            const wish_num = await Wishlist.findAndCountAll({
+                where: {
+                    ClassId: req.params.id
+                }
+            });
+            if (wish_num) {
+                res.send({status: 'success', message: '위시리스트에서 강의를 뺐습니다', num: wish_num.count});
+            } else {
+                res.send({status: 'success', message: '위시리스트에서 강의를 뺐습니다'});
+            }
         } catch (e) {
             throw { status: 'fail', message: 'DB 오류'};
         }
@@ -385,7 +407,16 @@ router.post('/:id/wish', isLoggedIn, async(req, res) => {
                 ClassId: req.params.id,
                 UserUserId: req.user.user_id,
             });
-            res.send({status: 'success', message: '찜목록에 넣었습니다'});
+            const wish_num = await Wishlist.findAndCountAll({
+                where: {
+                    ClassId: req.params.id
+                }
+            });
+            if (wish_num) {
+                res.send({status: 'success', message: '찜목록에 넣었습니다', num: wish_num.count});
+            } else {
+                res.send({status: 'success', message: '찜목록에 넣었습니다'});
+            }
         } catch (e) {
             throw { status: 'fail', message: 'DB 오류'};
         }

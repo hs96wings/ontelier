@@ -41,7 +41,14 @@
       {% endif %}
       <span class="sale_price">{{sale_price.toLocaleString('ko-KR')}}원</span><br>
 
-      <button type="button" class="like-button" name="button" onclick="inWishlist();"> <span id="heart" class="unchecked">♥</span><span id="wishlist_num">{{wishlist_num}}</span></button>
+      <button type="button" class="like-button" name="button" onclick="inWishlist();">
+        {% if userWish %}
+        <span id="heart" class="checked">♥</span>
+        {% else %}
+        <span id="heart" class="unchecked">♥</span>
+        {% endif %}
+        <span id="wishlist_num">{{wishlist_num}}</span>
+      </button>
       <button class="submit-button" id="class-submit-button" type="button" onclick="location.href='/class/{{class.id}}/payment'">신청하기</button>
 
   </div>
@@ -172,6 +179,7 @@
             },
             success : function(Wish_data){
               // 유저 찜목록에 이 클래스가 있으면
+              console.log(Wish_data);
               var isInWishlist = Wish_data.some(class_id => class_id.ClassId == {{class.id}});
               if ( isInWishlist ) {
                 $(`#heart`).attr("class", "checked"); // 클래스명 checked로 변경
