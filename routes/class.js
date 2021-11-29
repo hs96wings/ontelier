@@ -96,6 +96,9 @@ router.get('/:id/review', async (req, res, next) => {
         include: {
             model: User,
             attributes: ['user_id', 'user_email', 'user_nickname', 'user_profile_url']
+        },
+        include: {
+            model: Thumbsup,
         }
     });
     if (result) {

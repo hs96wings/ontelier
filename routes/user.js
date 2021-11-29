@@ -10,6 +10,7 @@ const bcrypt = require('bcrypt');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const Thumbsup = require('../models/thumbsup');
 
 const router = express.Router();
 
@@ -121,6 +122,19 @@ router.get('/wishlist', isLoggedIn, async (req, res, next) => {
     });
     if (myWishlist) {
         res.send({status: 'success', Wish_data: myWishlist});
+    } else {
+        throw { status: 'fail', message: 'DB 오류'};
+    }
+});
+
+router.get('/thumbsup', isLoggedIn, async (req, res, next) => {
+    const myThumbsup = await Thumbsup.findAll({
+        where: {
+            UserUserId: req.user.user_id,
+        }
+    });
+    if (myThumbsup) {
+        res.send({status: 'success', Thumbs_data: myThumbsup});
     } else {
         throw { status: 'fail', message: 'DB 오류'};
     }
