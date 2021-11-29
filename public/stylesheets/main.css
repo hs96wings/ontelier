@@ -11,6 +11,10 @@
   font-family: 'Pretendard Variable';
 }
 
+body {
+  overflow-x: hidden;
+}
+
 #main-container {
   display: grid;
   grid-template-areas:

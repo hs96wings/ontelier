@@ -1,10 +1,65 @@
 {% extends 'main_layout.html' %}
 {% block content %}
-강의 페이지<br>
-{{class.class_title}}<br>
-{{class.class_cirriculum}}<br>
-{% for video in videos %}
-    {{video.video_url}}<br>
-    {{video.video_info}}<br>
-{% endfor %}
+
+
+{% if class %}
+<div class="contents_view_container">
+
+<!----- 강의영상 배너 ----->
+<div class="contents-banner-wrapper">
+  <!-- <img class="contents_banner" src="{{class.class_img}}"> -->
+  <div>{{class.class_title}}</div>
+  <button type="button" class="contents-button">▶ 0-1 수강하기</button>
+</div>
+
+    <div class="class_space"></div>
+
+<!----- 우측 컨텐츠 ----->
+<div class="class_right">
+  <div class="class_float_wrapper floating">
+
+      <p class="sub-title">커리큘럼</p>
+      <div class="pt20">{{class.class_cirriculum | safe}}</div>
+
+
+
+  </div>
+</div>
+
+<!----- 좌측 컨텐츠 ----->
+<div class="class_left">
+
+  <menu class="class_nav floating">
+    <ul>
+      <li data-target="#class_info">수업노트</li>
+      <li data-target="#class_teacher_name">댓글</li>
+    </ul>
+  </menu>
+
+  <div class="class_contents">
+    <!-- 클래스 설명 -->
+    <p id="class_info" class="scroll">{{class.class_title}}</p>
+    <div class="class_space"></div>
+
+    <!-- 챕터 소개 -->
+    <p id="class_teacher_name" class="scroll">강사 {{class.teacher_name}}</p>
+    <p class="class_teacher_info">
+    {% for video in videos %}
+        {{video.video_url}}<br>
+        {{video.video_info}}<br>
+    {% endfor %}</p>
+
+    <div class="class_space"></div>
+
+  </div>
+
+</div>
+
+    {% else %}
+    <h1>잘못된 접근입니다</h1>
+    {% endif %}
+    <!-- <input type="button" value="돌아가기" onclick="history.back()"> -->
+
+</div>
+
 {% endblock %}
