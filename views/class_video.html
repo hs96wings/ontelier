@@ -1,0 +1,72 @@
+{% extends 'main_layout.html' %}
+{% block content %}
+
+
+{% if class %}
+<div class="contents_video_container">
+
+<!----- 강의영상 배너 ----->
+<div class="contents-video-wrapper">
+  <!-- <img class="contents_banner" src="{{class.class_img}}"> -->
+  <button type="button" class="contents-button">▶</button>
+</div>
+
+    <div class="class_space"></div>
+
+<!----- 좌측 컨텐츠 ----->
+<div class="class_center">
+
+  <menu class="class_nav floating">
+    <ul>
+      <li data-target="#class_info" class="on" onclick="acyncMovePage('/htmls/class_contents_classnote.html')">수업노트</li>
+      <li data-target="#class_teacher_name" onclick="acyncMovePage('/htmls/class_contents_comment.html')">댓글</li>
+      <li data-target="#class_teacher_name" onclick="acyncMovePage('/htmls/class_contents_cirriculum.html')">커리큘럼</li>
+    </ul>
+  </menu>
+
+  <div class="class_contents">
+    <!-- 네비바 클릭시 에이젝스로 변경되는 콘텐츠 영역 -->
+  </div>
+
+</div>
+
+    {% else %}
+    <h1>잘못된 접근입니다</h1>
+    {% endif %}
+    <!-- <input type="button" value="돌아가기" onclick="history.back()"> -->
+
+</div>
+
+<script>
+
+
+    // 콘텐츠 로드
+    $(".class_contents").load('/htmls/class_contents_classnote.html');
+
+
+    function acyncMovePage(url){
+        $(".class_contents").load(url);
+    }
+
+$(function() {
+    var tabBtn = $(".class_nav li");     //각각의 버튼을 변수에 저장
+
+
+    tabBtn.click(function(){
+      var target = $(this);         //버튼의 타겟(순서)을 변수에 저장
+      var index = target.index();   //버튼의 순서를 변수에 저장
+      tabBtn.removeClass("on");    //버튼의 클래스를 삭제
+      target.addClass("on");       //타겟의 클래스를 추가
+    });
+  });
+
+  $(".cirriculum-title").click(function() {
+    $(this).next(".submenu").stop().slideToggle(300);
+    // $(this).toggleClass('on').siblings().removeClass('on');
+    $(this).next(".submenu").siblings(".submenu").slideUp(300); // 1개씩 펼치기
+  });
+
+</script>
+
+
+{% endblock %}
