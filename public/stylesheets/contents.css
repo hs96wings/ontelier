@@ -36,3 +36,66 @@
   margin: 0 25px;
   text-align: center;
 }
+
+.contents_view_container .class_float_wrapper {
+  height: fit-content;
+}
+
+/* -----메뉴----- */
+#menu {
+    border-collapse: collapse;
+}
+
+li {
+    list-style: none;
+    padding: 10px;
+}
+.cirriculum-title {
+    font-size: 17px;
+    font-weight: 700;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.2;
+    letter-spacing: normal;
+    text-align: left;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.cirriculum-title::before {
+    display: inline-block;
+    font-size: 17px;
+}
+
+.submenu{
+    display: none;
+    overflow: hidden;
+    transition: max-height 0.7s;
+    max-height: 300px;
+}
+
+.submenu::before {
+  display: inline-block;
+}
+
+.submenu.on>p{
+  font-weight: bold;
+  color: #006633;
+}
+
+.submenu p{
+    display: block;
+    padding: 15px 20px;
+    color: #222;
+    font-size: 14px;
+    position: relative;
+}
+
+/* ------------ */
+
+.contents_video_container {
+}
+
+.class_center {
+  width: 100%;
+}

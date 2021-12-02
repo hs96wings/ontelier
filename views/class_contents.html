@@ -9,16 +9,38 @@
 <div class="contents-banner-wrapper">
   <!-- <img class="contents_banner" src="{{class.class_img}}"> -->
   <div>{{class.class_title}}</div>
-  <button type="button" class="contents-button">▶ 0-1 수강하기</button>
+  <button type="button" class="contents-button" onclick="location.href='/class/contents/{{class.id}}/video'">▶ 0-1 수강하기</button>
 </div>
 
     <div class="class_space"></div>
 
 <!----- 우측 컨텐츠 ----->
 <div class="class_right">
-  <div class="class_float_wrapper floating">
+  <div class="class_float_wrapper">
 
       <p class="sub-title">커리큘럼</p>
+
+          <div id="menu">
+              <div class="cirriculum-title">0. prologue</div>
+              <div class="submenu">
+                  <p>안녕하세요. 친구같은 강사이름입니다</p>
+                  <p>준비물을 소개합니다</p>
+              </div>
+              <div class="cirriculum-title">1 펀치니들의 도구들 (클래스 자료 다운로드)</div>
+              <div class="submenu">
+                  <p>1-1 원단의 특성과 사용</p>
+                  <p>1-4 다양한 실의 질감</p>
+                  <p>1-5 도안 옮겨 그리기 (클래스 자료 다운로드)</p>
+              </div>
+              <div class="cirriculum-title">2 펀치니들의 방법 익히기</div>
+              <div class="submenu">
+                  <p>2-1 직선 연습하기</p>
+                  <p>2-3 원형 연습하기</p>
+                  <p>2-4 작업할 때 간격과 질감의 차이</p>
+                  <p>2-5 펀치니들 수정하는 방법</p>
+              </div>
+          </div>
+
       <div class="pt20">{{class.class_cirriculum | safe}}</div>
 
 
@@ -31,26 +53,13 @@
 
   <menu class="class_nav floating">
     <ul>
-      <li data-target="#class_info">수업노트</li>
-      <li data-target="#class_teacher_name">댓글</li>
+      <li data-target="#class_info" class="on" onclick="acyncMovePage('/htmls/class_contents_classnote.html')">수업노트</li>
+      <li data-target="#class_teacher_name" onclick="acyncMovePage('/htmls/class_contents_comment.html')">댓글</li>
     </ul>
   </menu>
 
   <div class="class_contents">
-    <!-- 클래스 설명 -->
-    <p id="class_info" class="scroll">{{class.class_title}}</p>
-    <div class="class_space"></div>
-
-    <!-- 챕터 소개 -->
-    <p id="class_teacher_name" class="scroll">강사 {{class.teacher_name}}</p>
-    <p class="class_teacher_info">
-    {% for video in videos %}
-        {{video.video_url}}<br>
-        {{video.video_info}}<br>
-    {% endfor %}</p>
-
-    <div class="class_space"></div>
-
+    <!-- 네비바 클릭시 에이젝스로 변경되는 콘텐츠 영역 -->
   </div>
 
 </div>
@@ -61,5 +70,54 @@
     <!-- <input type="button" value="돌아가기" onclick="history.back()"> -->
 
 </div>
+
+<script>
+
+
+    // 콘텐츠 로드
+    $(".class_contents").load('/htmls/class_contents_classnote.html');
+
+
+    function acyncMovePage(url){
+        // ajax option
+        // var ajaxOption = {
+        //         url : url,
+        //         async : true,
+        //         type : "GET",
+        //         dataType : "html",
+        //         cache : false
+        // };
+        //
+        // $.ajax(ajaxOption).done(function(data){
+        //     // Contents 영역 삭제
+        //     $('.class_contents').children().remove();
+        //     // Contents 영역 교체
+        //
+        //     $(".class_contents").load('/htmls/class_contents_classnote.html');
+        // });
+
+        $(".class_contents").load(url);
+    }
+
+$(function() {
+    var tabBtn = $(".class_nav li");     //각각의 버튼을 변수에 저장
+
+
+    tabBtn.click(function(){
+      var target = $(this);         //버튼의 타겟(순서)을 변수에 저장
+      var index = target.index();   //버튼의 순서를 변수에 저장
+      tabBtn.removeClass("on");    //버튼의 클래스를 삭제
+      target.addClass("on");       //타겟의 클래스를 추가
+    });
+  });
+
+  $(".cirriculum-title").click(function() {
+    $(this).next(".submenu").stop().slideToggle(300);
+    // $(this).toggleClass('on').siblings().removeClass('on');
+    $(this).next(".submenu").siblings(".submenu").slideUp(300); // 1개씩 펼치기
+  });
+
+</script>
+
 
 {% endblock %}
