@@ -353,7 +353,7 @@ router.get('/contents/:id/video', isLoggedIn, async (req, res) => {
             }
         });
         if (cirriculum) {
-            res.render('class_contents', {
+            res.render('class_video', {
                 cirriculum,
                 cmts,
                 info,
