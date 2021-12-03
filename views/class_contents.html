@@ -1,8 +1,6 @@
 {% extends 'main_layout.html' %}
 {% block content %}
 
-
-{% if class %}
 <div class="contents_view_container">
 
 <!----- 강의영상 배너 ----->
@@ -41,7 +39,25 @@
               </div>
           </div>
 
-      <div class="pt20">{{class.class_cirriculum | safe}}</div>
+          <!-- 커리큘럼 예시 -->
+          {% for cir in cirriculum %}
+            {% if cir.depth == 0 %}
+              <div class="cirriculum-title">{{cir.cirriculum_text}}</div>
+            {% else %}
+              <div>{{cir.cirriculum_text}}</div>
+            {% endif %}
+          {% endfor %}
+          <!-- 강의 목표 -->>
+          {{info.lecture_goal}}<br>
+          <!-- 강의 요약 -->
+          {{info.lecture_summary}}<br>
+          <!-- 강의 이전 내용 -->
+          {{info.lecture_previous}}<br>
+          <br>
+          {% for c in cmt %}
+          <!-- 유저 테이블도 연결은 해놨는데 sql에 안 불러와지네요 -->
+          {{c.lecture_cmt_text}} <small>{{c.lecture_cmt_enrolldate}}</small><br>
+          {% endfor %}
 
 
 
@@ -64,9 +80,6 @@
 
 </div>
 
-    {% else %}
-    <h1>잘못된 접근입니다</h1>
-    {% endif %}
     <!-- <input type="button" value="돌아가기" onclick="history.back()"> -->
 
 </div>

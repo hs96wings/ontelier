@@ -20,16 +20,11 @@ router.get('/', async (req, res, next) => {
 	let reviewClass;
 	
 	bestClass = await Class.findAll({
-		attributes: [[sequelize.fn("COUNT", sequelize.col("reviews.ClassId")), "reviewCount"]],
-		include: {
-			model: Review,
-		},
 		order: [['class_score', 'DESC']],
 		limit: 5,
 		group: ['id']
 	});
 
-	console.log(bestClass);
 	saleClass = await Class.findAll({
 		order: [['class_discount', 'DESC']],
 		limit: 5,

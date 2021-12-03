@@ -24,12 +24,3 @@ exports.isAdmin = (req, res, next) => {
         res.redirect('/');
     }
 }
-
-// exports.isSuper = (req, res, next) => {
-//     if (req.user.user_roll === 'admin') {
-//         next();
-//     } else {
-//         req.flash('error', '권한이 없습니다');
-//         res.redirect('/');
-//     }
-// }

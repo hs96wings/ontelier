@@ -6,12 +6,7 @@ const axios = require('axios');
 const sequelize = require('sequelize');
 
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
-const User = require('../models/user');
-const Class = require('../models/class');
-const Review = require('../models/review');
-const Purchase = require('../models/purchase');
-const Wishlist = require('../models/wishlist');
-const Thumbsup = require('../models/thumbsup');
+const { User, Class, Review, Purchase, Wishlist, Thumbsup, Lecture_cmt, Lecture_info, Cirriculum } = require('../models');
 
 const router = express.Router();
 
@@ -248,13 +243,43 @@ router.post('/:id/payment/complete', async (req, res) => {
     }
 });
 
-router.get('/contents/:id', async (req, res, next) => {
+
+//     const isPurchase = await Purchase.findOne({
+//         where: {
+//             UserUserId: req.user.user_id,
+//             ClassId: req.params.id,
+//         }
+//     });
+//     if (isPurchase) {
+//         let class_title = await Class.findOne({
+//             where: {
+//                 id: req.params.id,
+//             }
+//         });
+        
+//         // if (cirriculum) {
+//             res.render('class_contents', {
+//                 cirriculum,
+//                 cmt,
+//                 info,
+//                 class_title: class_title.class_title
+//             });
+//         // } else {
+//         //     req.flash('error', '강의를 불러오지 못했습니다');
+//         //     res.redirect('/mypage');
+//         // }
+//     } else {
+//         req.flash('error', '구매하지 않은 강의입니다');
+//         res.redirect('/');
+//     }
+// });
+router.get('/contents/:id', isLoggedIn, async (req, res, next) => {
     const isPurchase = await Purchase.findOne({
         where: {
             UserUserId: req.user.user_id,
             ClassId: req.params.id,
         }
-    })
+    });
     if (isPurchase) {
         const isClass = await Class.findOne({
             where: {
@@ -262,15 +287,28 @@ router.get('/contents/:id', async (req, res, next) => {
             }
         });
         if (isClass) {
-            // let result = await Lecture.findAll({
-            //     where: {
-            //         ClassId: req.params.id,
-            //     }
-            // });
-            result = null;
-            if (result) {
+            let cmt = await Lecture_cmt.findAll({
+                where: {
+                    ClassId: req.params.id,
+                }
+            });
+            let info = await Lecture_info.findOne({
+                where: {
+                    CirriculumId: 1,
+                }
+            });
+            let cirriculum = await Cirriculum.findAll({
+                where: {
+                    ClassId: req.params.id,
+                }
+            });
+            if (!cmt) cmt = null;
+            if (!info) info = null;
+            if (cirriculum) {
                 res.render('class_contents', {
-                    videos: result,
+                    cirriculum,
+                    cmt,
+                    info,
                     class: isClass
                 });
             } else {
@@ -279,6 +317,49 @@ router.get('/contents/:id', async (req, res, next) => {
             }
         } else {
             req.flash('error', '존재하지 않는 강의입니다');
+            res.redirect('/mypage');
+        }
+    } else {
+        req.flash('error', '구매하지 않은 강의입니다');
+        res.redirect('/');
+    }
+});
+
+router.get('/contents/:id/video', isLoggedIn, async (req, res) => {
+    const isPurchase = await Purchase.findOne({
+        where: {
+            UserUserId: req.user.user_id,
+            ClassId: req.params.id,
+        }
+    });
+    if (isPurchase) {
+        let cmts = await Lecture_cmt.findAll({
+            where: {
+                ClassId: req.params.id,
+            },
+            include: {
+                model: User,
+                attributes: ['user_nickname']
+            }
+        });
+        let info = await Lecture_info.findOne({
+            where: {
+                CirriculumId: 1,
+            }
+        });
+        let cirriculum = await Cirriculum.findAll({
+            where: {
+                ClassId: req.params.id,
+            }
+        });
+        if (cirriculum) {
+            res.render('class_contents', {
+                cirriculum,
+                cmts,
+                info,
+            });
+        } else {
+            req.flash('error', '강의를 불러오지 못했습니다');
             res.redirect('/mypage');
         }
     } else {
