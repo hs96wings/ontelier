@@ -20,10 +20,16 @@ router.get('/', async (req, res, next) => {
 	let reviewClass;
 	
 	bestClass = await Class.findAll({
+		attributes: [[sequelize.fn("COUNT", sequelize.col("reviews.ClassId")), "reviewCount"]],
+		include: {
+			model: Review,
+		},
 		order: [['class_score', 'DESC']],
 		limit: 5,
+		group: ['id']
 	});
 
+	console.log(bestClass);
 	saleClass = await Class.findAll({
 		order: [['class_discount', 'DESC']],
 		limit: 5,
@@ -47,13 +53,16 @@ router.get('/', async (req, res, next) => {
 
 	// SELECT class_title FROM classes INNER JOIN reviews ON classes.id = reviews.ClassId GROUP BY classes.id ORDER BY COUNT(classes.id) DESC;
 	reviewClass = await Class.findAll({
+		attributes: {
+			include: [[sequelize.fn("COUNT", sequelize.col("reviews.ClassId")), "reviewCount"]]
+		},
 		include: [
 			{
 				model: Review,
 				attributes: ['ClassId']
 			}
 		],
-		group: ['ClassId'],
+		group: ['id'],
 		order: [[sequelize.fn('COUNT', sequelize.col('ClassId')), 'DESC']],
 	});
 
@@ -63,7 +72,7 @@ router.get('/', async (req, res, next) => {
 			sale: saleClass,
 			newes: newClass,
 			family: familyClass,
-			reviews: reviewClass,
+			reviews: reviewClass.rows,
 			title: '온뜰',
 			messages: req.flash('error'),
 		});

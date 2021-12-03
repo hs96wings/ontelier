@@ -10,48 +10,47 @@ const User = require('../models/user');
 const Class = require('../models/class');
 const Review = require('../models/review');
 const Purchase = require('../models/purchase');
-const Lecture = require('../models/lecture');
 const Wishlist = require('../models/wishlist');
 const Thumbsup = require('../models/thumbsup');
 
 const router = express.Router();
 
 try {
-	fs.readdirSync('./public/images/uploads');
+    fs.readdirSync('./public/images/uploads');
 } catch (error) {
-	console.error('uploads 폴더가 없어 uploads 폴더를 생성합니다');
-	fs.mkdirSync('./public/images/uploads')
+    console.error('uploads 폴더가 없어 uploads 폴더를 생성합니다');
+    fs.mkdirSync('./public/images/uploads')
 }
 
 const upload = multer({
-	storage: multer.diskStorage({
-		destination(req, file, cb) {
-			cb(null, './public/images/uploads/');
-		},
-		filename(req, file, cb) {
-			const ext = path.extname(file.originalname);
-			cb(null, req.user.user_nickname + '_' + Date.now() + ext);
-		},
-	}),
-	fileFilter: function (req, file, cb) {
-		var ext = path.extname(file.originalname);
-		if (ext !== '.png' && ext !== '.jpeg' && ext !== '.jpg' && ext !== '.gif') {
-			req.flash('error', '클래스는 등록되었으나 이미지는 등록되지 않았습니다');
-			cb(null, false);
-		} else {
-			cb(null, true);
-		}
-	},
-	limits: { fileSize: 10 * 1024 * 1024 },
+    storage: multer.diskStorage({
+        destination(req, file, cb) {
+            cb(null, './public/images/uploads/');
+        },
+        filename(req, file, cb) {
+            const ext = path.extname(file.originalname);
+            cb(null, req.user.user_nickname + '_' + Date.now() + ext);
+        },
+    }),
+    fileFilter: function (req, file, cb) {
+        var ext = path.extname(file.originalname);
+        if (ext !== '.png' && ext !== '.jpeg' && ext !== '.jpg' && ext !== '.gif') {
+            req.flash('error', '클래스는 등록되었으나 이미지는 등록되지 않았습니다');
+            cb(null, false);
+        } else {
+            cb(null, true);
+        }
+    },
+    limits: { fileSize: 10 * 1024 * 1024 },
 });
 
 
 router.get('/:id', async (req, res, next) => {
     let result = await Class.findOne({
-        where: {id: req.params.id}
+        where: { id: req.params.id }
     });
     let reviews = await Review.findAll({
-        where: {ClassId: req.params.id}
+        where: { ClassId: req.params.id }
     });
     let wishlist = await Wishlist.findAndCountAll({
         include: {
@@ -81,7 +80,7 @@ router.get('/:id', async (req, res, next) => {
             userWish,
         });
     } else {
-        req.flash('error', 'DB 오류');
+        req.flash('error', '없는 강의입니다');
         res.redirect('/');
     }
 });
@@ -90,15 +89,17 @@ router.get('/:id/review', async (req, res, next) => {
     let result = await Review.findAll({
         where: { ClassId: req.params.id },
         include: {
-			model: Class,
-			attributes: ['class_title'],
-		},
+            model: Class,
+            attributes: ['class_title'],
+        },
         include: {
             model: User,
             attributes: ['user_id', 'user_email', 'user_nickname', 'user_profile_url']
         },
-        include: {
-            model: Thumbsup,
+    });
+    let isThumbs = await Thumbsup.findAll({
+        where: {
+            UserUserId: req.user.user_id
         }
     });
     if (result) {
@@ -131,13 +132,13 @@ router.get('/:id/review/write', isLoggedIn, async (req, res, next) => {
 });
 
 router.post('/review/write', isLoggedIn, upload.single('review_img'), async (req, res) => {
-	let filename;
+    let filename;
 
-	if (req.file === undefined) {
-		filename = '';
-	} else {
-		filename = `/images/uploads/${req.file.filename}`;
-	}
+    if (req.file === undefined) {
+        filename = '';
+    } else {
+        filename = `/images/uploads/${req.file.filename}`;
+    }
     try {
         await Review.create({
             review_score: req.body.review_score,
@@ -148,7 +149,7 @@ router.post('/review/write', isLoggedIn, upload.single('review_img'), async (req
             ClassId: req.body.class_id,
             UserUserId: req.user.user_id,
         });
-     
+
         let url = '/class/' + req.body.class_id + '/review';
         res.redirect(url);
     } catch (error) {
@@ -182,7 +183,7 @@ router.get('/:id/payment', isLoggedIn, async (req, res, next) => {
     }
 });
 
-router.post('/:id/payment/complete', async(req, res) => {
+router.post('/:id/payment/complete', async (req, res) => {
     try {
         // 결제 번호, 주문 번호 추출
         const { imp_uid, merchant_uid } = req.body;
@@ -209,9 +210,9 @@ router.post('/:id/payment/complete', async(req, res) => {
             headers: { "Authorization": access_token }
         });
         const paymentData = getPaymentData.data.response;
-        
+
         // 금액 조회
-        const order = await Class.findOne({where: {id: req.params.id }});
+        const order = await Class.findOne({ where: { id: req.params.id } });
         const price = order.class_price;
         const discount = order.class_discount;
         const amountToBePaid = price - (price * discount / 100);
@@ -232,15 +233,15 @@ router.post('/:id/payment/complete', async(req, res) => {
                 case 'ready':
                     const { vbank_num, vbank_date, vbank_name } = paymentData;
                     // await Bank.create
-                    res.send({status: 'vbankIssued', message: '가상계좌 발급 성공'});
+                    res.send({ status: 'vbankIssued', message: '가상계좌 발급 성공' });
                     break;
                 // 결제 완료
                 case 'paid':
-                    res.send({status: 'success', message: '결제 성공'});
+                    res.send({ status: 'success', message: '결제 성공' });
                     break;
             }
         } else {
-            throw { status: 'forgery', message: '위조된 결제시도'};
+            throw { status: 'forgery', message: '위조된 결제시도' };
         }
     } catch (e) {
         res.status(400).send(e);
@@ -261,11 +262,12 @@ router.get('/contents/:id', async (req, res, next) => {
             }
         });
         if (isClass) {
-            let result = await Lecture.findAll({
-                where: {
-                    ClassId: req.params.id,
-                }
-            });
+            // let result = await Lecture.findAll({
+            //     where: {
+            //         ClassId: req.params.id,
+            //     }
+            // });
+            result = null;
             if (result) {
                 res.render('class_contents', {
                     videos: result,
@@ -285,9 +287,9 @@ router.get('/contents/:id', async (req, res, next) => {
     }
 });
 
-router.post('/:id/review/like', async(req, res) => {
+router.post('/:id/review/like', async (req, res) => {
     const { ClassId, id } = req.body;
-  
+
     const isThumbs = await Thumbsup.findOne({
         where: {
             ReviewId: id,
@@ -311,15 +313,15 @@ router.post('/:id/review/like', async(req, res) => {
             });
             if (change) {
                 const num = await Review.findOne({
-                    where: {id, ClassId}
+                    where: { id, ClassId }
                 });
                 if (num) {
-                    res.send({status: 'success', message: '좋아요를 취소했습니다', num: num.review_best_num});
+                    res.send({ status: 'success', message: '좋아요를 취소했습니다', num: num.review_best_num });
                 } else {
-                    throw { status: 'fail', message: 'DB 오류'};
+                    throw { status: 'fail', message: 'DB 오류' };
                 }
             } else {
-                throw { status: 'fail', message: 'DB 오류'};
+                throw { status: 'fail', message: 'DB 오류' };
             }
         } catch (e) {
             res.status(400).send(e);
@@ -339,15 +341,15 @@ router.post('/:id/review/like', async(req, res) => {
             });
             if (change) {
                 const num = await Review.findOne({
-                    where: {id, ClassId}
+                    where: { id, ClassId }
                 });
                 if (num) {
-                    res.send({status: 'success', message: '좋아요를 눌렀습니다', num: num.review_best_num});
+                    res.send({ status: 'success', message: '좋아요를 눌렀습니다', num: num.review_best_num });
                 } else {
-                    throw { status: 'fail', message: 'DB 오류'};
+                    throw { status: 'fail', message: 'DB 오류' };
                 }
             } else {
-                throw { status: 'fail', message: 'DB 오류'};
+                throw { status: 'fail', message: 'DB 오류' };
             }
         } catch (e) {
             res.status(400).send(e);
@@ -375,7 +377,7 @@ router.post('/:id/review/like', async(req, res) => {
     // }
 });
 
-router.post('/:id/wish', isLoggedIn, async(req, res) => {
+router.post('/:id/wish', isLoggedIn, async (req, res) => {
     req.params.id;
     const isWish = await Wishlist.findOne({
         where: {
@@ -397,12 +399,12 @@ router.post('/:id/wish', isLoggedIn, async(req, res) => {
                 }
             });
             if (wish_num) {
-                res.send({status: 'success', message: '위시리스트에서 강의를 뺐습니다', num: wish_num.count});
+                res.send({ status: 'success', message: '위시리스트에서 강의를 뺐습니다', num: wish_num.count });
             } else {
-                res.send({status: 'success', message: '위시리스트에서 강의를 뺐습니다'});
+                res.send({ status: 'success', message: '위시리스트에서 강의를 뺐습니다' });
             }
         } catch (e) {
-            throw { status: 'fail', message: 'DB 오류'};
+            throw { status: 'fail', message: 'DB 오류' };
         }
     } else {
         try {
@@ -416,12 +418,12 @@ router.post('/:id/wish', isLoggedIn, async(req, res) => {
                 }
             });
             if (wish_num) {
-                res.send({status: 'success', message: '찜목록에 넣었습니다', num: wish_num.count});
+                res.send({ status: 'success', message: '찜목록에 넣었습니다', num: wish_num.count });
             } else {
-                res.send({status: 'success', message: '찜목록에 넣었습니다'});
+                res.send({ status: 'success', message: '찜목록에 넣었습니다' });
             }
         } catch (e) {
-            throw { status: 'fail', message: 'DB 오류'};
+            throw { status: 'fail', message: 'DB 오류' };
         }
     }
 })
