@@ -46,28 +46,22 @@ router.get('/', async (req, res, next) => {
 		limit: 5,
 	});
 
-	// SELECT class_title FROM classes INNER JOIN reviews ON classes.id = reviews.ClassId GROUP BY classes.id ORDER BY COUNT(classes.id) DESC;
 	reviewClass = await Class.findAll({
-		attributes: {
-			include: [[sequelize.fn("COUNT", sequelize.col("reviews.ClassId")), "reviewCount"]]
-		},
-		include: [
-			{
-				model: Review,
-				attributes: ['ClassId']
-			}
-		],
-		group: ['id'],
+		include: [{
+			model: Review,
+			attributes: ['ClassId']
+		}],
+		group: ['ClassId'],
 		order: [[sequelize.fn('COUNT', sequelize.col('ClassId')), 'DESC']],
 	});
 
-	if (bestClass && saleClass && newClass && familyClass && reviewClass) {
+	if (bestClass && saleClass && newClass && familyClass) {
 		res.render('main', {
 			best: bestClass,
 			sale: saleClass,
 			newes: newClass,
 			family: familyClass,
-			reviews: reviewClass.rows,
+			reviews: reviewClass,
 			title: '온뜰',
 			messages: req.flash('error'),
 		});
