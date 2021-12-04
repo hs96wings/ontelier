@@ -16,9 +16,9 @@
 
   <menu class="class_nav floating">
     <ul>
-      <li data-target="#class_info" class="on" onclick="acyncMovePage('/htmls/class_contents_classnote.html')">수업노트</li>
-      <li data-target="#class_teacher_name" onclick="acyncMovePage('/htmls/class_contents_comment.html')">댓글</li>
-      <li data-target="#class_teacher_name" onclick="acyncMovePage('/htmls/class_contents_cirriculum.html')">커리큘럼</li>
+      <li class="on" onclick="acyncMovePage(classnote)">수업노트</li>
+      <li onclick="acyncMovePage(comment)">댓글</li>
+      <li onclick="acyncMovePage(cirriculum)">커리큘럼</li>
     </ul>
   </menu>
 
@@ -33,13 +33,49 @@
 
 <script>
 
+      var classnote = `<!-- 클래스 설명 -->
+        <p id="class_info" class="scroll">{{class.class_title}}</p>
+        <div class="class_space"></div>
+
+        <!-- 챕터 소개 -->
+
+        <!-- 수업 목표 -->>
+        <p>{{info.lecture_goal}}</p>
+
+        <!-- 수업 개요 -->
+        <p>{{info.lecture_summary}}</p>
+
+        <!-- 다음 영상 예고 -->
+        <p>{{info.lecture_previous}}</p>
+
+
+        <div class="class_space"></div>`;
+
+      var comment = `{% for c in cmt %}
+                <!-- 유저 테이블도 연결은 해놨는데 sql에 안 불러와지네요 -->
+                {{c.lecture_cmt_text}} <small>{{c.lecture_cmt_enrolldate}}</small><br>
+                {% endfor %}`;
+
+      var cirriculum = `
+            <p class="sub-title">커리큘럼</p>
+
+                <div id="menu">
+                <!-- 커리큘럼 -->
+                {% for cir in cirriculum %}
+                  {% if cir.depth == 0 %}
+                    <div class="cirriculum-title">{{cir.cirriculum_text}}</div>
+                  {% else %}
+                    <div class="submenu">{{cir.cirriculum_text}}</div>
+                  {% endif %}
+                {% endfor %}
+                </div>`;
 
     // 콘텐츠 로드
-    $(".class_contents").load('/htmls/class_contents_classnote.html');
+    $(".class_contents").html(classnote);
 
 
-    function acyncMovePage(url){
-        $(".class_contents").load(url);
+    function acyncMovePage(contents){
+        $(".class_contents").html(contents);
     }
 
 $(function() {
