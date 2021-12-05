@@ -51,6 +51,15 @@ module.exports = class User extends Sequelize.Model {
             bizz_license: {
                 type: Sequelize.STRING(10),
                 allowNull: true,
+            },
+            key_for_verify: {
+                type: Sequelize.STRING(10),
+                allowNull: true,
+            },
+            email_verified: {
+                type: Sequelize.BOOLEAN,
+                allowNull: false,
+                defaultValue: 0,
             }
         }, {
             sequelize,

@@ -3,6 +3,7 @@ const Class = require('../models/class');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const { Op } = require('sequelize');
 const Review = require('../models/review');
+const crypto = require('crypto');
 const sequelize = require('sequelize');
 const mailer = require('./mail');
 
