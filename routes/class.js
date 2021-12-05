@@ -411,26 +411,6 @@ router.post('/:id/review/like', async (req, res) => {
             res.status(400).send(e);
         }
     }
-    // }
-    // const change = await Review.update({
-    //     review_best_num: sequelize.literal('review_best_num + 1'),
-    // }, {
-    //     where: {id, ClassId}
-    // });
-    // if (change) {
-    //     console.log(change);
-    //     const result = await Review.findOne({
-    //         where: {id, ClassId}
-    //     });
-    //     if (result) {
-    //         console.log(result);
-    //         res.send({status: 'success', message: '좋아요', num: result.review_best_num});
-    //     } else {
-    //         throw { status: 'fail', message: 'DB 오류'};
-    //     }
-    // } else {
-    //     throw { status: 'fail', message: 'DB 오류'};
-    // }
 });
 
 router.post('/:id/wish', isLoggedIn, async (req, res) => {

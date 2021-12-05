@@ -80,8 +80,11 @@ function myFunction() {
 }
 </script>
 
-    {% if messages and messages.length > 0 %}
+    <!-- {% if messages and messages.length > 0 %}
     <script>alert("{{messages}}");</script>
+    {% endif %} -->
+    {% if messages.error %}
+    <script>alert("{{messages.error}}");</script>
     {% endif %}
 
 <!-- Channel Plugin Scripts -->

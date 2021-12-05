@@ -4,6 +4,7 @@ const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const { Op } = require('sequelize');
 const Review = require('../models/review');
 const sequelize = require('sequelize');
+const mailer = require('./mail');
 
 const router = express.Router();
 
@@ -22,7 +23,6 @@ router.get('/', async (req, res, next) => {
 	bestClass = await Class.findAll({
 		order: [['class_score', 'DESC']],
 		limit: 5,
-		group: ['id']
 	});
 
 	saleClass = await Class.findAll({
@@ -67,6 +67,23 @@ router.get('/', async (req, res, next) => {
 	} else {
 		req.flash('error', 'DB 오류');
 		res.status(500).send();
+	}
+});
+
+router.post('/mail/:id', async (req, res) => {
+	const result = await Class.findOne({
+		where: {
+			id: req.params.id,
+		}
+	});
+	if (result) {
+		let emailParam = {
+			toEmail: req.user.user_email,
+			subject: '온뜰에서 강의를 구매하셨습니다',
+			text: req.user.user_nickname + ' 회원님! ' + result.class_title + ' 강의 구매가 완료되었습니다'
+		};
+	
+		mailer.sendGmail(emailParam);
 	}
 })
 
