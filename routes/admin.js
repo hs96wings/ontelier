@@ -134,7 +134,8 @@ router.get('/', isLoggedIn, isAdmin, async (req, res) => {
 			order: [['createdAt', 'DESC']],
 			where: {
 				UserUserId: req.user.user_id
-			}
+			},
+			where: filter_condition,
 		});
 		res.render('admin_list', {
 			classes: result.rows,
