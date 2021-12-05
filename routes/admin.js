@@ -50,7 +50,7 @@ router.get('/', isLoggedIn, isAdmin, async (req, res) => {
 	const user_roll = req.user.user_roll;
 	const limit = 5;
 	let category = req.query.category;
-	let roll_condition;
+	const roll_condition = req.user.user_roll === 'admin' ? '%%' : req.user.user_id;
 
 	if (pageNum === undefined) pageNum = 1;
 	if (pageNum > 1) {
@@ -61,9 +61,6 @@ router.get('/', isLoggedIn, isAdmin, async (req, res) => {
 	let filter_condition;
 	if (!keyword) keyword = '';
 	if (!category) category = '';
-
-	if (user_roll === 'admin') roll_condition = '%%';
-	else roll_condition = req.user.user_id;
 	
 	switch (filter) {
 		case 'class_price':
@@ -145,7 +142,7 @@ router.get('/', isLoggedIn, isAdmin, async (req, res) => {
 });
 
 router.get('/write', isLoggedIn, isAdmin, (req, res) => {
-	res.render('admin_list_write', {title: '온뜰 - 클래스 추가'});
+	res.render('admin_list_write', {title: '온뜰 - 클래스 추가', messages: req.flash('error')});
 });
 
 router.post('/write', isLoggedIn, isAdmin, upload.single('class_img'), async (req, res, next) => {
@@ -176,14 +173,23 @@ router.post('/write', isLoggedIn, isAdmin, upload.single('class_img'), async (re
 });
 
 router.get('/update/:id', isLoggedIn, isAdmin, async (req, res) => {
-	let result = await Class.findOne({where: {id: req.params.id}});
+	const roll_condition = req.user.user_roll === 'admin' ? '%%' : req.user.user_id;
+	const result = await Class.findOne({
+		where: {
+			id: req.params.id,
+			UserUserId: {
+				[Op.like]: roll_condition
+			}
+		}
+	});
 	if (result) {
 		res.render('admin_list_update', {
 			title: '온뜰 - 클래스 수정',
-			class: result
+			class: result,
+			messages: req.flash('error'),
 		});
 	} else {
-		req.flash('error', 'DB 오류');
+		req.flash('error', '다른 사람의 강의는 수정할 수 없습니다');
 		res.redirect('/admin');
 	}
 });
@@ -207,10 +213,7 @@ router.post('/update', isLoggedIn, isAdmin, upload.single('class_img'), async (r
 			class_family, category_high, category_low, class_info,
 			teacher_name, teacher_info, class_cirriculum, class_discount,
 		}, {
-			where: {
-				id,
-				UserUserId: req.user.user_id,
-			}
+			where: { id }
 		});
 	} catch (error) {
 		req.flash('error', 'DB 오류');
@@ -247,7 +250,7 @@ router.get('/alluser', isLoggedIn, isAdmin, async (req, res) => {
 	}
 
 	if (result) {
-		res.render('admin_alluser', {title: '온뜰 - 유저보기', users: result});
+		res.render('admin_alluser', {title: '온뜰 - 유저보기', users: result, messages: req.flash('error')});
 	} else {
 		req.flash('error', 'DB 오류');
 		res.redirect('/admin');
@@ -255,19 +258,25 @@ router.get('/alluser', isLoggedIn, isAdmin, async (req, res) => {
 });
 
 router.get('/class/:id', isLoggedIn, isAdmin, async (req, res) => {
-	let result = await Class.findOne({where: { id: req.params.id }});
+	const roll_condition = req.user.user_roll === 'admin' ? '%%' : req.user.user_id;
+	const result = await Class.findOne({
+		where: {
+			id: req.params.id,
+			UserUserId: {
+				[Op.like]: roll_condition
+			}
+		}
+	});
 	if (result) {
-		res.render('admin_list_view', {title: '온뜰 - 클래스 조회', class: result});
+		res.render('admin_list_view', {title: '온뜰 - 클래스 조회', class: result, messages: req.flash('error')});
 	} else {
-		req.flash('error', 'DB 오류');
+		req.flash('error', '다른 사람의 강의는 볼 수 없습니다');
 		res.redirect('/admin');
 	}
 });
 
 router.get('/review', isLoggedIn, isAdmin, async (req, res) => {
-	let roll_condition;
-	if (req.user.user_roll === 'admin') roll_condition = '%%';
-	else roll_condition = req.user.user_id;
+	const roll_condition = req.user.user_roll === 'admin' ? '%%' : req.user.user_id;
 
 	const result = await Review.findAll({
 		include: {
@@ -285,6 +294,7 @@ router.get('/review', isLoggedIn, isAdmin, async (req, res) => {
 		res.render('admin_review', {
 			title: '온뜰 - 후기',
 			reviews: result,
+			messages: req.flash('error')
 		});
 	} else {
 		req.flash('error', 'DB 오류');
@@ -302,7 +312,7 @@ router.get('/review/:id', isLoggedIn, isAdmin, async (req, res) => {
 	});
 
 	if (result) {
-		res.render('admin_review_view', {title: '온뜰 - 후기 조회', review: result});
+		res.render('admin_review_view', {title: '온뜰 - 후기 조회', review: result, messages: req.flash('error')});
 	} else {
 		req.flash('error', 'DB 오류');
 		res.redirect('/admin');

@@ -73,6 +73,7 @@ router.get('/:id', async (req, res, next) => {
             reviews,
             wishlist_num: wishlist.count,
             userWish,
+            messages: req.flash('error')
         });
     } else {
         req.flash('error', '없는 강의입니다');
@@ -92,14 +93,9 @@ router.get('/:id/review', async (req, res, next) => {
             attributes: ['user_id', 'user_email', 'user_nickname', 'user_profile_url']
         },
     });
-    // let isThumbs = await Thumbsup.findAll({
-    //     where: {
-    //         UserUserId: req.user.user_id
-    //     }
-    // });
     if (result) {
         res.render('class_review', {
-            reviews: result,
+            reviews: result, messages: req.flash('error')
         });
     } else {
         req.flash('error', 'DB 오류');
@@ -108,21 +104,28 @@ router.get('/:id/review', async (req, res, next) => {
 });
 
 router.get('/:id/review/write', isLoggedIn, async (req, res, next) => {
-    let result;
-    result = await Class.findOne({
+    const isWrite = await Review.findOne({
         where: {
-            id: req.params.id
+            UserUserId: req.user.user_id,
         },
-        attributes: ['id']
     });
-
-    if (result) {
-        res.render('class_review_write', {
-            result: result,
-        });
-    } else {
-        req.flash('오류');
+    if (isWrite) {
+        req.flash('error', '이미 후기를 작성한 강의입니다');
         res.redirect('/mypage');
+    } else {
+        const result = await Class.findOne({
+            where: {
+                id: req.params.id
+            },
+            attributes: ['id']
+        });
+
+        if (result) {
+            res.render('class_review_write', { result, messages: req.flash('error') });
+        } else {
+            req.flash('error', 'DB 오류');
+            res.redirect('/mypage');
+        }
     }
 });
 
@@ -169,7 +172,7 @@ router.get('/:id/payment', isLoggedIn, async (req, res, next) => {
         });
         if (payClass) {
             res.render('class_payment', {
-                class: payClass
+                class: payClass, messages: req.flash('error')
             });
         } else {
             req.flash('error', '오류가 발생했습니다');
@@ -243,36 +246,6 @@ router.post('/:id/payment/complete', async (req, res) => {
     }
 });
 
-
-//     const isPurchase = await Purchase.findOne({
-//         where: {
-//             UserUserId: req.user.user_id,
-//             ClassId: req.params.id,
-//         }
-//     });
-//     if (isPurchase) {
-//         let class_title = await Class.findOne({
-//             where: {
-//                 id: req.params.id,
-//             }
-//         });
-        
-//         // if (cirriculum) {
-//             res.render('class_contents', {
-//                 cirriculum,
-//                 cmt,
-//                 info,
-//                 class_title: class_title.class_title
-//             });
-//         // } else {
-//         //     req.flash('error', '강의를 불러오지 못했습니다');
-//         //     res.redirect('/mypage');
-//         // }
-//     } else {
-//         req.flash('error', '구매하지 않은 강의입니다');
-//         res.redirect('/');
-//     }
-// });
 router.get('/contents/:id', isLoggedIn, async (req, res, next) => {
     const isPurchase = await Purchase.findOne({
         where: {
@@ -309,7 +282,8 @@ router.get('/contents/:id', isLoggedIn, async (req, res, next) => {
                     cirriculum,
                     cmt,
                     info,
-                    class: isClass
+                    class: isClass,
+                    messages: req.flash('error')
                 });
             } else {
                 req.flash('error', '강의를 불러오지 못했습니다');
@@ -357,6 +331,7 @@ router.get('/contents/:id/video', isLoggedIn, async (req, res) => {
                 cirriculum,
                 cmts,
                 info,
+                messages: req.flash('error')
             });
         } else {
             req.flash('error', '강의를 불러오지 못했습니다');

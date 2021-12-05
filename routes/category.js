@@ -50,11 +50,12 @@ router.get('/', async (req, res, next) => {
 			title: '온뜰',
 			best,
 			category1,
-			category2
+			category2,
+			messages: req.flash('error')
 		});
 	} else {
 		req.flash('error', 'DB 오류');
-		res.render('error');
+		res.redirect('/');
 	}
 });
 
@@ -150,7 +151,7 @@ router.get('/all', async (req, res, next) => {
 			classes: result,
 			category1,
 			category2,
-			sort
+			sort, messages: req.flash('error')
 		});
 	} else {
 		req.flash('error', 'DB 오류');

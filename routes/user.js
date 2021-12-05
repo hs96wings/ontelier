@@ -61,6 +61,7 @@ router.get('/', isLoggedIn, async (req, res) => {
             purchase_num: purchases.count,
             wishlist_num: wishlist_num,
             review_num: review_num,
+            messages: req.flash('error'),
         });
     } else {
         req.flash('error', 'DB 오류');
@@ -69,7 +70,7 @@ router.get('/', isLoggedIn, async (req, res) => {
 })
 
 router.get('/edit', isLoggedIn, (req, res, next) => {
-    res.render('userinfo_update', {user: req.user});
+    res.render('userinfo_update', {user: req.use, messages: req.flash('error'),});
 });
 
 router.post('/update', isLoggedIn, upload.single('user_profile_url'), async (req, res, next) => {
@@ -150,7 +151,7 @@ router.get('/purchase', isLoggedIn, async (req, res, next) => {
         }
     });
     if (classes) {
-        res.render('my_purchase', {title: '온뜰', classes})
+        res.render('my_purchase', {title: '온뜰', classes, messages: req.flash('error'),})
     } else {
         req.flash('error', 'DB 오류');
         res.redirect('/mypage');

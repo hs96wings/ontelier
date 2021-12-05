@@ -89,7 +89,7 @@ router.get('/search', async (req, res, next) => {
 
 	if (result) {
 		let title = req.query.title + '" 검색결과';
-		res.render('search', {title, classes: result});
+		res.render('search', {title, classes: result, messages: req.flash('error')});
 	} else {
 		req.flash('error', 'DB 오류');
 		res.redirect('/');
