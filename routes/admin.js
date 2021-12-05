@@ -46,11 +46,11 @@ router.get('/', isLoggedIn, isAdmin, async (req, res) => {
 	let pageNum = req.query.page;
 	let filter = req.query.filter;
 	let keyword = req.query.keyword;
-	let offset = 0;
+	const offset = 0;
 	const user_roll = req.user.user_roll;
 	const limit = 5;
 	let category = req.query.category;
-	let result;
+	let roll_condition;
 
 	if (pageNum === undefined) pageNum = 1;
 	if (pageNum > 1) {
@@ -61,6 +61,9 @@ router.get('/', isLoggedIn, isAdmin, async (req, res) => {
 	let filter_condition;
 	if (!keyword) keyword = '';
 	if (!category) category = '';
+
+	if (user_roll === 'admin') roll_condition = '%%';
+	else roll_condition = req.user.user_id;
 	
 	switch (filter) {
 		case 'class_price':
@@ -70,6 +73,9 @@ router.get('/', isLoggedIn, isAdmin, async (req, res) => {
 				},
 				category_high: {
 					[Op.like]: '%' + category + '%'
+				},
+				UserUserId: {
+					[Op.like]: roll_condition
 				}
 			};
 			break;
@@ -81,6 +87,9 @@ router.get('/', isLoggedIn, isAdmin, async (req, res) => {
 				category_low: {
 					[Op.like]: '%' + keyword + '%'
 				},
+				UserUserId: {
+					[Op.like]: roll_condition
+				}
 			};
 			break;
 		case 'teacher_name':
@@ -91,6 +100,9 @@ router.get('/', isLoggedIn, isAdmin, async (req, res) => {
 				teacher_name: {
 					[Op.like]: '%' + keyword + '%'
 				},
+				UserUserId: {
+					[Op.like]: roll_condition
+				}
 			};
 			break;
 		default:
@@ -101,42 +113,19 @@ router.get('/', isLoggedIn, isAdmin, async (req, res) => {
 				class_title: {
 					[Op.like]: '%' + keyword + '%'
 				},
+				UserUserId: {
+					[Op.like]: roll_condition
+				}
 			};
 	}
 
-	if (user_roll === 'admin') {
-		result = await Class.findAndCountAll({
-			offset: offset,
-			limit: limit,
-			order: [['createdAt', 'DESC']],
-			where: filter_condition,
-		});
-		if (result) {
-			res.render('admin_list', {
-				classes: result.rows,
-				user: req.user,
-				pageNum,
-				pages: result.count,
-				limit,
-				keyword,
-				filter,
-				queryCategory: category,
-				messages: req.flash('error')
-			});
-		} else {
-			req.flash('error', 'DB 오류');
-			res.redirect('/');
-		}
-	} else if (user_roll === 'bizz') {
-		result = await Class.findAndCountAll({
-			offset,
-			limit,
-			order: [['createdAt', 'DESC']],
-			where: {
-				UserUserId: req.user.user_id
-			},
-			where: filter_condition,
-		});
+	const result = await Class.findAndCountAll({
+		offset: offset,
+		limit: limit,
+		order: [['createdAt', 'DESC']],
+		where: filter_condition,
+	});
+	if (result) {
 		res.render('admin_list', {
 			classes: result.rows,
 			user: req.user,
@@ -146,17 +135,17 @@ router.get('/', isLoggedIn, isAdmin, async (req, res) => {
 			keyword,
 			filter,
 			queryCategory: category,
+			title: '온뜰 - 관리자 페이지',
 			messages: req.flash('error')
-		})
-	} else {
-		res.render('admin_alluser', {
-			user: req.user,
 		});
+	} else {
+		req.flash('error', 'DB 오류');
+		res.redirect('/');
 	}
 });
 
 router.get('/write', isLoggedIn, isAdmin, (req, res) => {
-	res.render('admin_list_write', {title: 'Ontelier'});
+	res.render('admin_list_write', {title: '온뜰 - 클래스 추가'});
 });
 
 router.post('/write', isLoggedIn, isAdmin, upload.single('class_img'), async (req, res, next) => {
@@ -190,7 +179,7 @@ router.get('/update/:id', isLoggedIn, isAdmin, async (req, res) => {
 	let result = await Class.findOne({where: {id: req.params.id}});
 	if (result) {
 		res.render('admin_list_update', {
-			title: '클래스 수정',
+			title: '온뜰 - 클래스 수정',
 			class: result
 		});
 	} else {
@@ -258,7 +247,7 @@ router.get('/alluser', isLoggedIn, isAdmin, async (req, res) => {
 	}
 
 	if (result) {
-		res.render('admin_alluser', {users: result});
+		res.render('admin_alluser', {title: '온뜰 - 유저보기', users: result});
 	} else {
 		req.flash('error', 'DB 오류');
 		res.redirect('/admin');
@@ -268,7 +257,7 @@ router.get('/alluser', isLoggedIn, isAdmin, async (req, res) => {
 router.get('/class/:id', isLoggedIn, isAdmin, async (req, res) => {
 	let result = await Class.findOne({where: { id: req.params.id }});
 	if (result) {
-		res.render('admin_list_view', {title: '글 조회', class: result});
+		res.render('admin_list_view', {title: '온뜰 - 클래스 조회', class: result});
 	} else {
 		req.flash('error', 'DB 오류');
 		res.redirect('/admin');
@@ -276,10 +265,19 @@ router.get('/class/:id', isLoggedIn, isAdmin, async (req, res) => {
 });
 
 router.get('/review', isLoggedIn, isAdmin, async (req, res) => {
-	let result = await Review.findAll({
+	let roll_condition;
+	if (req.user.user_roll === 'admin') roll_condition = '%%';
+	else roll_condition = req.user.user_id;
+
+	const result = await Review.findAll({
 		include: {
 			model: Class,
 			attributes: ['class_title'],
+			where: {
+				UserUserId: {
+					[Op.like]: roll_condition
+				},
+			},
 		},
 		order: [['createdAt', 'DESC']],
 	});
@@ -289,32 +287,6 @@ router.get('/review', isLoggedIn, isAdmin, async (req, res) => {
 			reviews: result,
 		});
 	} else {
-		req.flash('error', 'DB 오류');
-		res.redirect('/admin');
-	}
-});
-
-router.get('/review/write', isLoggedIn, isAdmin, (req, res) => {
-	res.render('admin_review_write', {title: '온뜰 - Admin - 후기'});
-});
-
-router.post('/review/write', isLoggedIn, isAdmin, async (req, res, next) => {
-	const body = req.body;
-	const user_nickname = req.user.user_nickname;
-	const user_id = req.user.user_id;
-
-	try {
-		await Review.create({
-			review_score: body.review_score,
-			review_best_num: body.review_best_num,
-			review_text: body.review_text,
-			reviewer: user_nickname,
-			UserUserId: user_id,
-			ClassId: 1,
-		});
-
-		res.redirect('/admin/review');
-	} catch (error) {
 		req.flash('error', 'DB 오류');
 		res.redirect('/admin');
 	}
@@ -330,7 +302,7 @@ router.get('/review/:id', isLoggedIn, isAdmin, async (req, res) => {
 	});
 
 	if (result) {
-		res.render('admin_review_view', {title: '후기 조회', review: result});
+		res.render('admin_review_view', {title: '온뜰 - 후기 조회', review: result});
 	} else {
 		req.flash('error', 'DB 오류');
 		res.redirect('/admin');
