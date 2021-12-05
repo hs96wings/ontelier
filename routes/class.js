@@ -92,11 +92,11 @@ router.get('/:id/review', async (req, res, next) => {
             attributes: ['user_id', 'user_email', 'user_nickname', 'user_profile_url']
         },
     });
-    let isThumbs = await Thumbsup.findAll({
-        where: {
-            UserUserId: req.user.user_id
-        }
-    });
+    // let isThumbs = await Thumbsup.findAll({
+    //     where: {
+    //         UserUserId: req.user.user_id
+    //     }
+    // });
     if (result) {
         res.render('class_review', {
             reviews: result,

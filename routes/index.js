@@ -62,7 +62,6 @@ router.get('/', async (req, res, next) => {
 			newes: newClass,
 			family: familyClass,
 			reviews: reviewClass,
-			title: '온뜰',
 			messages: req.flash('error'),
 		});
 	} else {
@@ -72,11 +71,11 @@ router.get('/', async (req, res, next) => {
 })
 
 router.get('/login', isNotLoggedIn, (req, res) =>  {
-	res.render('login', {title: '온뜰 - 로그인', messages: req.flash('error')});
+	res.render('login', { messages: req.flash('error') });
 });
 
 router.get('/join', isNotLoggedIn, (req, res) => {
-	res.render('join', {title: '온뜰 - 회원가입', messages: req.flash('error')});
+	res.render('join', { messages: req.flash('error') });
 });
 
 router.get('/search', async (req, res, next) => {

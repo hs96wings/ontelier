@@ -141,9 +141,16 @@ router.get('/thumbsup', isLoggedIn, async (req, res, next) => {
 });
 
 router.get('/purchase', isLoggedIn, async (req, res, next) => {
-    const myPurchase = await Purchase.findAll({where: {UserUserId: req.user.user_id}});
-    if (myPurchase) {
-        res.json(myPurchase);
+    const classes = await Class.findAll({
+        include: {
+            model: Purchase,
+            where: {
+                UserUserId: req.user.user_id,
+            }
+        }
+    });
+    if (classes) {
+        res.render('my_purchase', {title: '온뜰', classes})
     } else {
         req.flash('error', 'DB 오류');
         res.redirect('/mypage');

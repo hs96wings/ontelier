@@ -12,8 +12,6 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
         const exUser = await User.findOne({ where: { user_id }});
         if (exUser) {
             req.flash('error', '이미 존재하는 아이디입니다');
-            // const message = encodeURIComponent('이미 존재하는 아이디입니다');
-            // res.redirect(`/?error=${message}`);
             return res.redirect('/join');
         }
         const hash = await bcrypt.hash(user_pwd, 12);
@@ -24,7 +22,6 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
             user_nickname,
             user_phone,
         });
-        return res.redirect('/');
     } catch (error) {
         console.error(error);
         return next(error);
