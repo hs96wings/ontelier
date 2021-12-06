@@ -113,6 +113,7 @@ router.get('/:id/review/write', isLoggedIn, async (req, res, next) => {
     const isWrite = await Review.findOne({
         where: {
             UserUserId: req.user.user_id,
+            ClassId: req.params.id,
         },
     });
     if (isWrite) {
@@ -143,6 +144,20 @@ router.post('/review/write', isLoggedIn, upload.single('review_img'), async (req
     } else {
         filename = `/images/uploads/${req.file.filename}`;
     }
+
+    const reviews = await Review.findAll({
+        where: {
+            ClassId: req.body.class_id,
+        }
+    });
+
+    let score = 0;
+    let num = 0;
+    for (r in reviews) {
+        score += reviews[r].dataValues.review_score;
+        num++;
+    }
+
     try {
         await Review.create({
             review_score: req.body.review_score,
@@ -152,6 +167,20 @@ router.post('/review/write', isLoggedIn, upload.single('review_img'), async (req
             reviewer: req.user.user_nickname,
             ClassId: req.body.class_id,
             UserUserId: req.user.user_id,
+        });
+
+        score += parseInt(req.body.review_score);
+        num++;
+
+        let result = score / num;
+        result = Math.round(result);
+
+        await Class.update({
+            class_score: result
+        }, {
+            where: {
+                id: req.body.class_id,
+            }
         });
 
         let url = '/class/' + req.body.class_id + '/review';
