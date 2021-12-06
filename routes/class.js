@@ -318,7 +318,8 @@ router.get('/contents/:id', isLoggedIn, async (req, res, next) => {
                     cmt,
                     info,
                     class: isClass,
-                    messages: req.flash('error')
+                    messages: req.flash('error'),
+                    date: isPurchase.purchase_enrolldate
                 });
             } else {
                 req.flash('error', '강의를 불러오지 못했습니다');
