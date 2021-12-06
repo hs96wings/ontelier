@@ -46,10 +46,29 @@ document.getElementById('user-form').addEventListener('submit', async(e) => {
         return alert('이메일을 확인해주세요');
     }
 
-    try {
-        await axios.post('/auth/join', { user_id, user_pwd, user_email, user_nickname, user_phone });
-    } catch (err) {
-        console.error(err);
-    }
-    window.location.href = '/';
+    $.ajax({
+        type: 'POST',
+        url: '/auth/join',
+        data: {
+            'user_id': user_id,
+            'user_pwd': user_pwd,
+            'user_email': user_email,
+            'user_nickname': user_nickname,
+            'user_phone': user_phone
+        },
+        dataType: 'json',
+        success: function(response) {
+            alert(response.message);
+            window.location.href = '/login';
+        },
+        error: function (request, status, error) {
+            alert(error);
+        }
+    });
+
+    // try {
+    //     await axios.post('/auth/join', { user_id, user_pwd, user_email, user_nickname, user_phone });
+    // } catch (err) {
+    //     console.error(err);
+    // }
 });
