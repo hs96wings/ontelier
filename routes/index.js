@@ -5,6 +5,7 @@ const { Op } = require('sequelize');
 const Review = require('../models/review');
 const sequelize = require('sequelize');
 const mailer = require('./mail');
+const { User } = require('../models');
 
 const router = express.Router();
 
@@ -85,7 +86,45 @@ router.post('/mail/:id', async (req, res) => {
 	
 		mailer.sendGmail(emailParam);
 	}
-})
+});
+
+router.get('/confirmEmail', isNotLoggedIn, async (req, res) => {
+	const key = req.query.key;
+	const exKey = await User.findOne({
+		where: {
+			key_for_verify: key,
+		}
+	});
+
+	console.log(exKey);
+
+	if (exKey) {
+		if (!exKey.email_verified) {
+			try {
+				await User.update({
+					email_verified: 1,
+				}, {
+					where: {
+						key_for_verify: key,
+					}
+				});
+
+				req.flash('error', '인증 완료!');
+				return res.redirect('/login');
+			} catch (error) {
+				console.error(error);
+				req.flash('error', '오류가 발생했습니다');
+				return res.redirect('/');
+			}
+		} else {
+			req.flash('error', '이미 인증된 아이디입니다');
+			return res.redirect('/');
+		}
+	} else {
+		req.flash('error', '잘못된 인증입니다');
+		return res.redirect('/');
+	}
+});
 
 router.get('/login', isNotLoggedIn, (req, res) =>  {
 	res.render('login', { messages: req.flash('error') });

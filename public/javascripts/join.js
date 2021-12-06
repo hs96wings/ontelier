@@ -37,7 +37,7 @@ document.getElementById('user-form').addEventListener('submit', async(e) => {
     if (!pwdExp.test(user_pwd)) {
         return alert('비밀번호를 확인해주세요');
     }
-    var nickExp = /^[a-zA-Zㄱ-힣][a-zA-Zㄱ-힣]{1,9}$/;
+    var nickExp = /^[a-zA-Zㄱ-힣0-9][a-zA-Zㄱ-힣0-9]{1,9}$/;
     if (!nickExp.test(user_nickname)) {
         return alert('닉네임을 확인해주세요');
     }
