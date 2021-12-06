@@ -10,6 +10,7 @@ const Review = require('../models/review');
 const Purchase = require('../models/purchase');
 
 const { isLoggedIn, isAdmin } = require('./middlewares');
+const { Cirriculum } = require('../models');
 
 const router = express.Router();
 
@@ -318,5 +319,49 @@ router.get('/review/:id', isLoggedIn, isAdmin, async (req, res) => {
 		res.redirect('/admin');
 	}
 });
+
+router.get('/cirriculum/:id', isLoggedIn, isAdmin, async (req, res) => {
+	const roll_condition = req.user.user_roll === 'admin' ? '%%' : req.user.user_id;
+	const result = await Class.findOne({
+		where: {
+			id: req.params.id,
+			UserUserId: {
+				[Op.like]: roll_condition
+			}
+		}
+	});
+
+	const cirriculum = await Cirriculum.findAll({
+		where: {
+			ClassId: req.params.id,
+		},
+		order: [['id', 'ASC']]
+	});
+
+	if (result) {
+		res.render('admin_cirriculum', {title: '온뜰 - 커리큘럼 추가', messages: req.flash('error'), cirriculum, id: result.id});
+	} else {
+		req.flash('error', '다른 사람의 강의는 볼 수 없습니다');
+		res.redirect('/admin');
+	}
+});
+
+router.post('/cirriculum/:id/write', isLoggedIn, isAdmin, async (req, res) => {
+	const { depth, cir_text, video_url } = req.body;
+	try {
+		await Cirriculum.create({
+			depth,
+			cirriculum_text: cir_text,
+			video_url,
+			ClassId: req.params.id
+		});
+		
+		return res.redirect('/admin/cirriculum/' + req.params.id);
+	} catch(error) {
+		console.error(error);
+		req.flash('error', '오류!');
+		return res.redirect('/admin/class/' + req.params.id);
+	}
+})
 
 module.exports = router;

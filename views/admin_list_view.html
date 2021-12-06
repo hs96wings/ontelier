@@ -54,6 +54,7 @@
         </tr>
     </table>
     <button onclick="location.href='/admin/update/{{class.id}}'">수정</button>
+    <button onclick="location.href='/admin/cirriculum/{{class.id}}'">커리큘럼</button>
     <form method="post">
         <input type="hidden" value="{{class.id}}" name="id">
         <input type="submit" value="삭제" formaction="/admin/delete">

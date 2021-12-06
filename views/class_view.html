@@ -75,12 +75,21 @@
 
     <!-- 강사 소개 -->
     <p id="class_teacher_name" class="scroll">강사 {{class.teacher_name}}</p>
-    <p class="class_teacher_info">{{class.teacher_info}}</p>
+    <p class="class_teacher_info">{{class.teacher_info | safe}}</p>
 
     <div class="class_space"></div>
 
     <!-- 커리큘럼 -->
     <p id="class_cirriculum" class="scroll">커리큘럼</p>
+    {% for cir in cirriculum %}
+      <div class="pt20">
+        {% if cir.depth == 0 %}
+        <p><b>{{cir.cirriculum_text}}</b></p>
+        {% else %}
+        <p>{{cir.cirriculum_text}}</p>
+        {% endif %}
+      </div>
+    {% endfor %}
     <div class="pt20">{{class.class_cirriculum | safe}}</div>
 
     <div class="class_space"></div>

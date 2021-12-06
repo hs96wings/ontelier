@@ -1,0 +1,39 @@
+{% extends 'admin_layout.html' %}
+{% block content %}
+<h2>◆ 커리큘럼</h2>
+<h3>기존 커리큘럼</h3>
+{% for cir in cirriculum %}
+    <div class="pt20">
+        {% if cir.depth == 0 %}
+            <p><b>{{cir.cirriculum_text}}</b></p>
+        {% else %}
+            <p>{{cir.cirriculum_text}}</p>
+        {% endif %}
+    </div>
+{% endfor %}
+<form method="post" action="/admin/cirriculum/{{id}}/write">
+    <table>
+        <tr>
+            <th>분류</th>
+            <td>
+                <input type="radio" id="depth" name="depth" value="0" checked>
+                <label for="depth_0">대분류</label>
+                <input type="radio" id="depth" name="depth" value="1">
+                <label for="depth_1">소분류</label>
+            </td>
+        </tr>
+        <tr>
+            <th>커리큘럼 텍스트</th>
+            <td><input type="text" name="cir_text" maxlength="50" value=""></td>
+        </tr>
+        <tr>
+            <th>영상 주소</th>
+            <td><input type="text" name="video_url" maxlength="100" value=""></td>
+        </tr>
+    </table>
+
+     <br>
+    <input type="submit" value="입력">
+    <input type="button" value="취소" onclick="history.back()">
+</form>
+{% endblock %}

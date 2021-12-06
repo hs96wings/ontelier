@@ -55,6 +55,11 @@ router.get('/:id', async (req, res, next) => {
             }
         }
     });
+    let cirriculum = await Cirriculum.findAll({
+        where: { ClassId: req.params.id },
+        order: [['id', 'ASC']]
+    });
+
     let userWish;
     if (req.user && req.user.user_id) {
         userWish = await Wishlist.findOne({
@@ -73,7 +78,8 @@ router.get('/:id', async (req, res, next) => {
             reviews,
             wishlist_num: wishlist.count,
             userWish,
-            messages: req.flash('error')
+            cirriculum,
+            messages: req.flash('error'),
         });
     } else {
         req.flash('error', '없는 강의입니다');

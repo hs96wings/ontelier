@@ -21,7 +21,7 @@ router.post('/join', isNotLoggedIn, async (req, res) => {
 
         try {
             const hash = await bcrypt.hash(user_pwd, 12);
-            User.create({
+            await User.create({
                 user_id,
                 user_pwd: hash,
                 user_email, user_nickname, user_phone,
@@ -29,7 +29,6 @@ router.post('/join', isNotLoggedIn, async (req, res) => {
             });
 
             let url = 'http://ontelier.co.kr/confirmEmail?key=' + key_for_verify;
-            console.log(url);
 
             let emailParam = {
                 toEmail: user_email,
