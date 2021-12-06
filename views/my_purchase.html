@@ -3,13 +3,15 @@
 
 <script src="/javascripts/getParameter.js"></script>
 
+<link rel="stylesheet" href="/stylesheets/allview.css"/>
+
 <div class="container">
     <div class="class-container">
 
       <div class="class-wrapper">
         <p class="pt10" id="list-text">my purchase</p>
         <span class="pt27" id="list-title"> 구매 목록</span>
-    
+
             <div class="class-list">
 
 {% for class in classes %}
@@ -19,6 +21,7 @@
         <li class="class-title">{{class.class_title}}</li>
       </a>
     </ul>
+    <button type="button" class="submit-button" id="mypage-submit-button" onclick="location.href='/class/{{class.id}}/review/write'">후기 작성</button>
 </div>
 {% endfor %}
 
