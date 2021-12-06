@@ -146,7 +146,7 @@ router.get('/write', isLoggedIn, isAdmin, (req, res) => {
 });
 
 router.post('/write', isLoggedIn, isAdmin, upload.single('class_img'), async (req, res, next) => {
-	const {class_title, class_price, class_score, class_family, category_high, category_low, class_info, teacher_name, teacher_info, class_discount} = req.body;
+	const {class_title, class_price, class_family, category_high, category_low, class_info, teacher_name, teacher_info, class_discount} = req.body;
 	let filename;
 	let result;
 
@@ -158,7 +158,7 @@ router.post('/write', isLoggedIn, isAdmin, upload.single('class_img'), async (re
 
 	try {
 		result = await Class.create({
-			class_title, class_price, class_score,
+			class_title, class_price, class_score: 0,
 			class_img: filename,
 			class_family, category_high, category_low, class_info,
 			teacher_name, teacher_info, class_discount,
