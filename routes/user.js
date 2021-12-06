@@ -70,13 +70,14 @@ router.get('/', isLoggedIn, async (req, res) => {
 })
 
 router.get('/edit', isLoggedIn, (req, res, next) => {
-    res.render('userinfo_update', {user: req.use, messages: req.flash('error'),});
+    res.render('userinfo_update', {user: req.user, messages: req.flash('error'),});
 });
 
 router.post('/update', isLoggedIn, upload.single('user_profile_url'), async (req, res, next) => {
-    const {user_pwd, user_email, user_nickname, user_phone } = req.body;
+    const {user_pwd, user_pwd_change, user_email, user_nickname, user_phone } = req.body;
 
     let filename;
+    let mode;
 
 	if (req.file === undefined) {
 		filename = req.body.originalname;
@@ -84,24 +85,79 @@ router.post('/update', isLoggedIn, upload.single('user_profile_url'), async (req
 		filename = `/images/uploads/${req.file.filename}`;
 	}
 
-    try {
-        const hash = await bcrypt.hash(user_pwd, 12);
-        await User.update({
-            user_pwd: hash,
-            user_email,
-            user_nickname,
-            user_phone,
-            user_profile_url: filename,
-        }, {
-            where: {
-                user_id: req.user.user_id,
+    let pwdExp = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[$`~!@#$%^&*?\\(\\)\-_=+]).{8,16}$/;
+    if (user_pwd_change !== '' && user_pwd_change.length > 0) {
+        if (!pwdExp.test(user_pwd_change)) {
+            req.flash('error', '변경할 비밀번호가 형식에 맞지 않습니다');
+            return res.redirect('/mypage/edit');
+        } else {
+            mode = 'pwd_change';
+        }
+    } else {
+        mode = 'pwd_no_change';
+    }
+
+    let nickExp = /^[a-zA-Zㄱ-힣][a-zA-Zㄱ-힣]{1,9}$/;
+    if (!nickExp.test(user_nickname)) {
+        req.flash('error', '닉네임을 확인해주세요');
+        return res.redirect('/mypage/edit');
+    }
+
+    let emailExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+    if (!emailExp.test(user_email)) {
+        req.flash('error', '이메일을 확인해주세요');
+        return res.redirect('/mypage/edit');
+    }
+
+    const exUser = await User.findOne({ where: { user_id: req.user.user_id }});
+    if (exUser) {
+        const result = await bcrypt.compare(user_pwd, exUser.user_pwd);
+        if (result) {
+            switch (mode) {
+                case 'pwd_change':
+                    try {
+                        const hash = await bcrypt.hash(user_pwd_change, 12);
+                        await User.update({
+                            user_pwd: hash,
+                            user_email,
+                            user_nickname,
+                            user_phone,
+                            user_profile_url: filename,
+                        }, {
+                            where: {
+                                user_id: req.user.user_id,
+                            }
+                        });
+                    } catch (error) {
+                        req.flash('error', '오류가 발생했습니다');
+                        return res.redirect('/mypage/edit');
+                    }
+                default:
+                    try {
+                        await User.update({
+                            user_email,
+                            user_nickname,
+                            user_phone,
+                            user_profile_url: filename,
+                        }, {
+                            where: {
+                                user_id: req.user.user_id,
+                            }
+                        });
+                    } catch (error) {
+                        req.flash('error', '오류가 발생했습니다');
+                        return res.redirect('/mypage/edit');
+                    }
             }
-        });
-        return res.redirect('/mypage');
-    } catch (error) {
-        console.error(error);
-        req.flash('error', 'DB 오류');
-        return res.redirect('/');
+            req.flash('error', '변경 완료');
+            return res.redirect('/mypage');
+        } else {
+            req.flash('error', '비밀번호가 맞지 않습니다');
+            return res.redirect('/mypage/edit');
+        }
+    } else {
+        req.flash('error', '오류가 발생했습니다');
+        return res.redirect('/mypage/edit');
     }
 });
 
