@@ -7,45 +7,40 @@
 <div class="contents-banner-wrapper">
   <!-- <img class="contents_banner" src="{{class.class_img}}"> -->
   <div>{{class.class_title}}</div>
-  <button type="button" class="contents-button" onclick="location.href='/class/contents/{{class.id}}/video'">▶ 0-1 수강하기</button>
+  <button type="button" class="contents-button" onclick="location.href='/class/contents/{{class.id}}/video'"><img src="/images/play-btn.png"> <span id="contents-btn-num">0-1</span> 수강하기</button>
+  <div>
+    <span class="contents-enrolldate">~{{date}}까지</span>
+  </div>
 </div>
 
     <div class="class_space"></div>
 
 <!----- 우측 컨텐츠 ----->
 <div class="class_right">
-  <div class="class_float_wrapper">
+  <div class="class_float_wrapper floating">
 
       <p class="sub-title">커리큘럼</p>
 
           <div id="menu">
-              <!-- <div class="cirriculum-title">0. prologue</div>
-              <div class="submenu">
-                  <p>안녕하세요. 친구같은 강사이름입니다</p>
-                  <p>준비물을 소개합니다</p>
-              </div>
-              <div class="cirriculum-title">1 펀치니들의 도구들 (클래스 자료 다운로드)</div>
-              <div class="submenu">
-                  <p>1-1 원단의 특성과 사용</p>
-                  <p>1-4 다양한 실의 질감</p>
-                  <p>1-5 도안 옮겨 그리기 (클래스 자료 다운로드)</p>
-              </div>
-              <div class="cirriculum-title">2 펀치니들의 방법 익히기</div>
-              <div class="submenu">
-                  <p>2-1 직선 연습하기</p>
-                  <p>2-3 원형 연습하기</p>
-                  <p>2-4 작업할 때 간격과 질감의 차이</p>
-                  <p>2-5 펀치니들 수정하는 방법</p>
-              </div> -->
-
-          <!-- 커리큘럼 예시 -->
+          <!-- 커리큘럼 -->
+            <div>
+        {% if cir %}
           {% for cir in cirriculum %}
             {% if cir.depth == 0 %}
-              <div class="cirriculum-title">{{cir.cirriculum_text}}</div>
-            {% else %}
-              <div class="submenu">{{cir.cirriculum_text}}</div>
+             </div>
+              <div class="cirriculum-title">{{cir.cirriculum_text.replace(' ', '. ')}}</div>
+              <div class="submenu">
+            {% elif cir.depth == 1 %}
+
+              <span>{{cir.cirriculum_text.split("-")[1].replace(' ', '. ')}}<a href="#" class="cirriculum-btn"><img src="/images/play-btn-gray.png" id="{{cir.cirriculum_text.split(" ")[0]}}"></a></span>
             {% endif %}
+
+
           {% endfor %}
+        {% endif %}
+
+           </div>
+
           </div>
 
 
@@ -146,6 +141,30 @@ $(function() {
     $(this).next(".submenu").siblings(".submenu").slideUp(300); // 1개씩 펼치기
   });
 
+  $(function() {
+    var strArr = "{{date}}".split(' ')[0];
+    var split_date = strArr.split('/');
+
+    var date = new Date(split_date[0], split_date[1]-1, split_date[2]);
+    date.setDate(date.getDate() + 7 * 16);
+    var end_date = String(date.toISOString()).split("T")[0].replace('-', '.').replace('-', '.');
+
+    $(".contents-enrolldate").html(`~${end_date}까지`);
+  });
+
+$(function() {
+
+  var cirBtn = $(".cirriculum-btn img");
+
+  cirBtn.click(function() {
+
+    cirBtn.attr("src", "/images/play-btn-gray.png");
+    $(this).attr("src", "/images/play-btn-green.png");
+
+    $("#contents-btn-num").html($(this).attr("id"));
+
+  });
+});
 </script>
 
 

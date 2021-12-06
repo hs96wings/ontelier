@@ -5,11 +5,9 @@
 
 <!----- 강의영상 배너 ----->
 <div class="contents-video-wrapper">
-  <!-- <img class="contents_banner" src="{{class.class_img}}"> -->
-  <button type="button" class="contents-button">▶</button>
+  <iframe src="https://www.youtube.com/embed/aQch9Vb7Bdw{{video.video_url}}?modestbranding=1&rel=0" title="video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <!-- <button type="button" cla><img src="/images/play-btn-2.png"></button> -->
 </div>
-
-    <div class="class_space"></div>
 
 <!----- 좌측 컨텐츠 ----->
 <div class="class_center">
@@ -61,13 +59,24 @@
 
                 <div id="menu">
                 <!-- 커리큘럼 -->
+                  <div>
+              {% if cir %}
                 {% for cir in cirriculum %}
                   {% if cir.depth == 0 %}
-                    <div class="cirriculum-title">{{cir.cirriculum_text}}</div>
-                  {% else %}
-                    <div class="submenu">{{cir.cirriculum_text}}</div>
+                   </div>
+                    <div class="cirriculum-title">{{cir.cirriculum_text.replace(' ', '. ')}}</div>
+                    <div class="submenu">
+                  {% elif cir.depth == 1 %}
+
+                    <span>{{cir.cirriculum_text.split("-")[1].replace(' ', '. ')}}<a href="#" class="cirriculum-btn"><img src="/images/play-btn-gray.png" id="{{cir.cirriculum_text.split(" ")[0]}}"></a></span>
                   {% endif %}
+
+
                 {% endfor %}
+              {% endif %}
+
+                 </div>
+
                 </div>`;
 
     // 콘텐츠 로드
@@ -91,11 +100,24 @@ $(function() {
   });
 
   $(".cirriculum-title").click(function() {
+    alert("g");
     $(this).next(".submenu").stop().slideToggle(300);
-    // $(this).toggleClass('on').siblings().removeClass('on');
     $(this).next(".submenu").siblings(".submenu").slideUp(300); // 1개씩 펼치기
   });
 
+  $(function() {
+
+    var cirBtn = $(".cirriculum-btn img");
+
+    cirBtn.click(function() {
+
+      cirBtn.attr("src", "/images/play-btn-gray.png");
+      $(this).attr("src", "/images/play-btn-green.png");
+
+      $("#contents-btn-num").html($(this).attr("id"));
+
+    });
+  });
 </script>
 
 
