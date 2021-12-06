@@ -1,0 +1,19 @@
+{% block css %}
+<link rel="stylesheet" href="stylesheets/login.css"/>
+{% endblock %}
+
+{% extends 'main_layout.html' %}
+{% block content %}
+<div class="login-container">
+    <div class="login-wrapper">
+        <h2>비밀번호 찾기</h2>
+        <form id="user-form" class="form">
+            <span class="pt12"><span class="red">*</span>이메일</span>
+            <input type="email" name="user_email" class="input-box" placeholder="이메일을 입력해주세요" required>
+            <input type="submit" class="submit-button" value="비밀번호 초기화">
+        </form>
+    </div>
+</div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/javascripts/reset.js"></script>
+{% endblock %}

@@ -46,6 +46,68 @@ router.post('/join', isNotLoggedIn, async (req, res) => {
     }
 });
 
+router.post('/reset', isNotLoggedIn, async (req, res) => {
+    const user_email = req.body.user_email;
+
+    let key_one = crypto.randomBytes(256).toString('hex').substr(100, 5);
+    let key_two = crypto.randomBytes(256).toString('base64').substr(100, 5);
+    let key_for_verify = key_one + key_two;
+
+    let url = 'http://ontelier.co.kr/resetPwd?key=' + key_for_verify;
+
+    let emailParam = {
+        toEmail: user_email,
+        subject: '온뜰 - 비밀번호 초기화',
+        text: '비밀번호를 초기화하려면 눌러주세요\n' + url
+    };
+
+    try {
+        await User.update({
+            key_for_verify
+        }, {
+            where: {
+                user_email
+            }
+        });
+
+        mailer.sendGmail(emailParam);
+
+        return res.send({ status: 'success', message: '발송 완료!\n이메일을 확인해주세요!'});
+    } catch (error) {
+        console.error(error);
+        return res.send({ status: 'error', message: '오류가 발생했습니다' });
+    }
+});
+
+router.post('/resetPwd', isNotLoggedIn, async (req, res) => {
+    const { user_pwd, user_email } = req.body;
+    const isUser = await User.findOne({
+        where: {
+            user_email,
+        }
+    });
+
+    if (isUser) {
+        const hash = await bcrypt.hash(user_pwd, 12);
+        try {
+            await User.update({
+                user_pwd: hash,
+                key_for_verify: null,
+            }, {
+                where: {
+                    user_email
+                }
+            });
+            return res.send({ status: 'success', message: '변경 완료'});
+        } catch (error) {
+            console.error(error);
+            return res.send({ status: 'error', message: '오류가 발생했습니다' });
+        }
+    } else {
+        return res.send({ status: 'error', message: '오류가 발생했습니다' });
+    }
+})
+
 router.post('/login', isNotLoggedIn, passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login',

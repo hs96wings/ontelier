@@ -98,7 +98,7 @@ router.get('/confirmEmail', isNotLoggedIn, async (req, res) => {
 
 	console.log(exKey);
 
-	if (exKey) {
+	if (exKey && key.length > 0) {
 		if (!exKey.email_verified) {
 			try {
 				await User.update({
@@ -133,6 +133,31 @@ router.get('/login', isNotLoggedIn, (req, res) =>  {
 router.get('/join', isNotLoggedIn, (req, res) => {
 	res.render('join', { messages: req.flash('error') });
 });
+
+router.get('/reset', isNotLoggedIn, (req, res) => {
+	res.render('reset', { message: req.flash('error') });
+});
+
+router.get('/resetPwd', isNotLoggedIn, async (req, res) => {
+	const key = req.query.key;
+
+	const exKey = await User.findOne({
+		where: {
+			key_for_verify: key,
+		}
+	});
+
+	if (exKey && key.length > 0) {
+		res.render('resetPwd', {
+			messages: req.flash('error'),
+			user_nickname: exKey.user_nickname,
+			user_email: exKey.user_email
+		});
+	} else {
+		req.flash('error', '잘못된 인증입니다');
+		return res.redirect('/');
+	}
+})
 
 router.get('/search', async (req, res, next) => {
 	let result = await Class.findAll({
