@@ -65,11 +65,6 @@ module.exports = class Class extends Sequelize.Model {
 				type: Sequelize.TEXT,
 				allowNull: true,
 			},
-			// 커리큘럼
-			class_cirriculum: {
-				type: Sequelize.TEXT,
-				allowNull: true,
-			},
 			// 할인률
 			class_discount: {
 				type: Sequelize.INTEGER,
