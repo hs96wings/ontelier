@@ -47,11 +47,10 @@ router.get('/', isLoggedIn, isAdmin, async (req, res) => {
 	let pageNum = req.query.page;
 	let filter = req.query.filter;
 	let keyword = req.query.keyword;
-	const offset = 0;
-	const user_roll = req.user.user_roll;
-	const limit = 5;
+	let offset = 0;
+	let limit = 5;
 	let category = req.query.category;
-	const roll_condition = req.user.user_roll === 'admin' ? '%%' : req.user.user_id;
+	let roll_condition = req.user.user_roll === 'admin' ? '%%' : req.user.user_id;
 
 	if (pageNum === undefined) pageNum = 1;
 	if (pageNum > 1) {
