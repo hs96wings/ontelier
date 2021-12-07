@@ -3,36 +3,21 @@
 
 
 <script src="/javascripts/classView.js"></script>
+<script src="/javascripts/getParameter.js"></script>
 
 <!-- 카테고리 메뉴 -->
 <div class="category-list-wrapper">
     <li class="dropdown">
     <div><span id="category-ti" class="category-title">{{category1}}</span> ▼</div>
     <div class="dropdown-content">
-      {% if category1 !== 'DIY/수공예' %}
         <a href="/category?category1=DIY/수공예">DIY·수공예</a>
-      {% endif %}
-      {% if category1 !== '예술문화' %}
         <a href="/category?category1=예술문화">예술문화</a>
-      {% endif %}
-      {% if category1 !== '스포츠' %}
         <a href="/category?category1=스포츠">스포츠</a>
-      {% endif %}
-      {% if category1 !== '뷰티' %}
         <a href="/category?category1=뷰티">뷰티</a>
-      {% endif %}
-      {% if category1 !== '요리' %}
         <a href="/category?category1=요리">요리</a>
-      {% endif %}
-      {% if category1 !== '음악' %}
         <a href="/category?category1=음악">음악</a>
-      {% endif %}
-      {% if category1 !== '디자인/개발' %}
         <a href="/category?category1=디자인/개발">디자인·개발</a>
-      {% endif %}
-      {% if category1 !== '수익창출' %}
         <a href="/category?category1=수익창출">수익창출</a>
-      {% endif %}
     </div>
 </li>
   {% if category1 == 'DIY/수공예' %}
@@ -51,7 +36,7 @@
   {% if category1 == '예술문화' %}
     <ul class="category-list">
         <li><a href="/category?category1=예술문화">전체</a></li>
-        <li><a href="/category?category1=예술문화&category2=마카/색연필/수채화">마카·색연필·수채화</a></li>
+        <li><a href="/category?category1=예술문화&category2=마카색/연필/수채화">마카·색연필·수채화</a></li>
         <li><a href="/category?category1=예술문화&category2=오일파스텔">오일·파스텔</a></li>
         <li><a href="/category?category1=예술문화&category2=아크릴화">아크릴화</a></li>
         <li><a href="/category?category1=예술문화&category2=유화">유화</a></li>
@@ -206,6 +191,25 @@
 </div>
 </div>
 
+<script type="text/javascript">
+
+  $(function() {
+
+    var dropBtn = $(".dropdown-content a");     //각각의 버튼을 변수에 저장
+    var lowerBtn = $(".category-list li a");     //각각의 버튼을 변수에 저장
+    var category1 = getParameter("category1").substring(0, 2);
+    var category2 = getParameter("category2").substring(0, 2);
+
+    if (category2 == "") {
+      $(`.dropdown-content a:contains(${category1})`).addClass("on");       //타겟의 클래스를 추가
+      $(`.category-list li a:contains('전체')`).addClass("on");       //타겟의 클래스를 추가
+    } else {
+      $(`.dropdown-content a:contains(${category1})`).addClass("on");       //타겟의 클래스를 추가
+      $(`.category-list li a:contains(${category2})`).addClass("on");       //타겟의 클래스를 추가
+    }
+
+  });
+</script>
 
 
 {% endblock %}
