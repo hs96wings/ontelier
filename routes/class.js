@@ -6,7 +6,7 @@ const axios = require('axios');
 const sequelize = require('sequelize');
 
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
-const { User, Class, Review, Purchase, Wishlist, Thumbsup, Lecture_cmt, Lecture_info, Cirriculum } = require('../models');
+const { User, Class, Review, Purchase, Wishlist, Thumbsup, Lecture_info, Cirriculum } = require('../models');
 
 const router = express.Router();
 
@@ -88,8 +88,29 @@ router.get('/:id', async (req, res, next) => {
 });
 
 router.get('/:id/review', async (req, res, next) => {
+    console.log(req.params.id);
+    let sort = req.query.sort;
+    let order;
+
+    switch (sort) {
+        case 'best':
+            order = [['review_best_num', 'DESC']];
+            break;
+        case 'high':
+            order = [['review_score', 'DESC']];
+            break;
+        case 'low':
+            order = [['review_score', 'ASC']];
+            break;
+        default:
+            order = [['review_enrolldate', 'DESC']];
+    };
+    console.log('sort:'+ sort);
+    console.log('order:' + order);
+
     let result = await Review.findAll({
         where: { ClassId: req.params.id },
+        order,
         include: {
             model: Class,
             attributes: ['class_title'],
@@ -101,7 +122,7 @@ router.get('/:id/review', async (req, res, next) => {
     });
     if (result) {
         res.render('class_review', {
-            reviews: result, messages: req.flash('error')
+            reviews: result, messages: req.flash('error'), sort, id: req.params.id
         });
     } else {
         req.flash('error', 'DB 오류');
@@ -295,11 +316,6 @@ router.get('/contents/:id', isLoggedIn, async (req, res, next) => {
             }
         });
         if (isClass) {
-            let cmt = await Lecture_cmt.findAll({
-                where: {
-                    ClassId: req.params.id,
-                }
-            });
             let info = await Lecture_info.findOne({
                 where: {
                     CirriculumId: 1,
@@ -315,7 +331,6 @@ router.get('/contents/:id', isLoggedIn, async (req, res, next) => {
             if (cirriculum) {
                 res.render('class_contents', {
                     cirriculum,
-                    cmt,
                     info,
                     class: isClass,
                     messages: req.flash('error'),
@@ -343,15 +358,6 @@ router.get('/contents/:id/video', isLoggedIn, async (req, res) => {
         }
     });
     if (isPurchase) {
-        let cmts = await Lecture_cmt.findAll({
-            where: {
-                ClassId: req.params.id,
-            },
-            include: {
-                model: User,
-                attributes: ['user_nickname']
-            }
-        });
         let info = await Lecture_info.findOne({
             where: {
                 CirriculumId: 1,
@@ -365,7 +371,6 @@ router.get('/contents/:id/video', isLoggedIn, async (req, res) => {
         if (cirriculum) {
             res.render('class_video', {
                 cirriculum,
-                cmts,
                 info,
                 messages: req.flash('error')
             });

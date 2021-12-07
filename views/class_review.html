@@ -52,13 +52,39 @@
 
   <div class="list-filter">
     <li class="dropdown">
-    <div class="filter-title"><span id="filter-title">최신순</span> ▼</div>
-    <div class="dropdown-content">
-        <a href="#">최신순</a>
-        <a href="#">도움이 많이 된 순</a>
-        <a href="#">별점 높은 순</a>
-        <a href="#">별점 낮은 순</a>
-    </div>
+      {% if sort === 'best' %}
+        <div class="filter-title"><span id="filter-title">도움이 많이 된 순</span> ▼</div>
+          <div class="dropdown-content">
+              <a href="/class/{{id}}/review?sort=best">도움이 많이 된 순</a>
+              <a href="/class/{{id}}/review?sort=new">최신순</a>
+              <a href="/class/{{id}}/review?sort=high">별점 높은 순</a>
+              <a href="/class/{{id}}/review?sort=low">별점 낮은 순</a>
+        </div>
+      {% elif sort === 'high' %}
+        <div class="filter-title"><span id="filter-title">별점 높은 순</span> ▼</div>
+          <div class="dropdown-content">
+              <a href="/class/{{id}}/review?sort=high">별점 높은 순</a>
+              <a href="/class/{{id}}/review?sort=new">최신순</a>
+              <a href="/class/{{id}}/review?sort=best">도움이 많이 된 순</a>
+              <a href="/class/{{id}}/review?sort=low">별점 낮은 순</a>
+          </div>
+      {% elif sort === 'low' %}
+      <div class="filter-title"><span id="filter-title">별점 낮은 순</span> ▼</div>
+        <div class="dropdown-content">
+          <a href="/class/{{id}}/review?sort=low">별점 낮은 순</a>
+          <a href="/class/{{id}}/review?sort=new">최신순</a>  
+          <a href="/class/{{id}}/review?sort=best">도움이 많이 된 순</a>
+          <a href="/class/{{id}}/review?sort=high">별점 높은 순</a>  
+        </div>
+      {% else %}
+      <div class="filter-title"><span id="filter-title">최신순</span> ▼</div>
+        <div class="dropdown-content">
+            <a href="/class/{{id}}/review?sort=new">최신순</a>
+            <a href="/class/{{id}}/review?sort=best">도움이 많이 된 순</a>
+            <a href="/class/{{id}}/review?sort=high">별점 높은 순</a>
+            <a href="/class/{{id}}/review?sort=low">별점 낮은 순</a>
+        </div>
+    {% endif %}
   </li>
   </div>
     <!-- 후기 리스트 -->
