@@ -24,7 +24,7 @@
           <div id="menu">
           <!-- 커리큘럼 -->
             <div>
-        {% if cir %}
+        {% if cirriculum %}
           {% for cir in cirriculum %}
             {% if cir.depth == 0 %}
              </div>
@@ -55,7 +55,6 @@
   <menu class="class_nav floating">
     <ul>
       <li class="on" onclick="acyncMovePage(classnote)">수업노트</li>
-      <li onclick="acyncMovePage(comment)">댓글</li>
     </ul>
   </menu>
 
