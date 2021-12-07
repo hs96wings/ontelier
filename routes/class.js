@@ -326,7 +326,6 @@ router.get('/contents/:id', isLoggedIn, async (req, res, next) => {
                     ClassId: req.params.id,
                 }
             });
-            if (!cmt) cmt = null;
             if (!info) info = null;
             if (cirriculum) {
                 res.render('class_contents', {
