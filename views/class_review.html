@@ -1,16 +1,14 @@
 {% extends 'main_layout.html' %}
 {% block content %}
 
-<script type="text/javascript">
-  var data2 = new Array(); // 후기 id 데이터
-</script>
+<script src="/javascripts/thumbsUp.js"></script>
 
 
 <div class="review-container">
 
 <div class="review-score-wrapper">
 
-      <p>후기 {{reviews.length}}개</p>{{thumbsup}}
+      <p>후기 {{reviews.length}}개</p>
 
       <div class="score-wrapper">
 
@@ -55,38 +53,45 @@
       {% if sort === 'best' %}
         <div class="filter-title"><span id="filter-title">도움이 많이 된 순</span> ▼</div>
           <div class="dropdown-content">
-              <a href="/class/{{id}}/review?sort=best">도움이 많이 된 순</a>
-              <a href="/class/{{id}}/review?sort=new">최신순</a>
-              <a href="/class/{{id}}/review?sort=high">별점 높은 순</a>
-              <a href="/class/{{id}}/review?sort=low">별점 낮은 순</a>
+              <a href="javascript:void(0);" onclick="filterSort('new')">최신순</a>
+              <a href="javascript:void(0);" onclick="filterSort('best')">도움이 많이 된 순</a>
+              <a href="javascript:void(0);" onclick="filterSort('high')">별점 높은 순</a>
+              <a href="javascript:void(0);" onclick="filterSort('low')">별점 낮은 순</a>
         </div>
       {% elif sort === 'high' %}
         <div class="filter-title"><span id="filter-title">별점 높은 순</span> ▼</div>
           <div class="dropdown-content">
-              <a href="/class/{{id}}/review?sort=high">별점 높은 순</a>
-              <a href="/class/{{id}}/review?sort=new">최신순</a>
-              <a href="/class/{{id}}/review?sort=best">도움이 많이 된 순</a>
-              <a href="/class/{{id}}/review?sort=low">별점 낮은 순</a>
+              <a href="javascript:void(0);" onclick="filterSort('new')">최신순</a>
+              <a href="javascript:void(0);" onclick="filterSort('best')">도움이 많이 된 순</a>
+              <a href="javascript:void(0);" onclick="filterSort('high')">별점 높은 순</a>
+              <a href="javascript:void(0);" onclick="filterSort('low')">별점 낮은 순</a>
           </div>
       {% elif sort === 'low' %}
       <div class="filter-title"><span id="filter-title">별점 낮은 순</span> ▼</div>
         <div class="dropdown-content">
-          <a href="/class/{{id}}/review?sort=low">별점 낮은 순</a>
-          <a href="/class/{{id}}/review?sort=new">최신순</a>  
-          <a href="/class/{{id}}/review?sort=best">도움이 많이 된 순</a>
-          <a href="/class/{{id}}/review?sort=high">별점 높은 순</a>  
+            <a href="javascript:void(0);" onclick="filterSort('new')">최신순</a>
+            <a href="javascript:void(0);" onclick="filterSort('best')">도움이 많이 된 순</a>
+            <a href="javascript:void(0);" onclick="filterSort('high')">별점 높은 순</a>
+            <a href="javascript:void(0);" onclick="filterSort('low')">별점 낮은 순</a>
         </div>
       {% else %}
       <div class="filter-title"><span id="filter-title">최신순</span> ▼</div>
         <div class="dropdown-content">
-            <a href="/class/{{id}}/review?sort=new">최신순</a>
-            <a href="/class/{{id}}/review?sort=best">도움이 많이 된 순</a>
-            <a href="/class/{{id}}/review?sort=high">별점 높은 순</a>
-            <a href="/class/{{id}}/review?sort=low">별점 낮은 순</a>
+            <a href="javascript:void(0);" onclick="filterSort('new')">최신순</a>
+            <a href="javascript:void(0);" onclick="filterSort('best')">도움이 많이 된 순</a>
+            <a href="javascript:void(0);" onclick="filterSort('high')">별점 높은 순</a>
+            <a href="javascript:void(0);" onclick="filterSort('low')">별점 낮은 순</a>
         </div>
     {% endif %}
   </li>
   </div>
+
+  <script type="text/javascript">
+    if ( `{{user.user_id}}` != "" ) {
+      var mydata = parseThumbsUp();
+    }
+  </script>
+
     <!-- 후기 리스트 -->
     {% for review in reviews %}
 
@@ -105,9 +110,9 @@
           <p>{{review.review_text}}</p>
 
           <span class="thumbsup-text">
-            <button type="button" onClick="thumbsUp({{review.ClassId}}, {{review.id}})" class="unchecked" id="like-cnt"><img src="/images/thumbs-up.png" class="like-btn"></button>
+            <button type="button" onClick="thumbsUp({{review.ClassId}}, {{review.id}}, {{user.user_id}})" class="unchecked" id="like-cnt"><img src="/images/thumbs-up.png" class="like-btn"></button>
             <span id="thumbsup-num">{{review.review_best_num}}</span> 도움이 됐어요!
-          </span>{{review.Thumbsup.id}}
+          </span>
 
           {% if review.review_img %}
           <div class="class-review-img">
@@ -120,7 +125,9 @@
         <script type="text/javascript">
           document.querySelector(`#review_id{{review.id}} .star-fill`).style.width = `{{review.review_score * 20 + 5}}%`
 
-          data2.push("{{review.id}}");
+          if ( `{{user.user_id}}` != "" ) {
+            ReadyThumbsUp("{{review.id}}", mydata);
+          }
         </script>
 
     {% endfor %}
@@ -136,41 +143,30 @@
   <script src="https://cdn.jsdelivr.net/mojs/latest/mo.min.js"></script>
   <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/DrawSVGPlugin.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
-  <script src="/javascripts/thumbsUp.js"></script>
   <script type="text/javascript">
 
-    $(document).ready(function(){
 
-      if ( `{{user.user_id}}` != "" ) { // 로그인 되어있을 시에만
+    function filterSort(sort) {
 
-        $.ajax({
-            type : "GET",
-            url : `/mypage/thumbsup`,
-            dataType : "json",
-            error : function(request, status, error){
-                alert(error);
-            },
-            success : function(Thumb_data){
-              console.log(Thumb_data);
+      $.ajax({
+          type : "GET",
+          url : `/class/{{id}}/review?sort=${sort}`,
+          error : function(request, status, error){
+              alert(error);
+          },
+          success : function(filter_data){
 
-              var data1 = Thumb_data.Thumbs_data.map(a => a.ReviewId); // 받아온 좋아요 id 데이터
+            var filter = $(filter_data).find(".review-list-wrapper");
 
-              for (var i = 0; i < data1.length; i++) {
-                for (var k = 0; k < data2.length; k++) {
-                  if (data1[i] == data2[k]) {
-                    // 유저 찜목록에 이 클래스가 있으면
-                      $(`#review_id${data2[k]} .thumbsup-text #like-cnt`).attr("class", "checked"); // 클래스명 checked로 변경
-                      $(`#review_id${data2[k]} .thumbsup-text #like-cnt .like-btn`).attr("src", "/images/thumbs-up-click.png"); // 이미지 변경
-                  }
-                }
-              }
+            console.log(filter);
+            $(".review-list-wrapper").replaceWith(filter);
 
-              }
+          }
 
+      });
 
-        });
-      }
-  });
+    };
+
 
     var five = 0; four = 0; three = 0; two = 0; one = 0; zero = 0; score_five = 0; score_four = 0; score_three = 0; score_two = 0; score_one = 0; score_zero = 0; score_avg = 0; score_sum = 0; five_pct = 0; four_pct = 0; three_pct = 0; two_pct = 0; one_pct = 0; zero_pct = 0;
     </script>
