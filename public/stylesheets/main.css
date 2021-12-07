@@ -147,7 +147,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: calc((100vh - 668px - 60px) / 2 - 63px) 0;
+  margin: calc((100vh - 668px - 60px) / 2 - 63px) calc((100vw - 1200px) / 2);
+  width: 1200px;
 }
 .category-icon {
   position: relative;
@@ -156,8 +157,16 @@ body {
   margin: 0 50px;
   flex: none;
 }
-.button-next {
-  height: 20px;
+.category-next {
+  all: unset;
+  height: 30px;
+  width: 30px;
+  cursor: pointer;
+}
+
+.category-next img {
+  height: 100%;
+  width: 100%;
 }
 
 .container {
