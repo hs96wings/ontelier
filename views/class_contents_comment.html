@@ -1,0 +1,4 @@
+{% for c in cmt %}
+  <!-- 유저 테이블도 연결은 해놨는데 sql에 안 불러와지네요 -->
+  <span>{{c.lecture_cmt_text}}</span> <small>{{c.lecture_cmt_enrolldate}}</small><br>
+{% endfor %}
