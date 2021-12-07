@@ -32,6 +32,8 @@ $(window).scroll(function(){
     var $menu = $('li');
     var $contents = $('.scroll');
     var scltop = $(window).scrollTop();
+    var innerHeight = $(window).innerHeight();
+    var scrollHeight = $('body').prop('scrollHeight');
 
     $.each($('.scroll'), function(idx, item){
         var $target   = $contents.eq(idx),
@@ -44,6 +46,10 @@ $(window).scroll(function(){
         }
         if (!(200 <= scltop)) {
             $menu.removeClass('on');
+        }
+        if (scltop + innerHeight >= scrollHeight) {
+            $menu.removeClass('on');
+            $('li[data-target="#class_review"]').addClass('on');
         }
     })
 
