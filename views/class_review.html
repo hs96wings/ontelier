@@ -110,7 +110,7 @@
           <p>{{review.review_text}}</p>
 
           <span class="thumbsup-text">
-            <button type="button" onClick="thumbsUp({{review.ClassId}}, {{review.id}}, {{user.user_id}})" class="unchecked" id="like-cnt"><img src="/images/thumbs-up.png" class="like-btn"></button>
+            <button type="button" onClick="thumbsUp({{review.ClassId}}, {{review.id}}, '{{user.user_id}}')" class="unchecked" id="like-cnt"><img src="/images/thumbs-up.png" class="like-btn"></button>
             <span id="thumbsup-num">{{review.review_best_num}}</span> 도움이 됐어요!
           </span>
 

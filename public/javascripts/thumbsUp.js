@@ -23,7 +23,7 @@ function parseThumbsUp() {
 function thumbsUp(classId, id, userId) {
 
   // 로그인 되어있을 시에만
-  if (userId != undefined) {
+  if (userId != "") {
     $.ajax({
       type: "POST",
       url: `/class/${classId}/review/like`,
