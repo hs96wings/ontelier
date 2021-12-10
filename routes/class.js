@@ -41,6 +41,8 @@ const upload = multer({
 
 
 router.get('/:id', async (req, res, next) => {
+    req.session.returnTo = req.originalUrl;
+
     let result = await Class.findOne({
         where: { id: req.params.id }
     });
@@ -88,7 +90,8 @@ router.get('/:id', async (req, res, next) => {
 });
 
 router.get('/:id/review', async (req, res, next) => {
-    console.log(req.params.id);
+    req.session.returnTo = req.originalUrl;
+
     let sort = req.query.sort;
     let order;
 

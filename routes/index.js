@@ -15,6 +15,8 @@ router.use((req, res, next) => {
 });
 
 router.get('/', async (req, res, next) => {
+	req.session.returnTo = req.originalUrl;
+
 	let bestClass;
 	let saleClass;
 	let newClass;
@@ -160,6 +162,8 @@ router.get('/resetPwd', isNotLoggedIn, async (req, res) => {
 })
 
 router.get('/search', async (req, res, next) => {
+	req.session.returnTo = req.originalUrl;
+
 	let result = await Class.findAll({
 		where: {
 			'class_title': {
@@ -169,8 +173,13 @@ router.get('/search', async (req, res, next) => {
 	});
 
 	if (result) {
-		let title = req.query.title + '" 검색결과';
-		res.render('search', {title, classes: result, messages: req.flash('error')});
+		if (result.length > 0) {
+			let title = req.query.title + '" 검색결과';
+			res.render('search', {title, classes: result, messages: req.flash('error')});
+		} else {
+			req.flash('error', '검색 결과가 없습니다');
+			res.redirect('/');
+		}
 	} else {
 		req.flash('error', 'DB 오류');
 		res.redirect('/');

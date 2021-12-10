@@ -136,8 +136,8 @@ router.get('/', isLoggedIn, isAdmin, async (req, res) => {
 			messages: req.flash('error')
 		});
 	} else {
-		req.flash('error', 'DB 오류');
-		res.redirect('/');
+		req.flash('error', '검색 결과 없음');
+		res.redirect('/admin');
 	}
 });
 

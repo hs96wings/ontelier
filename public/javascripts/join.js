@@ -31,19 +31,19 @@ document.getElementById('user-form').addEventListener('submit', async(e) => {
     var idExp = /^[a-z]+[a-z0-9]{5,19}$/g;
     if (!idExp.test(user_id)) {
         console.log(idExp.test(user_id));
-        return alert('아이디를 확인해주세요');
+        return alert('아이디가 형식에 맞지 않습니다\n영문, 숫자로 구성된 6~20자');
     }
     var pwdExp = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[$`~!@#$%^&*?\\(\\)\-_=+]).{8,16}$/;
     if (!pwdExp.test(user_pwd)) {
-        return alert('비밀번호를 확인해주세요');
+        return alert('비밀번호가 형식에 맞지 않습니다\n영문, 숫자, 특문으로 구성된 8~16자');
     }
     var nickExp = /^[a-zA-Zㄱ-힣0-9][a-zA-Zㄱ-힣0-9]{1,9}$/;
     if (!nickExp.test(user_nickname)) {
-        return alert('닉네임을 확인해주세요');
+        return alert('닉네임이 형식에 맞지 않습니다\n한글, 영문, 숫자로 구성된 2~10자');
     }
     var emailExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
     if (!emailExp.test(user_email)) {
-        return alert('이메일을 확인해주세요');
+        return alert('이메일이 형식에 맞지 않습니다');
     }
 
     $.ajax({

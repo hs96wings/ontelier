@@ -108,11 +108,18 @@ router.post('/resetPwd', isNotLoggedIn, async (req, res) => {
     }
 })
 
-router.post('/login', isNotLoggedIn, passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-    failureFlash: true,
-}));
+// router.post('/login', passport.authenticate('local', {
+//     successRedirect: req.session.returnTo,
+//     failureRedirect: '/login',
+//     failureFlash: true,
+// }));
+
+router.post('/login', passport.authenticate('local', {
+    failureRedirect: '/login', failureFlash: true }),
+    function(req, res) {
+        res.redirect(req.session.returnTo);
+    }
+);
 
 router.get('/logout', isLoggedIn, (req, res) => {
     req.logout();
