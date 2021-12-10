@@ -66,8 +66,12 @@ app.use('/class', classRouter);
 app.use((err, req, res, next) => {
 	if (err instanceof multer.MulterError) {
 		// return res.status(418).send(err.code);
-		return res.send('<script type="text/javascript">alert("파일 용량 제한: 10MB"); history.go(-1); </script>');
+		res.send('<script type="text/javascript">alert("파일 용량 제한: 10MB"); history.go(-1); </script>');
 	}
+	next(err);
+});
+
+app.use((req, res, next) => {
 	res.status = 404;
 	res.send('<script type="text/javascript">alert("잘못된 페이지입니다"); window.location = "/"; </script>');
 });
