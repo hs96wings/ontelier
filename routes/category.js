@@ -17,6 +17,14 @@ router.get('/', async (req, res, next) => {
 	if (!category2) category2 = '';
 
 	best = await Class.findAll({
+		attributes: {
+			include: [[sequelize.fn("COUNT", sequelize.col("Reviews.ClassId")), 'reviewCount']],
+			exclude: ['class_enrolldate', 'class_family', 'class_info', 'teacher_name',
+						'teacher_info', 'createdAt', 'updatedAt', 'deletedAt', 'UserUserId']
+		},
+		include: [{
+			model: Review, attributes: []
+		}],
 		where: {
 			category_high: {
 				[Op.like]: '%' + category1 + '%'
@@ -25,11 +33,20 @@ router.get('/', async (req, res, next) => {
 				[Op.like]: '%' + category2 + '%'
 			},
 		},
+		raw: true,
+		group: ['Class.id'],
 		order: [['class_score', 'DESC']],
-		limit: 5,
 	});
 
 	sale = await Class.findAll({
+		attributes: {
+			include: [[sequelize.fn("COUNT", sequelize.col("Reviews.ClassId")), 'reviewCount']],
+			exclude: ['class_enrolldate', 'class_family', 'class_info', 'teacher_name',
+						'teacher_info', 'createdAt', 'updatedAt', 'deletedAt', 'UserUserId']
+		},
+		include: [{
+			model: Review, attributes: []
+		}],
 		where: {
 			category_high: {
 				[Op.like]: '%' + category1 + '%',
@@ -41,14 +58,16 @@ router.get('/', async (req, res, next) => {
 				[Op.gt]: 0,
 			},
 		},
+		raw: true,
+		group: ['Class.id'],
 		order: [['class_discount', 'DESC']],
-		limit: 5,
 	});
 
 	if (best && sale) {
 		res.render('category_list', {
 			title: '온뜰',
 			best,
+			sale,
 			category1,
 			category2,
 			messages: req.flash('error')
@@ -124,12 +143,14 @@ router.get('/all', async (req, res, next) => {
 
 	if (sort === 'review') {
 		result = await Class.findAll({
+			attributes: {
+				include: [[sequelize.fn("COUNT", sequelize.col("Reviews.ClassId")), 'reviewCount']],
+				exclude: ['class_enrolldate', 'class_family', 'class_info', 'teacher_name',
+							'teacher_info', 'createdAt', 'updatedAt', 'deletedAt', 'UserUserId']
+			},
 			include: [{
-				model: Review,
-				attributes: ['ClassId']
+				model: Review, attributes: []
 			}],
-			group: ['ClassId'],
-			order: [[sequelize.fn('COUNT', sequelize.col('ClassId')), 'DESC']],
 			where: {
 				category_high: {
 					[Op.like]: '%' + category1 + '%',
@@ -138,11 +159,24 @@ router.get('/all', async (req, res, next) => {
 					[Op.like]: '%' + category2 + '%',
 				},
 			},
+			raw: true,
+			group: ['Class.id'],
+			order: [[sequelize.fn('COUNT', sequelize.col('Reviews.ClassId')), 'DESC']],
 		});
 	} else {
 		result = await Class.findAll({
+			attributes: {
+				include: [[sequelize.fn("COUNT", sequelize.col("Reviews.ClassId")), 'reviewCount']],
+				exclude: ['class_enrolldate', 'class_family', 'class_info', 'teacher_name',
+							'teacher_info', 'createdAt', 'updatedAt', 'deletedAt', 'UserUserId']
+			},
+			include: [{
+				model: Review, attributes: []
+			}],
 			where: where_condition,
 			order: order_condition,
+			raw: true,
+			group: ['Class.id'],
 		});
 	}
 	
