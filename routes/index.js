@@ -24,39 +24,82 @@ router.get('/', async (req, res, next) => {
 	let reviewClass;
 	
 	bestClass = await Class.findAll({
+		attributes: {
+			include: [[sequelize.fn("COUNT", sequelize.col("reviews.ClassId")), 'reviewCount']],
+			exclude: ['class_enrolldate', 'class_family', 'class_info', 'teacher_name',
+						'teacher_info', 'createdAt', 'updatedAt', 'deletedAt', 'UserUserId']
+		},
+		include: [{
+			model: Review, attributes: []
+		}],
+		raw: true,
+		group: ['Class.id'],
 		order: [['class_score', 'DESC']],
-		limit: 5,
 	});
+	console.log(bestClass);
 
 	saleClass = await Class.findAll({
-		order: [['class_discount', 'DESC']],
-		limit: 5,
+		attributes: {
+			include: [[sequelize.fn("COUNT", sequelize.col("reviews.ClassId")), 'reviewCount']],
+			exclude: ['class_enrolldate', 'class_family', 'class_info', 'teacher_name',
+						'teacher_info', 'createdAt', 'updatedAt', 'deletedAt', 'UserUserId']
+		},
+		include: [{
+			model: Review, attributes: []
+		}],
 		where: {
 			class_discount: {
 				[Op.gt]: 0,
 			},
 		},
+		raw: true,
+		group: ['Class.id'],
+		order: [['class_discount', 'DESC']],
 	});
 
 	newClass = await Class.findAll({
+		attributes: {
+			include: [[sequelize.fn("COUNT", sequelize.col("reviews.ClassId")), 'reviewCount']],
+			exclude: ['class_enrolldate', 'class_family', 'class_info', 'teacher_name',
+						'teacher_info', 'createdAt', 'updatedAt', 'deletedAt', 'UserUserId']
+		},
+		include: [{
+			model: Review, attributes: []
+		}],
+		raw: true,
+		group: ['Class.id'],
 		order: [['createdAt', 'DESC']],
-		limit: 5,
 	});
 
 	familyClass = await Class.findAll({
+		attributes: {
+			include: [[sequelize.fn("COUNT", sequelize.col("reviews.ClassId")), 'reviewCount']],
+			exclude: ['class_enrolldate', 'class_family', 'class_info', 'teacher_name',
+						'teacher_info', 'createdAt', 'updatedAt', 'deletedAt', 'UserUserId']
+		},
+		include: [{
+			model: Review, attributes: []
+		}],
 		where: {class_family: 1},
+		raw: true,
+		group: ['Class.id'],
 		order: [['createdAt', 'DESC']],
-		limit: 5,
 	});
 
 	reviewClass = await Class.findAll({
+		attributes: {
+			include: [[sequelize.fn("COUNT", sequelize.col("reviews.ClassId")), 'reviewCount']],
+			exclude: ['class_enrolldate', 'class_family', 'class_info', 'teacher_name',
+						'teacher_info', 'createdAt', 'updatedAt', 'deletedAt', 'UserUserId']
+		},
 		include: [{
-			model: Review,
-			attributes: ['ClassId']
+			model: Review, attributes: []
 		}],
-		group: ['ClassId'],
-		order: [[sequelize.fn('COUNT', sequelize.col('ClassId')), 'DESC']],
+		raw: true,
+		group: ['Class.id'],
+		order: [[sequelize.fn('COUNT', sequelize.col('reviewCount')), 'DESC']],
 	});
+	console.log(reviewClass);
 
 	if (bestClass && saleClass && newClass && familyClass) {
 		res.render('main', {
