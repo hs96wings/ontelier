@@ -35,6 +35,7 @@ module.exports = () => {
                     user_nickname: user_nickname,
                     user_email: user_email,
                     provider: 'naver',
+                    email_verified: 1,
                 });
                 done(null, newUser);
             }

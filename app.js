@@ -19,6 +19,7 @@ const userRouter = require('./routes/user');
 const classRouter = require('./routes/class');
 const { sequelize } = require('./models');
 const passportConfig = require('./passport');
+const multer = require('multer');
 
 const app = express();
 app.use(favicon(path.join(__dirname, 'public/', 'favicon.ico')));
@@ -62,17 +63,20 @@ app.use('/category', categoryRouter);
 app.use('/mypage', userRouter);
 app.use('/class', classRouter);
 
-app.use((req, res, next) => {
-	const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
-    error.status = 404;
-    next(error);
+app.use((err, req, res, next) => {
+	if (err instanceof multer.MulterError) {
+		// return res.status(418).send(err.code);
+		return res.send('<script type="text/javascript">alert("파일 용량 제한: 10MB"); history.go(-1); </script>');
+	}
+	res.status = 404;
+	res.send('<script type="text/javascript">alert("잘못된 페이지입니다"); window.location = "/"; </script>');
 });
 
 app.use((err, req, res) => {
 	res.locals.message = err.message;
 	res.locals.error = req.app.get('env') === 'development' ? err : {};
 	res.status(err.status || 500);
-	res.render('error');
+	res.send('<script type="text/javascript">alert("서버가 응답하지 않습니다"); window.location = "/"; </script>');
 });
 
 
