@@ -13,6 +13,16 @@
 </head>
 <body>
 
+<!-- Loading 화면 코드 시작 -->
+
+<div id="load"> <img src="/images/loading-circle.gif" alt="loading"> </div>
+<script type="text/javascript">
+  $(window).load(function() {
+    $("#load").hide();
+  });
+</script>
+<!-- Loading 화면 코드 종료-->
+
 <div id="main-container">
 <!----- 헤더 영역 ----->
     <div class="header">
@@ -132,13 +142,4 @@ function myFunction() {
   </script>
   <!-- End Channel Plugin -->
 
-  <!-- Loading 화면 코드 시작 -->
-
-  <div id="load"> <img src="/images/loading-circle.gif" alt="loading"> </div>
-  <script type="text/javascript">
-    $(window).load(function() {
-      $("#load").hide();
-    });
-  </script>
-  <!-- Loading 화면 코드 종료-->
 </html>
