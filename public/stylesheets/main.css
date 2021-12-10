@@ -211,6 +211,12 @@ body {
   text-align: left;
   color: #231815;
 }
+.count {
+  padding-left: 3px;
+  vertical-align: text-top;
+  line-height: 1.5em;
+}
+
 .class-list {
   display: flex;
   justify-content: start;
@@ -293,6 +299,11 @@ body {
 .class-score {
   padding: 0 10px;
 }
+.class-item .star-fill {
+  color: #7e7e7f !important;
+}
+
+
 .swiper-button-next, .swiper-button-prev {
   --swiper-navigation-size: 14px;
   color: white;

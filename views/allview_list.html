@@ -20,7 +20,7 @@
 
           {% set sale_price = class.class_price * ( (100 - class.class_discount) / 100 ) %}
 
-          <div class="class-item">
+          <div class="class-item" id="class-id{{class.id}}">
               <ul><a href="/class/{{class.id}}">
                   <li><div class="class-image"><img class="class-thumbnail" src="{{class.class_img}}"></div></li>
                   <li class="class-title">{{class.class_title}}</li>
@@ -32,12 +32,20 @@
                       <span class="sale_price">{{sale_price.toLocaleString('ko-KR')}}원</span><br>
                   </li>
                   <li class="class-score">
-                      <span class="pt14">{{"★".repeat(class.class_score) + ("☆".repeat(5 - class.class_score) )}}</span>
-                      <span class="pt10 gray">({{class.reviewCount}})<!--후기개수--></span> <!--임시. review 테이블에서 개수 가져오기-->
+
+                      <div class="review-star-wrapper">
+                        <div class="class-star-wrapper">
+                          <span class="star">★★★★★</span><span class="star-fill">★★★★★</span>
+                        </div>
+                      </div>
+                      <span class="pt10 gray count">({{class.reviewCount}})<!--후기개수--></span>
                   </li></a>
               </ul>
           </div>
 
+          <script type="text/javascript">
+            $("#class-id{{class.id}} .star-fill").css("width", "{{class.class_score * 20 + 5}}%");
+          </script>
           {% endfor %}
 
           <!-- 클래스 리스트 열 맞추기 -->

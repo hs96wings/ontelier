@@ -61,7 +61,9 @@ progress {
   overflow: hidden;
   pointer-events: none;
 }
-
+.review-star-wrapper {
+  display: inline-block;
+}
 .review-star-wrapper .class-star-wrapper {
   display: inline-block;
   position: relative;
