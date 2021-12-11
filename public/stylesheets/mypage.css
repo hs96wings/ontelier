@@ -1,5 +1,5 @@
 .mypage-space {
-  height: 160px;
+  height: 100px;
 }
 
 
@@ -23,6 +23,7 @@
 
 .mypage-profile {
   height: 130px;
+  margin-top: 60px;
 }
 .mypage-profile-wrapper {
   margin-left: 135px;
@@ -49,10 +50,10 @@
 }
 
 .profile-text {
-  padding: 25px;
-  float: left;
-  height: 130px;
-  width: 200px;
+    padding: 15px 25px;
+    float: left;
+    height: fit-content;
+    width: 200px;
 }
 
 .mypage-nickname {
@@ -113,4 +114,31 @@
   letter-spacing: normal;
   text-align: center;
   color: #85b830;
+}
+
+
+/* ----- 반응형 태블릿 ----- */
+
+@media ( max-width: 1200px ) {
+
+  .mypage-container {
+    grid-template-columns: calc(50vw - 450px) 900px calc(50vw - 450px);
+  }
+
+  .mypage-profile-wrapper {
+      margin-left: 0;
+  }
+  .mypage-button-wrapper {
+    width: 300px;
+    height: 95px;
+    float: right;
+    margin: 17.5px -7px;
+  }
+
+  .mypage-space {
+    height: 30px;
+  }
+
+
+
 }

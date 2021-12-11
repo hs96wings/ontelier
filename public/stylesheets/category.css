@@ -15,7 +15,7 @@
 }
 
 .category-list li {
-    margin: 20px 17.5px;
+    padding: 20px 27.5px;
     font-size: 18px;
 }
 
@@ -28,15 +28,6 @@
   color: #85b830 !important;
   font-weight: 800;
 }
-
-  .container {
-    display: grid;
-    grid-template-areas:
-            ". content .";
-    grid-template-columns: calc(50vw - 600px) 1200px calc(50vw - 600px);
-    grid-template-rows: 1fr;
-    margin-top: 60px;
-  }
 
 .selected-btn {
     color: #85b830;
@@ -76,4 +67,22 @@
 .dropdown-menu:hover:not(.home){
     background-color: darkorange;
     color: white;
+}
+
+/* ----- 반응형 태블릿 ----- */
+
+@media ( max-width: 1200px ) {
+
+  .category-list-wrapper {
+    margin: 60px calc(50vw - 450px) 0px;
+  }
+
+  .category-list {
+    flex-wrap: wrap;
+  }
+
+  .category-list li {
+      padding: 20px 17.5px 0px;
+  }
+
 }

@@ -99,7 +99,7 @@ progress {
   cursor: pointer;
   border: solid 1px #c6c6c6;
   border-radius: .25em;
-  margin: 10px auto auto auto;
+  margin: 20px auto auto auto;
 }
 
 .file-box input[type="file"] {  /* 파일 필드 숨기기 */
@@ -237,3 +237,18 @@ progress {
     color: #7e7e7f;
     text-align: center;
     margin-top: 50px;
+}
+
+.review-list-wrapper .class_review_wrapper {
+  padding-left: 0;
+}
+
+/* ----- 반응형 태블릿 ----- */
+
+@media ( max-width: 1200px ) {
+
+  .review-container {
+    width: 900px;
+  }
+
+}

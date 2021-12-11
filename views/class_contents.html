@@ -1,15 +1,40 @@
 {% extends 'main_layout.html' %}
 {% block content %}
 
+<style media="screen">
+
+  #main-container {
+    display: grid;
+    grid-template-areas:
+      '. header .'
+      '. content .'
+      'footer footer footer';
+    grid-template-columns: calc(50vw - 1200px /2) 1200px calc(50vw - 1200px /2);
+    grid-template-rows: 60px 95% 300px;
+  }
+  @media ( max-width: 1200px ) {
+    #main-container {
+    grid-template-areas: '. header .'
+        'content content content'
+        'footer footer footer';
+    grid-template-columns: calc(50vw - 900px /2) 900px calc(50vw - 900px /2);
+    }
+  }
+
+</style>
+
 <div class="contents_view_container">
 
 <!----- 강의영상 배너 ----->
 <div class="contents-banner-wrapper">
-  <!-- <img class="contents_banner" src="{{class.class_img}}"> -->
+  <div class="contents-text-wrapper">
+
   <div>{{class.class_title}}</div>
   <button type="button" class="contents-button" onclick="location.href='/class/contents/{{class.id}}/video'"><img src="/images/play-btn.png"> <span id="contents-btn-num">0-1</span> 수강하기</button>
   <div>
     <span class="contents-enrolldate">~{{date}}까지</span>
+  </div>
+
   </div>
 </div>
 
@@ -68,22 +93,28 @@
 
 </div>
 
+
 <script>
     var classnote = `<!-- 클래스 설명 -->
-      <p id="class_info" class="scroll">{{class.class_title}}</p>
-      <div class="class_space"></div>
+      <p id="class_info" class="note-title">{{class.class_title}}</p>
 
-      <!-- 챕터 소개 -->
+        <!-- 챕터 소개 -->
+          <p id="chapter-depth0">prologue</p>
+          <p id="chapter-depth1">0 -1. 안녕하세요. 친구같은 수박동입니다.</p>
 
-      <!-- 수업 목표 -->>
-      <p>{{info.lecture_goal}}</p>
+        <!-- 수업 목표 -->
+        <p class="semi-title">[수업목표]</p>
+        <p>{{info.lecture_goal}}프랑스 자수와 펀치니들 자수 수업에 오신걸 환영해요 !
+        이번 클래스에서는 다양한 종류의 실과 기법, 그리고 많이 사용하는 입체 자수 기법을 골라 알려드립니다. 프랑스자수의 기본적인 재료들에 대해 꼼꼼히 살펴보고 총 다섯개의 작품을 만들어볼 거에요.</p>
 
-      <!-- 수업 개요 -->
-      <p>{{info.lecture_summary}}</p>
+        <!-- 수업 개요 -->
+        <p class="semi-title">[수업개요]</p>
+        <p>{{info.lecture_summary}}수박동은 자수, 펀치니들 등 하고 싶은 일들을 하나씩 디자인 해나가고 있어요.
+프랑스 자수는 제가 가진 첫 취미예요. 보기만 해도 기분 좋아지는 다양한 컬러의 실을 사용하고 제가 좋아하는 귀여운 것들을 디자인하면서 힘든 일이나 지친 일들을 잠시나마 잊게 해주는 그게 자수의 큰 매력같아요. 자수를 시작하면서 느낀 좋은 경험들을 함께 나누고 싶어요. 이젠 함께 놀 수 있기를 바라요.</p>
 
-      <!-- 다음 영상 예고 -->
-      <p>{{info.lecture_previous}}</p>
-
+        <!-- 다음 영상 예고 -->
+        <p class="semi-title">[다음 영상 예고]</p>
+        <p>{{info.lecture_previous}}</p>
 
       <div class="class_space"></div>`;
 

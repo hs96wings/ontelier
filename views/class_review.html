@@ -98,7 +98,11 @@
 
         <div class="class_review_wrapper" id="review_id{{review.id}}">
           <div class="profile-img">
-            <img src="{{review.User.user_profile_url}}">
+            {% if review.User.user_profile_url %}
+              <img src="{{review.User.user_profile_url}}">
+            {% else %}
+              <img class="profile-pic" src="/images/user.png">
+            {% endif %}
           </div>
           <div class="review-profile-wrapper">
             <span class="pt20">{{review.User.user_nickname}} 님</span><br>

@@ -42,8 +42,11 @@
         <input type="text" name="user_phone" class="input-box" maxlength="40" value="{{user.user_phone}}">
 
     <input type="hidden" value="{{user.user_id}}" name="user_id">
-    <input type="submit" id="user-submit" class="submit-button" value="수정">
 
+    <div class="big-button-wrapper">
+      <input type="submit" id="user-submit" class="submit-button" value="수정">
+      <input type="button" class="submit-button" value="취소" onclick="history.back()">
+    </div>
 </form>
 
 </div>

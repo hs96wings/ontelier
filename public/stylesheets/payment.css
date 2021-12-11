@@ -87,3 +87,20 @@
   display: inline-block;
   margin: 55px auto;
 }
+
+
+/* ----- 반응형 태블릿 ----- */
+
+@media ( max-width: 1200px ) {
+
+  .payment-container {
+    width: 827px;
+  }
+  .payment-title-wrapper{
+    width: 500px;
+  }
+
+  .dividing-line {
+    width: 827px;
+  }
+}

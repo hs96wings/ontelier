@@ -18,27 +18,37 @@
     grid-template-columns: calc(50vw - 1200px /2) 1200px calc(50vw - 1200px /2);
     grid-template-rows: 60px 95% 300px;
   }
+  @media ( max-width: 1200px ) {
+    #main-container {
+      grid-template-columns: calc(50vw - 900px /2) 900px calc(50vw - 900px /2);
+    }
+  }
 
 </style>
 
 <div class="class_view_container">
 
 <!----- 클래스 배너 ----->
-<img class="class_banner" src="{{class.class_img}}">
+<div class="class-banner-wrapper">
+  <img class="class_banner" src="{{class.class_img}}">
+</div>
 
     <div class="class_space"></div>
 
 <!----- 우측 컨텐츠 ----->
 <div class="class_right">
   <div class="class_float_wrapper floating">
+      <div class="class-title-wrapper">
+        <p class="class_title">{{class.class_title}}</p>
+      </div>
 
-      <p class="class_title">{{class.class_title}}</p>
-
-      {% if class.class_discount %}
-      <span class="discount">{{class.class_discount}}%</span>
-      <span class="price">{{class.class_price.toLocaleString('ko-KR')}}원</span>
-      {% endif %}
-      <span class="sale_price">{{sale_price.toLocaleString('ko-KR')}}원</span><br>
+      <div class="prices">
+        {% if class.class_discount %}
+        <span class="discount">{{class.class_discount}}%</span>
+        <span class="price">{{class.class_price.toLocaleString('ko-KR')}}원</span>
+        {% endif %}
+        <span class="sale_price">{{sale_price.toLocaleString('ko-KR')}}원</span><br>
+      </div>
 
       <button type="button" class="like-button" name="button" onclick="inWishlist();">
         {% if userWish %}

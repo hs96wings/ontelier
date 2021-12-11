@@ -34,7 +34,7 @@ body {
 
 #main-wrapper {
   position: absolute;
-  width: 68%;
+  width: 1200px;
   margin: 0px 15%;
   display: flex;
   justify-content: flex-start;
@@ -143,12 +143,16 @@ body {
   top: 50%;
   transform: translate(-50%, 0);
 }
+.slick-dotted.slick-slider {
+  margin-bottom: 0;
+}
 .category-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: calc((100vh - 668px - 60px) / 2 - 63px) calc((100vw - 1200px) / 2);
-  width: 1200px;
+  padding: calc((100vh - 668px - 60px) / 2 - 63px) calc((100vw - 1200px) / 2);
+  width: 100vw;
+  min-height: 220px;
 }
 .category-icon {
   position: relative;
@@ -175,7 +179,7 @@ body {
           ". content .";
   grid-template-columns: calc(50vw - 600px) 1200px calc(50vw - 600px);
   grid-template-rows: 1fr;
-  margin-top: 127px;
+  margin-top: 60px;
 }
 .class-container {
   grid-area: content;
@@ -329,4 +333,61 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 100;
+}
+
+
+/* ----- 반응형 태블릿 ----- */
+
+@media ( max-width: 1200px ) {
+
+  /* #main-container {
+    display: grid;
+    grid-template-areas:
+      '. header .'
+      '. content .'
+      'footer footer footer';
+    grid-template-columns: 1fr 900px 1fr;
+    grid-template-rows: 60px 95% 300px;
+  } */
+  #main-wrapper {
+    width: 900px;
+  }
+
+  .banner {
+    height: 367px;
+  }
+
+  .banner-image {
+    width: 100% !important;
+    height: 367px !important;
+  }
+
+  .category-wrapper{
+    padding: 20px calc((100vw - 900px) / 2);
+    min-height: 150px;
+  }
+  .category-icon {
+    position: relative;
+    height: 100px;
+    width: 71px;
+    margin: 0 50px;
+    flex: none;
+  }
+  .category-icon img {
+    height: 100px;
+    object-fit: cover;
+  }
+  .category-next {
+    height: 20px;
+    width: 20px;
+  }
+
+  .container {
+    display: grid;
+    grid-template-areas: ". content .";
+    grid-template-columns: calc(50vw - 450px) 900px calc(50vw - 450px);
+    grid-template-rows: 1fr;
+    margin-top: 60px;
+  }
+
 }
