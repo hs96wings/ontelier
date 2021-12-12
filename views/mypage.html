@@ -46,9 +46,27 @@
     </div>
 
     <div class="mypage-button-wrapper">
-      <button type="button" class="mypage-btn" onclick="location.href='/mypage/purchase'">구매내역<p class="mypage-btn-num">{{purchase_num}}개</p></button>
-      <button type="button" class="mypage-btn" onclick="location.href='/mypage/wishlist'">찜 목록<p class="mypage-btn-num">{{wishlist_num}}개</p></button>
-      <button type="button" class="mypage-btn" onclick="location.href='/mypage/reviews'">내 후기<p class="mypage-btn-num">{{review_num}}개</p></button>
+      <button type="button" class="mypage-btn">
+        <div class="myBtn-text-wrapper">
+          <img src="/images/purchase-icon.png">
+          구매내역
+          <p class="mypage-btn-num">{{purchase_num}}개</p>
+        </div>
+      </button>
+      <button type="button" class="mypage-btn">
+        <div class="myBtn-text-wrapper">
+          <img src="/images/wishlist-icon.png">
+          찜 목록
+          <p class="mypage-btn-num">{{wishlist_num}}개</p>
+        </div>
+      </button>
+      <button type="button" class="mypage-btn">
+        <div class="myBtn-text-wrapper">
+          <img src="/images/review-icon.png">
+          내 후기
+          <p class="mypage-btn-num">{{review_num}}개</p>
+        </div>
+      </button>
     </div>
 
     </div>

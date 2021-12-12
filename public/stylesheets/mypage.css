@@ -103,16 +103,26 @@
   border-radius: 5px;
   border: none;
   background-color: #eaeaea;
-  cursor: pointer;
+  text-align: left;
 }
-
+.myBtn-text-wrapper {
+  padding: 20px 15px 10px 15px;
+}
+.myBtn-text-wrapper img {
+  display: block;
+  width: 15px;
+}
+.myBtn-text-wrapper img,
+.myBtn-text-wrapper p,
+.myBtn-text-wrapper div {
+  padding: 2px 0;
+}
 .mypage-btn-num {
   font-size: 15px;
   font-weight: 700;
   font-stretch: normal;
   line-height: 1.28;
   letter-spacing: normal;
-  text-align: center;
   color: #85b830;
 }
 
