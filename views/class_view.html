@@ -1,6 +1,7 @@
 {% extends 'main_layout.html' %}
 
 {% set sale_price = class.class_price * ( (100 - class.class_discount) / 100 ) %}
+{% set reviews_view = reviews.slice(0, 6) %}
 
 {% block content %}
 
@@ -16,7 +17,6 @@
       '. content .'
       'footer footer footer';
     grid-template-columns: calc(50vw - 1200px /2) 1200px calc(50vw - 1200px /2);
-    grid-template-rows: 60px 95% 300px;
   }
   @media ( max-width: 1200px ) {
     #main-container {
@@ -33,7 +33,6 @@
   <img class="class_banner" src="{{class.class_img}}">
 </div>
 
-    <div class="class_space"></div>
 
 <!----- 우측 컨텐츠 ----->
 <div class="class_right">
@@ -82,29 +81,41 @@
     <div class="class_space"></div>
 
     <!-- 강사 소개 -->
-    <p id="class_teacher_name" class="scroll">강사 {{class.teacher_name}}</p>
+    <p id="class_teacher_name" class="scroll">강사 소개</p>
+    <p class="sub-title">{{class.teacher_name}} 님</p>
     <p class="class_teacher_info">{{class.teacher_info | safe}}</p>
 
     <div class="class_space"></div>
 
     <!-- 커리큘럼 -->
     <p id="class_cirriculum" class="scroll">커리큘럼</p>
-    {% for cir in cirriculum %}
-      <div class="pt20">
-        {% if cir.depth == 0 %}
-        <p><b>{{cir.cirriculum_text}}</b></p>
-        {% else %}
-        <p>{{cir.cirriculum_text}}</p>
-        {% endif %}
-      </div>
-    {% endfor %}
-    <div class="pt20">{{class.class_cirriculum | safe}}</div>
+      <div>
+      {% if cirriculum %}
+        {% for cir in cirriculum %}
+          {% if cir.depth == 0 %}
+           </div>
+            <div class="cirriculum-title">
+              <span>{{cir.cirriculum_text.split(" ")[0]}}</span>
+              <span>{{cir.cirriculum_text.substring(2)}}</span>
+              <img src="/images/arrow-down.png">
+            </div>
+            <div class="submenu">
+          {% elif cir.depth == 1 %}
+
+            <span>{{cir.cirriculum_text.split("-")[1].replace(' ', '. ')}}</span>
+          {% endif %}
+
+
+        {% endfor %}
+      {% endif %}
+
+     </div>
 
     <div class="class_space"></div>
 
     <!-- 후기 -->
     <p id="class_review" class="scroll">실제 후기<span>{{reviews.length}}개</span></p>
-    {% for review in reviews %}
+    {% for review in reviews_view %}
 
     <div class="class_review_wrapper" id="review_id{{review.id}}">
 
@@ -129,6 +140,10 @@
 
     {% endfor %}
 
+    {% if reviews.length >= 3 %}
+    <div class="fade-out"></div>
+    {% endif %}
+
     <button type="button" class="class_more_button" name="button"><a href="/class/{{class.id}}/review">+ 후기 더보기</a></button>
     <div class="class_space"></div>
 
@@ -152,10 +167,6 @@
             success : function(Wish_data){
               // 유저 찜목록에 이 클래스가 있으면
               console.log(Wish_data);
-              var isInWishlist = Wish_data.some(class_id => class_id.ClassId == {{class.id}});
-              if ( isInWishlist ) {
-                $(`#heart`).attr("class", "checked"); // 클래스명 checked로 변경
-              }
 
             }
 
@@ -191,5 +202,19 @@
       },
     });
 }
+
+  $(".cirriculum-title").click(function() {
+    $(this).next(".submenu").stop().slideToggle(300);
+    $(this).next(".submenu").siblings(".submenu").slideUp(300); // 1개씩 펼치기
+
+    if ( $(this).find("img").attr("class") == "up" ) {
+      $(this).find("img").attr("src", "/images/arrow-down.png"); // down 화살표로
+    } else { // down 눌렀을 때
+      $(".cirriculum-title img").replaceWith('<img src="/images/arrow-down.png">'); // 다른 화살표들 down으로
+      $(this).find("img").attr("src", "/images/arrow-up.png"); // up 화살표로
+    }
+
+    $(this).find("img").toggleClass("up");
+  });
 </script>
 {% endblock %}

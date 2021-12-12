@@ -10,7 +10,6 @@
       '. content .'
       'footer footer footer';
     grid-template-columns: calc(50vw - 1200px /2) 1200px calc(50vw - 1200px /2);
-    grid-template-rows: 60px 95% 300px;
   }
   @media ( max-width: 1200px ) {
     #main-container {
@@ -38,7 +37,6 @@
   </div>
 </div>
 
-    <div class="class_space"></div>
 
 <!----- 우측 컨텐츠 ----->
 <div class="class_right">
@@ -53,7 +51,10 @@
           {% for cir in cirriculum %}
             {% if cir.depth == 0 %}
              </div>
-              <div class="cirriculum-title">{{cir.cirriculum_text.replace(' ', '. ')}}</div>
+              <div class="cirriculum-title">
+                <span>{{cir.cirriculum_text.replace(' ', '. ')}}</span>
+                <img src="/images/arrow-down.png">
+              </div>
               <div class="submenu">
             {% elif cir.depth == 1 %}
 
@@ -163,8 +164,16 @@ $(function() {
 
   $(".cirriculum-title").click(function() {
     $(this).next(".submenu").stop().slideToggle(300);
-    // $(this).toggleClass('on').siblings().removeClass('on');
     $(this).next(".submenu").siblings(".submenu").slideUp(300); // 1개씩 펼치기
+
+    if ( $(this).find("img").attr("class") == "up" ) {
+      $(this).find("img").attr("src", "/images/arrow-down.png"); // down 화살표로
+    } else { // down 눌렀을 때
+      $(".cirriculum-title img").replaceWith('<img src="/images/arrow-down.png">'); // 다른 화살표들 down으로
+      $(this).find("img").attr("src", "/images/arrow-up.png"); // up 화살표로
+    }
+
+    $(this).find("img").toggleClass("up");
   });
 
   $(function() {

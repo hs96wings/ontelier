@@ -6,19 +6,6 @@
 {% block content %}
 
 
-<style media="screen">
-  @media ( max-width: 1200px ) {
-    #main-container {
-      display: grid;
-      grid-template-areas: '. header .'
-      '. content .'
-      'footer footer footer';
-      grid-template-columns: 1fr 4.5fr 1fr;
-      grid-template-rows: 60px minmax(calc( 100vh - 360px ), 700px) 300px;
-    }
-  }
-</style>
-
 <div class="login-container">
     <div class="login-wrapper">
         <h2>{{user_nickname}}님 비밀번호 찾기</h2>

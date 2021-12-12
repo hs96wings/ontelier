@@ -4,7 +4,7 @@
     'banner2 banner2'
     'left1 right1';
   grid-template-columns: 2.4fr 1.7fr;
-  grid-template-rows: 360px 95%;
+  grid-template-rows: 360px calc(100% - 360px);
 }
 
 .contents-banner-wrapper {
@@ -113,7 +113,7 @@
 
 .submenu span{
     display: block;
-    padding: 15px 20px;
+    padding: 15px 7px 15px 20px;
     color: #222;
     font-size: 14px;
     position: relative;
@@ -122,9 +122,7 @@
 .cirriculum-btn {
     width: 15px;
     height: 15px;
-    z-index: 10;
-    position: absolute;
-    right: 0;
+    float: right;
 }
 
 .cirriculum-btn img {

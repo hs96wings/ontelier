@@ -1,6 +1,9 @@
 @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css');
 
+html, body {
+  height: 100%;
+}
 
 * {
   margin: 0;
@@ -16,13 +19,14 @@ body {
 }
 
 #main-container {
+  min-height: 100%;
   display: grid;
   grid-template-areas:
     '. header .'
     '. content .'
     'footer footer footer';
   grid-template-columns: 1fr 4.5fr 1fr;
-  grid-template-rows: 60px 95% 300px;
+  grid-template-rows: 60px calc(100% - 360px) 300px;
 }
 
 .logo {

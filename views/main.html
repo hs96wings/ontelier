@@ -1,5 +1,11 @@
 {% extends 'main_layout.html' %}
 
+{% set best_view = best.slice(0, 4) %}
+{% set sale_view = sale.slice(0, 4) %}
+{% set newes_view = newes.slice(0, 4) %}
+{% set family_view = family.slice(0, 4) %}
+{% set reviews_view = reviews.slice(0, 4) %}
+
 {% block content %}
 
 
@@ -38,7 +44,7 @@
     <span class="pt27">인기 클래스 Best</span><a class="allview-btn pt10" href="/category/all?sort=best">전체보기</a>
         <div class="class-list">
             <!-- 클래스 리스트 -->
-            {% for class in best %}
+            {% for class in best_view %}
 
             {% set sale_price = class.class_price * ( (100 - class.class_discount) / 100 ) %}
 
@@ -79,7 +85,7 @@
     <span class="pt27">오늘의 특가 클래스</span><a class="allview-btn pt10" href="/category/all?sort=sale">전체보기</a>
         <div class="class-list">
             <!-- 클래스 리스트 -->
-            {% for class in sale %}
+            {% for class in sale_view %}
 
             {% set sale_price = class.class_price * ( (100 - class.class_discount) / 100 ) %}
 
@@ -119,7 +125,7 @@
     <span class="pt27">신규 클래스</span><a class="allview-btn pt10" href="/category/all?sort=new">전체보기</a>
         <div class="class-list">
             <!-- 클래스 리스트 -->
-            {% for class in newes %}
+            {% for class in newes_view %}
 
             {% set sale_price = class.class_price * ( (100 - class.class_discount) / 100 ) %}
 
@@ -158,7 +164,7 @@
     <span class="pt27">가족과 함께 하는 강의</span><a class="allview-btn pt10" href="/category/all?sort=family">전체보기</a>
         <div class="class-list">
             <!-- 클래스 리스트 -->
-            {% for class in family %}
+            {% for class in family_view %}
 
             {% set sale_price = class.class_price * ( (100 - class.class_discount) / 100 ) %}
 
@@ -198,7 +204,7 @@
     <span class="pt27">이달의 우수후기 클래스</span><a class="allview-btn pt10" href="/category/all?sort=review">전체보기</a>
         <div class="class-list">
             <!-- 클래스 리스트 -->
-            {% for class in reviews %}
+            {% for class in reviews_view %}
 
             {% set sale_price = class.class_price * ( (100 - class.class_discount) / 100 ) %}
 
