@@ -24,9 +24,9 @@
     <tr>
         <th>카테고리</th>
         <td>
-            <select name="category_high" class="category_high" id="category_high" onchange="categoryKindChange(this)">
+            <select name="category_high" class="category_high" id="category_high" onchange="categoryKindChange(this.value)">
                 <option value="수익창출">수익창출</option>
-                <option value="DIY/수공예">DIY/수공예</option>
+                <option value="DIY/수공예" selected>DIY/수공예</option>
                 <option value="예술문화">예술문화</option>
                 <option value="스포츠">스포츠</option>
                 <option value="뷰티">뷰티</option>
@@ -43,7 +43,7 @@
     <tr>
         <th>클래스소개</th>
         <td><form method="post">
-              <textarea id="summernote" name="class_info">{{class.class_info}}</textarea>
+              <textarea class="summernote" name="class_info">{{class.class_info}}</textarea>
             </form></td>
     </tr>
     <tr>
@@ -53,7 +53,7 @@
     </tr>
     <tr>
         <th>강사소개</th>
-        <td><textarea name="teacher_info" rows="10">{{class.teacher_info}}</textarea></td>
+        <td><textarea class="summernote" name="teacher_info">{{class.teacher_info}}</textarea></td>
     </tr>
     <tr>
         <th>클래스이미지</th>
@@ -102,9 +102,15 @@
 <script>
   //값 가져오기
     $('textarea[name="class_info"]').summernote('code', `{{class.class_info | safe }}`);
+    $('textarea[name="teacher_info"]').summernote('code', `{{class.teacher_info | safe }}`);
+
+        $('.category_high option[value="{{class.category_high}}"]').prop('selected', true);
+        categoryKindChange($('.category_high option[value="{{class.category_high}}"]').html());
+        $('.category_low option[value="{{class.category_low}}"]').prop('selected', true);
 
 
-    function categoryKindChange(e) {
+    function categoryKindChange(value) {
+
         var diy = ["뜨개질", "자수", "비누/캔들/향", "라탄공예", "가죽공예", "레진공예", "도예", "플라워도예"];
         var culture = ["마카색/연필/수채화", "오일파스텔", "아크릴화", "유화", "캘리그라피", "디지털드로잉", "웹툰", "사진영상"];
         var sports = ["요가", "필라테스", "스트레칭", "재활", "피트니스", "러닝사이클"];
@@ -116,14 +122,14 @@
         var target = document.getElementById("category_low");
         var target2;
 
-        if (e.value === "DIY/수공예") target2 = diy;
-        else if (e.value === "예술문화") target2 = culture;
-        else if (e.value === "스포츠") target2 = sports;
-        else if (e.value === "뷰티") target2 = beauty;
-        else if (e.value === "요리") target2 = cook;
-        else if (e.value === '음악') target2 = music;
-        else if (e.value === '디자인/개발') target2 = dev;
-        else if (e.value === '수익창출') target2 = earn;
+        if (value === "DIY/수공예") target2 = diy;
+        else if (value === "예술문화") target2 = culture;
+        else if (value === "스포츠") target2 = sports;
+        else if (value === "뷰티") target2 = beauty;
+        else if (value === "요리") target2 = cook;
+        else if (value === '음악') target2 = music;
+        else if (value === '디자인/개발') target2 = dev;
+        else if (value === '수익창출') target2 = earn;
 
         target.options.length = 0;
 
