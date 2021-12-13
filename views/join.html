@@ -5,18 +5,6 @@
 {% extends 'main_layout.html' %}
 {% block content %}
 
-<style media="screen">
-  @media ( max-width: 1200px ) {
-    #main-container {
-      display: grid;
-      grid-template-areas: '. header .'
-      '. content .'
-      'footer footer footer';
-      grid-template-columns: 1fr 4.5fr 1fr;
-      grid-template-rows: 60px minmax(calc( 100vh - 360px ), 700px) 300px;
-    }
-  }
-</style>
 
 <div class="login-container">
     <div class="login-wrapper">
@@ -32,13 +20,33 @@
             <input type="email" name="user_email" class="input-box" placeholder="이메일을 입력해주세요" required>
             <span class="pt12">연락처</span>
             <input type="text" name="user_phone" class="input-box" placeholder="연락처">
+
+            <!-- biz 회원 -->
+            <div id="biz-join-wrapper">
+              <br><br>
+              <p class="pt12">사업자등록번호</p>
+              <input type="text" name="bizz_license" class="input-box" placeholder="사업자등록번호">
+            </div>
+
             <div class="right">
+            <span><a href="javascript:slideToggle();" class="pt12">biz 회원가입</a></span><span class="pt12"> | </span>
             <input type="checkbox" id="checkbox" name="checkbox" class="checkbox" value="true"><a href="#"><span class="pt12">개인정보 이용약관 동의</span></a>
             </div>
+
             <input type="submit" class="submit-button" value="가입 완료">
         </form>
+
     </div>
 </div>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/javascripts/join.js"></script>
+
+    <script type="text/javascript">
+
+        function slideToggle() {
+          $("#biz-join-wrapper").stop().slideToggle(300);
+        }
+
+    </script>
+
 {% endblock %}

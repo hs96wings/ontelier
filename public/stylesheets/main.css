@@ -41,7 +41,7 @@ body {
   width: 1200px;
   margin: 0px 15%;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
 }
 
@@ -342,7 +342,7 @@ body {
 
 /* ----- 반응형 태블릿 ----- */
 
-@media ( max-width: 1200px ) {
+@media screen and ( max-width: 1200px ) {
 
   /* #main-container {
     display: grid;

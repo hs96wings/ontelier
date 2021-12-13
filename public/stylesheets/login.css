@@ -44,11 +44,13 @@ body {
     padding-left: 10px;
     margin: 5px 0;
     border: solid 1px #c6c6c6;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .input-box::placeholder {
     color: #c6c6c6;
-    font-family:'NanumSquare';
+    /* font-family:'NanumSquare'; */
 }
 
 .submit-button {
@@ -87,4 +89,8 @@ body {
     border: solid 1px #888;
     vertical-align: middle;
     margin: 0 3px;
+}
+
+#biz-join-wrapper {
+  display: none;
 }
