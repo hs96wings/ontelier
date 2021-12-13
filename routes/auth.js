@@ -117,7 +117,11 @@ router.post('/resetPwd', isNotLoggedIn, async (req, res) => {
 router.post('/login', passport.authenticate('local', {
     failureRedirect: '/login', failureFlash: true }),
     function(req, res) {
-        res.redirect(req.session.returnTo);
+        if (req.session.returnTo) {
+            res.redirect(req.session.returnTo);
+        } else {
+            res.redirect('/');
+        }
     }
 );
 
