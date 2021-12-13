@@ -6,7 +6,7 @@ const axios = require('axios');
 const sequelize = require('sequelize');
 
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
-const { User, Class, Review, Purchase, Wishlist, Thumbsup, Cirriculum } = require('../models');
+const { User, Class, Review, Purchase, Wishlist, Thumbsup, Cirriculum, Note } = require('../models');
 
 const router = express.Router();
 
@@ -377,13 +377,18 @@ router.get('/contents/:id/video', isLoggedIn, async (req, res) => {
 });
 
 router.get('/contents/:id/classnote', isLoggedIn, async (req, res) => {
-    const note = await Cirriculum.findOne({
+    const note = await Note.findOne({
         where: {
-            ClassId: req.body.class_id,
-            id: req.body.cir_id
-        }
+            ClassId: req.params.id,
+        },
+        raw: true
     });
-    res.render('class_contents_classnote', { info: note });
+    if (note) {
+        res.render('class_contents_classnote', { note, id: req.params.id });
+    } else {
+        req.flash('error', '오류가 발생했습니다');
+        res.redirect('/mypage');
+    }
 });
 
 router.get('/contents/:id/cirriculum', isLoggedIn, async(req, res) => {
@@ -392,7 +397,12 @@ router.get('/contents/:id/cirriculum', isLoggedIn, async(req, res) => {
             ClassId: req.params.id
         }
     });
-    res.render('class_contents_cirriculum', {cirriculum, id: req.params.id});
+    if (cirriculum) {
+        res.render('class_contents_cirriculum', {cirriculum, id: req.params.id});
+    } else {
+        req.flash('error', '오류가 발생했습니다');
+        res.redirect('/mypage');
+    }
 });
 
 router.post('/:id/review/like', async (req, res) => {

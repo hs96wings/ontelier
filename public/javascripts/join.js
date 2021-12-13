@@ -29,7 +29,7 @@ document.getElementById('user-form').addEventListener('submit', async(e) => {
     }
 
     // 값 유효 체크
-    var idExp = /^[a-z]+[a-z0-9]{5,19}$/g;
+    var idExp = /^[a-z]+[a-z0-9_]{5,19}$/g;
     if (!idExp.test(user_id)) {
         console.log(idExp.test(user_id));
         return alert('아이디가 형식에 맞지 않습니다\n영문, 숫자로 구성된 6~20자');
