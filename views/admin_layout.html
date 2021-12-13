@@ -69,7 +69,7 @@
                 <option value="카테고리">카테고리</option>
                 <option value="강사이름">강사이름</option>
             </select>
-            <input type="text" class="search-input">
+            <input type="text" class="search-input" onkeydown="enterSearch()">
             <button class="search-button" onclick="search()">검색</button>
         </div>
 
@@ -78,6 +78,11 @@
 
     </div>
     <script>
+    function enterSearch() {
+        if(event.keyCode == 13){
+            search();  // 실행할 이벤트
+        }
+    }
         function search() {
             var searchFilter = document.getElementsByName('search-filter')[0].selectedIndex;
             var searchKeyword = document.getElementsByClassName('search-input')[0].value;
