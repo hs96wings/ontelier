@@ -17,6 +17,18 @@ module.exports = class Cirriculum extends Sequelize.Model {
                 type: Sequelize.STRING(100),
                 allowNull: true,
             },
+			lecture_goal: {
+                type: Sequelize.TEXT,
+                allowNull: true,
+            },
+            lecture_summary: {
+                type: Sequelize.TEXT,
+                allowNull: true,
+            },
+            lecture_previous: {
+                type: Sequelize.TEXT,
+                allowNull: true
+            },
 		}, {
 			sequelize,
 			timestamps: true,
@@ -31,6 +43,5 @@ module.exports = class Cirriculum extends Sequelize.Model {
 
 	static associate(db) {
 		db.Cirriculum.belongsTo(db.Class);
-        db.Cirriculum.hasMany(db.Lecture_info);
 	};
 }

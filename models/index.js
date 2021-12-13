@@ -10,7 +10,6 @@ const Purchase = require('./purchase');
 const Thumbsup = require('./thumbsup');
 
 const Cirriculum = require('./cirriculum');
-const Lecture_info = require('./lecture_info');
 
 const db = {};
 const sequelize = new Sequelize(
@@ -25,7 +24,6 @@ db.Wishlist = Wishlist;
 db.Purchase = Purchase;
 db.Thumbsup = Thumbsup;
 db.Cirriculum = Cirriculum;
-db.Lecture_info = Lecture_info;
 
 Class.init(sequelize);
 User.init(sequelize);
@@ -34,7 +32,6 @@ Wishlist.init(sequelize);
 Purchase.init(sequelize);
 Thumbsup.init(sequelize);
 Cirriculum.init(sequelize);
-Lecture_info.init(sequelize);
 
 Class.associate(db);
 User.associate(db);
@@ -43,6 +40,5 @@ Wishlist.associate(db);
 Purchase.associate(db);
 Thumbsup.associate(db);
 Cirriculum.associate(db);
-Lecture_info.associate(db);
 
 module.exports = db;
