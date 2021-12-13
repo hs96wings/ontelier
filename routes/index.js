@@ -36,7 +36,6 @@ router.get('/', async (req, res, next) => {
 		group: ['Class.id'],
 		order: [['class_score', 'DESC']],
 	});
-	console.log(bestClass);
 
 	saleClass = await Class.findAll({
 		attributes: {
@@ -99,7 +98,6 @@ router.get('/', async (req, res, next) => {
 		group: ['Class.id'],
 		order: [[sequelize.fn('COUNT', sequelize.col('Reviews.ClassId')), 'DESC']],
 	});
-	console.log(reviewClass);
 
 	if (bestClass && saleClass && newClass && familyClass) {
 		res.render('main', {
@@ -140,8 +138,6 @@ router.get('/confirmEmail', isNotLoggedIn, async (req, res) => {
 			key_for_verify: key,
 		}
 	});
-
-	console.log(exKey);
 
 	if (exKey && key.length > 0) {
 		if (!exKey.email_verified) {

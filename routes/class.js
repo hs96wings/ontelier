@@ -376,14 +376,22 @@ router.get('/contents/:id/video', isLoggedIn, async (req, res) => {
 });
 
 router.get('/contents/:id/classnote', isLoggedIn, async (req, res) => {
-    const class_title = await Class.findOne({
-        where: { ClassId: req.params.id }
+    const note = await Cirriculum.findOne({
+        where: {
+            ClassId: req.body.class_id,
+            id: req.body.cir_id
+        }
     });
-    res.render('class_contents_classnote');
+    res.render('class_contents_classnote', { info: note });
 });
 
 router.get('/contents/:id/cirriculum', isLoggedIn, async(req, res) => {
-    res.render('class_contents_cirriculum');
+    const cirriculum = await Cirriculum.findAll({
+        where: {
+            ClassId: req.params.id
+        }
+    });
+    res.render('class_contents_cirriculum', {cirriculum, id: req.params.id});
 });
 
 router.post('/:id/review/like', async (req, res) => {
