@@ -1,21 +1,32 @@
-  <div id="menu">
-  <!-- 커리큘럼 -->
-    <div>
-{% if cirriculum %}
-  {% for cir in cirriculum %}
-    {% if cir.depth == 0 %}
+
+<p class="sub-title">커리큘럼</p>
+
+    <div id="menu">
+    <!-- 커리큘럼 -->
+      <div>
+  {% if cirriculum %}
+    {% for cir in cirriculum %}
+      {% if cir.depth == 0 %}
+       </div>
+        <div class="cirriculum-title">
+          <span>{{cir.cirriculum_text.replace(' ', '. ')}}</span>
+          <img src="/images/arrow-down.png">
+        </div>
+        <div class="submenu">
+      {% elif cir.depth == 1 %}
+        {% if cir.cirriculum_text.includes("-") %}
+        <span>{{cir.cirriculum_text.split("-")[1].replace(' ', '. ')}}<a href="#" class="cirriculum-btn"><img src="/images/play-btn-gray.png" id="{{cir.cirriculum_text.split(" ")[0]}}"></a></span>
+        {% else %}
+        <span>{{cir.cirriculum_text}}</span>
+        {% endif %}
+      {% endif %}
+
+
+    {% endfor %}
+  {% endif %}
+
      </div>
-      <div class="cirriculum-title">{{cir.cirriculum_text.replace(' ', '. ')}}</div>
-      <div class="submenu">
-    {% elif cir.depth == 1 %}
 
-      <span>{{cir.cirriculum_text.split("-")[1].replace(' ', '. ')}}<a href="#" class="cirriculum-btn"><img src="/images/play-btn-gray.png" id="{{cir.cirriculum_text.split(" ")[0]}}"></a></span>
-    {% endif %}
+    </div>
 
-
-  {% endfor %}
-{% endif %}
-
-   </div>
-
-  </div>
+<div class="class_space"></div>

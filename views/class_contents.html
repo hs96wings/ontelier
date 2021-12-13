@@ -29,7 +29,7 @@
   <div class="contents-text-wrapper">
 
   <div>{{class.class_title}}</div>
-  <button type="button" class="contents-button" onclick="location.href='/class/contents/{{class.id}}/video'"><img src="/images/play-btn.png"> <span id="contents-btn-num">0-1</span> 수강하기</button>
+  <button type="button" class="contents-button" onclick="location.href='/class/contents/{{class.id}}/video?num=0-1'"><img src="/images/play-btn.png"> <span id="contents-btn-num">0-1</span> 수강하기</button>
   <div>
     <span class="contents-enrolldate">~{{date}}까지</span>
   </div>
@@ -57,8 +57,11 @@
               </div>
               <div class="submenu">
             {% elif cir.depth == 1 %}
-
+              {% if cir.cirriculum_text.includes("-") %}
               <span>{{cir.cirriculum_text.split("-")[1].replace(' ', '. ')}}<a href="#" class="cirriculum-btn"><img src="/images/play-btn-gray.png" id="{{cir.cirriculum_text.split(" ")[0]}}"></a></span>
+              {% else %}
+              <span>{{cir.cirriculum_text}}</span>
+              {% endif %}
             {% endif %}
 
 
@@ -86,6 +89,8 @@
 
   <div class="class_contents">
     <!-- 네비바 클릭시 에이젝스로 변경되는 콘텐츠 영역 -->
+    {% block classnote %}
+    {% endblock %}
   </div>
 
 </div>
@@ -196,7 +201,10 @@ $(function() {
     cirBtn.attr("src", "/images/play-btn-gray.png");
     $(this).attr("src", "/images/play-btn-green.png");
 
-    $("#contents-btn-num").html($(this).attr("id"));
+    var cir_num = $(this).attr("id");
+
+    $("#contents-btn-num").html(cir_num);
+    $(".contents-button").attr("onclick", `location.href='/class/contents/{{class.id}}/video?num=${cir_num}'`);
 
   });
 });
