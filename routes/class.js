@@ -363,6 +363,7 @@ router.get('/contents/:id/video', isLoggedIn, async (req, res) => {
         if (cirriculum) {
             res.render('class_video', {
                 cirriculum,
+                class_id: req.params.id,
                 messages: req.flash('error')
             });
         } else {

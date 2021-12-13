@@ -7,6 +7,7 @@ document.getElementById('user-form').addEventListener('submit', async(e) => {
     const user_nickname = e.target.user_nickname.value;
     const user_phone = e.target.user_phone.value;
     const checkbox = document.getElementById('checkbox').checked;
+    const bizz_license = e.target.bizz_license.value;
 
     if (!user_id) {
         return alert('아이디를 입력하세요');
@@ -54,7 +55,8 @@ document.getElementById('user-form').addEventListener('submit', async(e) => {
             'user_pwd': user_pwd,
             'user_email': user_email,
             'user_nickname': user_nickname,
-            'user_phone': user_phone
+            'user_phone': user_phone,
+            'bizz_license': bizz_license,
         },
         dataType: 'json',
         success: function(response) {
