@@ -11,6 +11,7 @@ const router = express.Router();
 router.post('/join', isNotLoggedIn, async (req, res) => {
     const { user_id, user_pwd, user_email, user_nickname, user_phone, bizz_license } = req.body;
     const exUser = await User.findOne({where: {user_id}});
+    const exEmail = await User.findOne({where: {user_email}});
     let user_roll;
     let licenseExp = /([0-9]{3})-?([0-9]{2})-?([0-9]{5})/;
     
@@ -29,6 +30,8 @@ router.post('/join', isNotLoggedIn, async (req, res) => {
     } else {
         if (exUser) {
             return res.send({ status: 'error', message: '이미 존재하는 아이디입니다' });
+        } else if (exEmail) {
+            return res.send({ status: 'error', message: '이미 존재하는 이메일입니다'});
         } else {
             let key_one = crypto.randomBytes(256).toString('hex').substr(100, 5);
             let key_two = crypto.randomBytes(256).toString('base64').substr(100, 5);
