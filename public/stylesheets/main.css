@@ -39,7 +39,6 @@ body {
 #main-wrapper {
   position: absolute;
   width: 1200px;
-  margin: 0px 15%;
   display: flex;
   justify-content: center;
   align-items: center;
