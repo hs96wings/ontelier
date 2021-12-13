@@ -120,14 +120,18 @@ router.post('/mail/:id', async (req, res) => {
 			id: req.params.id,
 		}
 	});
-	if (result) {
-		let emailParam = {
-			toEmail: req.user.user_email,
-			subject: '온뜰에서 강의를 구매하셨습니다',
-			text: req.user.user_nickname + ' 회원님! ' + result.class_title + ' 강의 구매가 완료되었습니다'
-		};
-	
-		mailer.sendGmail(emailParam);
+
+	var emailExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+	if (emailExp.test(req.user.user_email)) {
+		if (result) {
+			let emailParam = {
+				toEmail: req.user.user_email,
+				subject: '온뜰에서 강의를 구매하셨습니다',
+				text: req.user.user_nickname + ' 회원님! ' + result.class_title + ' 강의 구매가 완료되었습니다'
+			};
+		
+			mailer.sendGmail(emailParam);
+		}
 	}
 });
 
