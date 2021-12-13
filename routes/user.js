@@ -187,6 +187,19 @@ router.get('/wishlist', isLoggedIn, async (req, res, next) => {
     }
 });
 
+router.get('/getWishlist', isLoggedIn, async (req, res, next) => {
+    const myWishlist = await Wishlist.findAll({
+        where: {
+            UserUserId: req.user.user_id,
+        }
+    });
+    if (myWishlist) {
+        res.send({status: 'success', Wish_data: myWishlist});
+    } else {
+        throw { status: 'fail', message: 'DB 오류'};
+    }
+});
+
 router.get('/thumbsup', isLoggedIn, async (req, res, next) => {
     const myThumbsup = await Thumbsup.findAll({
         where: {

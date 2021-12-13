@@ -162,8 +162,11 @@
 
         $.ajax({
             type : "GET",
-            url : "/mypage/wishlist",
+            url : "/mypage/getWishlist",
             dataType : "json",
+            headers: {
+              'Accept': 'application/json'
+            },
             error : function(request, status, error){
                 alert(error);
             },
@@ -181,6 +184,9 @@
     $.ajax({
       type: "POST",
       url: `/class/{{class.id}}/wish`,
+      headers: {
+        'Accept': 'application/json'
+      },
       success: function(response) {
         console.log(response.message);
 

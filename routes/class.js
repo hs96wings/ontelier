@@ -84,7 +84,7 @@ router.get('/:id', async (req, res, next) => {
             messages: req.flash('error'),
         });
     } else {
-        req.flash('error', '없는 강의입니다');
+        req.flash('error', '존재하지 않는 강의입니다');
         res.redirect('/');
     }
 });
@@ -128,7 +128,7 @@ router.get('/:id/review', async (req, res, next) => {
             reviews: result, messages: req.flash('error'), sort, id: req.params.id
         });
     } else {
-        req.flash('error', 'DB 오류');
+        req.flash('error', '리뷰를 찾을 수 없습니다');
         res.redirect('/');
     }
 });
@@ -154,7 +154,7 @@ router.get('/:id/review/write', isLoggedIn, async (req, res, next) => {
         if (result) {
             res.render('class_review_write', { result, messages: req.flash('error') });
         } else {
-            req.flash('error', 'DB 오류');
+            req.flash('error', '리뷰 작성에 문제가 생겼습니다');
             res.redirect('/mypage');
         }
     }

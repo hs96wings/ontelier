@@ -108,12 +108,6 @@ router.post('/resetPwd', isNotLoggedIn, async (req, res) => {
     }
 })
 
-// router.post('/login', passport.authenticate('local', {
-//     successRedirect: req.session.returnTo,
-//     failureRedirect: '/login',
-//     failureFlash: true,
-// }));
-
 router.post('/login', passport.authenticate('local', {
     failureRedirect: '/login', failureFlash: true }),
     function(req, res) {
@@ -136,7 +130,11 @@ router.get('/kakao', isNotLoggedIn, passport.authenticate('kakao'));
 router.get('/kakao/callback', isNotLoggedIn,  passport.authenticate('kakao', {
     failureRedirect: '/',
 }), (req, res) => {
-    res.redirect('/');
+    if (req.session.returnTo) {
+        res.redirect(req.session.returnTo);
+    } else {
+        res.redirect('/');
+    }
 });
 
 router.get('/naver', isNotLoggedIn, passport.authenticate('naver'));
@@ -144,7 +142,11 @@ router.get('/naver', isNotLoggedIn, passport.authenticate('naver'));
 router.get('/naver/callback',isNotLoggedIn,  passport.authenticate('naver', {
     failureRedirect: '/',
 }), (req, res) => {
-    res.redirect('/');
+    if (req.session.returnTo) {
+        res.redirect(req.session.returnTo);
+    } else {
+        res.redirect('/');
+    }
 });
 
 module.exports = router;
