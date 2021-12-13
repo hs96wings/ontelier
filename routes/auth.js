@@ -16,7 +16,7 @@ router.post('/join', isNotLoggedIn, async (req, res) => {
     
     console.log(bizz_license);
     
-    if (bizz_license !== undefined) {
+    if (bizz_license !== undefined && bizz_license.length > 0) {
         user_roll = 'bizz';
     } else {
         user_roll = 'user';
