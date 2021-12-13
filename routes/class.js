@@ -6,7 +6,7 @@ const axios = require('axios');
 const sequelize = require('sequelize');
 
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
-const { User, Class, Review, Purchase, Wishlist, Thumbsup, Lecture_info, Cirriculum } = require('../models');
+const { User, Class, Review, Purchase, Wishlist, Thumbsup, Cirriculum } = require('../models');
 
 const router = express.Router();
 
@@ -188,7 +188,6 @@ router.post('/review/write', isLoggedIn, upload.single('review_img'), async (req
             review_img: filename,
             review_text: req.body.review_text,
             review_best_num: req.body.review_best_num,
-            reviewer: req.user.user_nickname,
             ClassId: req.body.class_id,
             UserUserId: req.user.user_id,
         });
@@ -319,21 +318,14 @@ router.get('/contents/:id', isLoggedIn, async (req, res, next) => {
             }
         });
         if (isClass) {
-            let info = await Lecture_info.findOne({
-                where: {
-                    CirriculumId: 1,
-                }
-            });
             let cirriculum = await Cirriculum.findAll({
                 where: {
                     ClassId: req.params.id,
                 }
             });
-            if (!info) info = null;
             if (cirriculum) {
                 res.render('class_contents', {
                     cirriculum,
-                    info,
                     class: isClass,
                     messages: req.flash('error'),
                     date: isPurchase.purchase_enrolldate
@@ -360,12 +352,10 @@ router.get('/contents/:id/video', isLoggedIn, async (req, res) => {
         }
     });
     if (isPurchase) {
-        let info = await Lecture_info.findOne({
-            where: {
-                CirriculumId: 1,
-            }
-        });
         let cirriculum = await Cirriculum.findAll({
+            attributes: {
+                include: ['id', 'depth', 'cirriculum_text', 'video_url'],
+            },
             where: {
                 ClassId: req.params.id,
             }
@@ -373,7 +363,6 @@ router.get('/contents/:id/video', isLoggedIn, async (req, res) => {
         if (cirriculum) {
             res.render('class_video', {
                 cirriculum,
-                info,
                 messages: req.flash('error')
             });
         } else {
