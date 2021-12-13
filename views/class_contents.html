@@ -58,7 +58,7 @@
               <div class="submenu">
             {% elif cir.depth == 1 %}
               {% if cir.cirriculum_text.includes("-") %}
-              <span>{{cir.cirriculum_text.split("-")[1].replace(' ', '. ')}}<a href="#" class="cirriculum-btn"><img src="/images/play-btn-gray.png" id="{{cir.cirriculum_text.split(" ")[0]}}"></a></span>
+              <span>{{cir.cirriculum_text.substr(2).replace(' ', '. ')}}<a href="#" class="cirriculum-btn"><img src="/images/play-btn-gray.png" id="{{cir.cirriculum_text.split(" ")[0]}}"></a></span>
               {% else %}
               <span>{{cir.cirriculum_text}}</span>
               {% endif %}
@@ -83,14 +83,12 @@
 
   <menu class="class_nav floating">
     <ul>
-      <li class="on" onclick="acyncMovePage(classnote)">수업노트</li>
+      <li class="on">수업노트</li>
     </ul>
   </menu>
 
   <div class="class_contents">
     <!-- 네비바 클릭시 에이젝스로 변경되는 콘텐츠 영역 -->
-    {% block classnote %}
-    {% endblock %}
   </div>
 
 </div>
@@ -101,59 +99,29 @@
 
 
 <script>
-    var classnote = `<!-- 클래스 설명 -->
-      <p id="class_info" class="note-title">{{class.class_title}}</p>
 
-        <!-- 챕터 소개 -->
-          <p id="chapter-depth0">prologue</p>
-          <p id="chapter-depth1">0 -1. 안녕하세요. 친구같은 수박동입니다.</p>
-
-        <!-- 수업 목표 -->
-        <p class="semi-title">[수업목표]</p>
-        <p>{{info.lecture_goal}}프랑스 자수와 펀치니들 자수 수업에 오신걸 환영해요 !
-        이번 클래스에서는 다양한 종류의 실과 기법, 그리고 많이 사용하는 입체 자수 기법을 골라 알려드립니다. 프랑스자수의 기본적인 재료들에 대해 꼼꼼히 살펴보고 총 다섯개의 작품을 만들어볼 거에요.</p>
-
-        <!-- 수업 개요 -->
-        <p class="semi-title">[수업개요]</p>
-        <p>{{info.lecture_summary}}수박동은 자수, 펀치니들 등 하고 싶은 일들을 하나씩 디자인 해나가고 있어요.
-프랑스 자수는 제가 가진 첫 취미예요. 보기만 해도 기분 좋아지는 다양한 컬러의 실을 사용하고 제가 좋아하는 귀여운 것들을 디자인하면서 힘든 일이나 지친 일들을 잠시나마 잊게 해주는 그게 자수의 큰 매력같아요. 자수를 시작하면서 느낀 좋은 경험들을 함께 나누고 싶어요. 이젠 함께 놀 수 있기를 바라요.</p>
-
-        <!-- 다음 영상 예고 -->
-        <p class="semi-title">[다음 영상 예고]</p>
-        <p>{{info.lecture_previous}}</p>
-
-      <div class="class_space"></div>`;
-
-
-      // {% for video in videos %}
-      //     {{video.video_url}}<br>
-      //     {{video.video_info}}<br>
-      // {% endfor %}
 
     // 콘텐츠 로드
-    $(".class_contents").html(classnote);
+
+    $.ajax({
+        type : "get",
+        url : '/class/contents/{{class.id}}/classnote',
+        dataType : "html",
+        error : function(request, status, error){
+            alert(error);
+        },
+        success : function(note){
 
 
-    function acyncMovePage(contents){
-        // ajax option
-        // var ajaxOption = {
-        //         url : url,
-        //         async : true,
-        //         type : "GET",
-        //         dataType : "html",
-        //         cache : false
-        // };
-        //
-        // $.ajax(ajaxOption).done(function(data){
-        //     // Contents 영역 삭제
-        //     $('.class_contents').children().remove();
-        //     // Contents 영역 교체
-        //
-        //     $(".class_contents").load('/htmls/class_contents_classnote.html');
-        // });
+          // Contents 영역 교체
+          $(".class_contents").html(note);
+          $("#class_info").html("{{class.class_title}}");
 
-        $(".class_contents").html(contents);
-    }
+        }
+
+    });
+
+
 
 $(function() {
     var tabBtn = $(".class_nav li");     //각각의 버튼을 변수에 저장

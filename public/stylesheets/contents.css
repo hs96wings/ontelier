@@ -99,7 +99,7 @@
     display: none;
     overflow: hidden;
     transition: max-height 0.7s;
-    max-height: 300px;
+    max-height: 700px;
 }
 
 .submenu::before {
@@ -128,6 +128,10 @@
 .cirriculum-btn img {
   width: 100%;
   height: 100%;
+}
+
+#note-video {
+  display: none;
 }
 
 /* ------------ */

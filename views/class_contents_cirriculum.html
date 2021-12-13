@@ -1,6 +1,4 @@
 
-<p class="sub-title">커리큘럼</p>
-
     <div id="menu">
     <!-- 커리큘럼 -->
       <div>
@@ -15,7 +13,7 @@
         <div class="submenu">
       {% elif cir.depth == 1 %}
         {% if cir.cirriculum_text.includes("-") %}
-        <span>{{cir.cirriculum_text.split("-")[1].replace(' ', '. ')}}<a href="#" class="cirriculum-btn"><img src="/images/play-btn-gray.png" id="{{cir.cirriculum_text.split(" ")[0]}}"></a></span>
+        <span>{{cir.cirriculum_text.substr(2).replace(' ', '. ')}}<a href="#" class="cirriculum-btn"><img src="/images/play-btn-gray.png" id="{{cir.cirriculum_text.split(" ")[0]}}"></a></span>
         {% else %}
         <span>{{cir.cirriculum_text}}</span>
         {% endif %}
@@ -30,3 +28,38 @@
     </div>
 
 <div class="class_space"></div>
+
+<script type="text/javascript">
+
+  $(function() {
+
+    $(".cirriculum-title").click(function() {
+      $(this).next(".submenu").stop().slideToggle(300);
+      $(this).next(".submenu").siblings(".submenu").slideUp(300); // 1개씩 펼치기
+
+      if ( $(this).find("img").attr("class") == "up" ) {
+        $(this).find("img").attr("src", "/images/arrow-down.png"); // down 화살표로
+      } else { // down 눌렀을 때
+        $(".cirriculum-title img").replaceWith('<img src="/images/arrow-down.png">'); // 다른 화살표들 down으로
+        $(this).find("img").attr("src", "/images/arrow-up.png"); // up 화살표로
+      }
+
+      $(this).find("img").toggleClass("up");
+    });
+
+
+
+      var cirBtn = $(".cirriculum-btn img");
+
+      cirBtn.click(function() {
+
+        cirBtn.attr("src", "/images/play-btn-gray.png");
+        $(this).attr("src", "/images/play-btn-green.png");
+
+        $("#contents-btn-num").html($(this).attr("id"));
+
+      });
+
+
+    });
+</script>
