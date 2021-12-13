@@ -47,7 +47,12 @@ router.get('/:id', async (req, res, next) => {
         where: { id: req.params.id }
     });
     let reviews = await Review.findAll({
-        where: { ClassId: req.params.id }
+        where: { ClassId: req.params.id },
+        include: {
+            model: User,
+            required: true,
+            attributes: ['user_nickname']
+        }
     });
     let wishlist = await Wishlist.findAndCountAll({
         include: {
