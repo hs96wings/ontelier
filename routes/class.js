@@ -386,6 +386,17 @@ router.get('/contents/:id/video', isLoggedIn, async (req, res) => {
     }
 });
 
+router.get('/contents/:id/classnote', isLoggedIn, async (req, res) => {
+    const class_title = await Class.findOne({
+        where: { ClassId: req.params.id }
+    });
+    res.render('class_contents_classnote');
+});
+
+router.get('/contents/:id/cirriculum', isLoggedIn, async(req, res) => {
+    res.render('class_contents_cirriculum');
+});
+
 router.post('/:id/review/like', async (req, res) => {
     const { ClassId, id } = req.body;
 
