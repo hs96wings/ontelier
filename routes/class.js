@@ -201,7 +201,7 @@ router.post('/review/write', isLoggedIn, upload.single('review_img'), async (req
         num++;
 
         let result = score / num;
-        result = Math.round(result);
+        result = result.toFixed(2);
 
         await Class.update({
             class_score: result
